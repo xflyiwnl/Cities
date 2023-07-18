@@ -6,6 +6,7 @@ import org.bukkit.Location;
 
 import java.util.ArrayList;
 import java.util.List;
+import java.util.UUID;
 
 public class City extends Government implements CitizenList, Spawnable, Claimable {
 
@@ -17,15 +18,27 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
     private List<Citizen> citizens = new ArrayList<Citizen>();
     private List<Land> lands = new ArrayList<Land>();
 
+    public City() {
+        super();
+    }
+
     public City(String name) {
         super(name);
     }
 
-    public City(String name, Citizen mayor, Country country, Location spawn) {
-        super(name);
+    public City(String name, UUID uuid, double bank, Citizen mayor, Country country, Location spawn) {
+        super(name, uuid);
+        setBank(new Bank(this, bank));
         this.mayor = mayor;
         this.country = country;
         this.spawn = spawn;
+    }
+
+    public void create(boolean save) {
+        Cities.getInstance().getCities().add(this);
+        if (save) {
+            save();
+        }
     }
 
     @Override

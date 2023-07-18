@@ -1,11 +1,25 @@
 package me.xflyiwnl.cities.object;
 
-public class Government extends CitiesObject implements BankHandler, Saveable {
+import java.util.UUID;
 
-    private Bank bank = new Bank();
+public abstract class Government extends CitiesObject implements BankHandler, Saveable {
+
+    private Bank bank = new Bank(this);
+
+    public Government() {
+    }
 
     public Government(String name) {
         super(name);
+    }
+
+    public Government(String name, UUID uuid) {
+        super(name, uuid);
+    }
+
+    public Government(String name, UUID uuid, Bank bank) {
+        super(name, uuid);
+        this.bank = bank;
     }
 
     @Override

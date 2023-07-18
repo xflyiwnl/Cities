@@ -7,8 +7,20 @@ public class CitiesObject implements Nameable, Identifyable {
     private String name;
     private UUID uuid = UUID.randomUUID();
 
+    public CitiesObject() {
+    }
+
     public CitiesObject(String name) {
         this.name = name;
+    }
+
+    public CitiesObject(UUID uuid) {
+        this.uuid = uuid;
+    }
+
+    public CitiesObject(String name, UUID uuid) {
+        this.name = name;
+        this.uuid = uuid;
     }
 
     @Override

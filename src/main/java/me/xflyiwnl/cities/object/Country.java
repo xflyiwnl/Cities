@@ -6,6 +6,7 @@ import me.xflyiwnl.cities.database.SQLDataSource;
 import java.util.ArrayList;
 import java.util.List;
 
+
 public class Country extends Government implements CitiesList {
 
     private Citizen mayor;

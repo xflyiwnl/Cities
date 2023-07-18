@@ -1,5 +1,7 @@
 package me.xflyiwnl.cities.database;
 
+import com.wiring.api.WiringAPI;
+
 public class CitiesDatabase {
 
     private DatabaseType type;
@@ -28,4 +30,5 @@ public class CitiesDatabase {
     public CitiesDataSource getSource() {
         return source;
     }
+
 }

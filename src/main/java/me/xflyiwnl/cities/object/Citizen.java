@@ -5,18 +5,29 @@ import me.xflyiwnl.cities.database.SQLDataSource;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.util.UUID;
+
 public class Citizen extends CitiesObject implements BankHandler, Saveable {
 
-    private Bank bank = new Bank();
+    private Bank bank = new Bank(this, BankType.CITIZEN);
     private City city;
 
-    public Citizen(String name) {
-        super(name);
+    public Citizen() {}
+
+    public Citizen(UUID uuid) {
+        super("", uuid);
     }
 
-    public Citizen(String name, City city) {
-        super(name);
+    public Citizen(UUID uuid, City city) {
+        super(uuid);
         this.city = city;
+    }
+
+    public void create(boolean save) {
+        Cities.getInstance().getCitizens().add(this);
+        if (save) {
+            save();
+        }
     }
 
     @Override
@@ -32,8 +43,17 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable {
     }
 
     @Override
+    public String getName() {
+        if (getPlayer() == null) {
+            return Bukkit.getOfflinePlayer(getUniqueId()).getName();
+        } else {
+            return getPlayer().getName();
+        }
+    }
+
+    @Override
     public Bank getBank() {
-        return null;
+        return bank;
     }
 
     public Player getPlayer() {

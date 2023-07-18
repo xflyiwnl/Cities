@@ -1,16 +1,23 @@
 package me.xflyiwnl.cities.database.sql;
 
+import com.wiring.api.entity.WiringResult;
 import me.xflyiwnl.cities.object.CitiesObject;
+import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Country;
 
+import java.util.List;
 import java.util.UUID;
 
 public interface CitiesDAO<T> {
 
-    void get(T object);
+    void create();
+
+    Citizen get(Object key);
+    Citizen get(WiringResult result);
+
     void save(T object);
     void remove(T object);
 
-    void all(T object);
+    List<T> all();
 
 }

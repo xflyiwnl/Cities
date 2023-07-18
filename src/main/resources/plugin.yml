@@ -2,3 +2,8 @@ name: Cities
 version: '${project.version}'
 main: me.xflyiwnl.cities.Cities
 api-version: '1.16'
+depend:
+  - Vault
+
+commands:
+  city:

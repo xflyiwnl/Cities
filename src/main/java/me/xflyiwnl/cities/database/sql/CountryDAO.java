@@ -1,21 +1,50 @@
 package me.xflyiwnl.cities.database.sql;
 
+import com.wiring.api.WiringAPI;
+import com.wiring.api.entity.Column;
+import com.wiring.api.entity.ColumnType;
+import com.wiring.api.entity.WiringResult;
 import com.zaxxer.hikari.HikariDataSource;
 import me.xflyiwnl.cities.object.CitiesObject;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Country;
 
+import java.util.List;
+
 public class CountryDAO implements CitiesDAO<Country> {
 
-    private HikariDataSource dataSource;
+    private WiringAPI api;
 
-    public CountryDAO(HikariDataSource dataSource) {
-        this.dataSource = dataSource;
+    public CountryDAO(WiringAPI api) {
+        this.api = api;
+
+        create();
     }
 
     @Override
-    public void get(Country object) {
+    public void create() {
+        if (!api.existsDatabase("cities")) {
+            return;
+        }
+        api.getDatabase("cities")
+                .createTable("countries")
+                .column(new Column("uuid", ColumnType.VARCHAR).primaryKey().notNull())
+                .column(new Column("name", ColumnType.VARCHAR).notNull())
+                .column(new Column("bank", ColumnType.DOUBLE).notNull())
+                .column(new Column("mayor", ColumnType.VARCHAR).notNull())
+                .column(new Column("capital", ColumnType.VARCHAR).notNull())
+                .column(new Column("countries", ColumnType.VARCHAR))
+                .execute();
+    }
 
+    @Override
+    public Citizen get(WiringResult result) {
+        return null;
+    }
+
+    @Override
+    public Citizen get(Object key) {
+        return null;
     }
 
     @Override
@@ -29,7 +58,8 @@ public class CountryDAO implements CitiesDAO<Country> {
     }
 
     @Override
-    public void all(Country object) {
-
+    public List<Country> all() {
+        return null;
     }
+
 }
