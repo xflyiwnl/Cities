@@ -6,10 +6,7 @@ import com.wiring.api.entity.ColumnType;
 import com.wiring.api.entity.WiringResult;
 import com.zaxxer.hikari.HikariDataSource;
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.Bank;
-import me.xflyiwnl.cities.object.CitiesObject;
-import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.City;
+import me.xflyiwnl.cities.object.*;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
@@ -41,22 +38,11 @@ public class CityDAO implements CitiesDAO<City> {
                 .column(new Column("country", ColumnType.VARCHAR))
                 .column(new Column("spawn", ColumnType.VARCHAR).notNull())
                 .column(new Column("citizens", ColumnType.VARCHAR))
-                .column(new Column("lands", ColumnType.VARCHAR))
                 .execute();
     }
 
     @Override
-    public Citizen get(WiringResult result) {
-        return null;
-    }
-
-    @Override
-    public Citizen get(Object key) {
-        WiringResult result = api.select("cities")
-                .table("cities")
-                .value(key)
-                .execute();
-
+    public City get(WiringResult result) {
         String[] formattedLocation = result.get("spawn").toString().split(",");
         Location location = new Location(Bukkit.getWorld(formattedLocation[0]), Double.valueOf(formattedLocation[1]), Double.valueOf(formattedLocation[2]), Double.valueOf(formattedLocation[3]), Float.valueOf(formattedLocation[4]), Float.valueOf(formattedLocation[5]));
 
@@ -71,22 +57,39 @@ public class CityDAO implements CitiesDAO<City> {
         );
 
         List<Citizen> citizens = new ArrayList<Citizen>();
-        for (String uid : (List<String>) result.get("citizens")) {
-            // todo
+        List<UUID> uuids = new ArrayList<UUID>();
+        for (String formatted : result.get("citizens").toString().split(",")) {
+            UUID uuid = UUID.fromString(formatted);
+            if (uuid != null) {
+                uuids.add(uuid);
+            }
         }
+        for (UUID uid : uuids) {
+            Citizen citizen = Cities.getInstance().getCitizen(uid);
+            if (citizen != null) {
+                citizens.add(citizen);
+            }
+        }
+
+        city.setCitizens(citizens);
 
         return city;
     }
 
     @Override
+    public City get(Object key) {
+        WiringResult result = api.select("cities")
+                .table("cities")
+                .value(key)
+                .execute();
+        return get(result);
+    }
+
+    @Override
     public void save(City object) {
-        List<String> formattedCitizens = new ArrayList<String>();
+        StringBuilder fc = new StringBuilder();
         object.getCitizens().forEach(citizen -> {
-            formattedCitizens.add(citizen.getName());
-        });
-        List<String> formattedLands = new ArrayList<String>();
-        object.getLands().forEach(land -> {
-            formattedLands.add(land.getUniqueId().toString());
+            fc.append(citizen.getUniqueId().toString()).append(",");
         });
 
         api.insert("cities")
@@ -97,15 +100,14 @@ public class CityDAO implements CitiesDAO<City> {
                 .column("mayor", object.getMayor().getUniqueId().toString())
                 .column("country", object.getCountry() == null ? null : object.getCountry().getUniqueId().toString())
                 .column("spawn",
-                        object.getSpawn().getWorld().toString() + ","
+                        object.getSpawn().getWorld().getName() + ","
                                 + object.getSpawn().getX() + ","
                                 + object.getSpawn().getY() + ","
                                 + object.getSpawn().getZ() + ","
                                 + object.getSpawn().getYaw() + ","
                                 + object.getSpawn().getPitch()
                         )
-                .column("citizens", formattedCitizens.isEmpty() ? null : formattedCitizens)
-                .column("lands", formattedLands.isEmpty() ? null : formattedLands)
+                .column("citizens", fc.isEmpty() == true ? null : fc.toString())
                 .execute();
     }
 
@@ -119,6 +121,17 @@ public class CityDAO implements CitiesDAO<City> {
 
     @Override
     public List<City> all() {
-        return null;
+        List<City> cities = new ArrayList<City>();
+
+        List<WiringResult> results = api.selectAll("cities")
+                .table("cities")
+                .execute();
+
+        for (WiringResult result : results) {
+            City city = get(result);
+            cities.add(city);
+        }
+
+        return cities;
     }
 }

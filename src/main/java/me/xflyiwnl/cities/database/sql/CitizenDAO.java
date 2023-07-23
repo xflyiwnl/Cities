@@ -37,9 +37,7 @@ public class CitizenDAO implements CitiesDAO<Citizen> {
                 .value(key)
                 .execute();
 
-        return new Citizen(
-                UUID.fromString(result.get("uuid").toString()), null
-        );
+        return get(result);
     }
 
     @Override

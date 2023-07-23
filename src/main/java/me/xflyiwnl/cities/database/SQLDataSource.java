@@ -11,6 +11,10 @@ import me.xflyiwnl.cities.database.sql.CityDAO;
 import me.xflyiwnl.cities.database.sql.CountryDAO;
 import me.xflyiwnl.cities.database.sql.LandDAO;
 import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.City;
+import me.xflyiwnl.cities.object.Land;
+
+import java.util.List;
 
 
 public class SQLDataSource implements CitiesDataSource {
@@ -52,6 +56,19 @@ public class SQLDataSource implements CitiesDataSource {
     @Override
     public void loadAll() {
         Cities.getInstance().getCitizens().addAll(citizenDAO.all());
+
+        List<City> cities = cityDAO.all();
+        cities.forEach(city -> {
+            for (Citizen citizen : city.getCitizens()) {
+                if (citizen.getCity() == null) {
+                    citizen.setCity(city);
+                }
+            }
+
+        });
+        Cities.getInstance().getCities().addAll(cities);
+
+        Cities.getInstance().getLands().addAll(landDAO.all());
     }
 
     public CountryDAO getCountryDAO() {

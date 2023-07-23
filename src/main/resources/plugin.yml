@@ -7,3 +7,5 @@ depend:
 
 commands:
   city:
+  confirmation:
+  invite:

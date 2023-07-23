@@ -16,7 +16,6 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
     private Location spawn;
 
     private List<Citizen> citizens = new ArrayList<Citizen>();
-    private List<Land> lands = new ArrayList<Land>();
 
     public City() {
         super();
@@ -24,6 +23,14 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     public City(String name) {
         super(name);
+    }
+
+    public City(String name, double bank, Citizen mayor, Country country, Location spawn) {
+        super(name);
+        setBank(new Bank(this, bank));
+        this.mayor = mayor;
+        this.country = country;
+        this.spawn = spawn;
     }
 
     public City(String name, UUID uuid, double bank, Citizen mayor, Country country, Location spawn) {
@@ -49,27 +56,49 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     @Override
     public void remove() {
+
+        for (Citizen citizen : citizens) {
+            citizen.setCity(null);
+            citizen.save();
+        }
+
+        for (Land land : Cities.getInstance().getCityLands(this)) {
+            land.remove();
+        }
+
+        Cities.getInstance().getCities().remove(this);
+
         SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
         source.getCityDAO().remove(this);
     }
 
+    public void broadcast(String message, boolean format) {
+        for (Citizen citizen : citizens) {
+            if (!citizen.isOnline()) {
+                continue;
+            }
+            if (format) {
+                Translator.send(citizen)
+                        .path("other.broadcast-format")
+                        .replace("city", getName())
+                        .replace("message", message)
+                        .run();
+            } else {
+                citizen.sendMessage(message);
+            }
+        }
+    }
+
     @Override
     public void claimLand(Land land) {
-        Claimable.super.claimLand(land);
+        land.setCity(this);
+        land.save();
     }
 
     @Override
     public void unclaimLand(Land land) {
-        Claimable.super.unclaimLand(land);
-    }
-
-    @Override
-    public List<Land> getLands() {
-        return lands;
-    }
-
-    public void setLands(List<Land> lands) {
-        this.lands = lands;
+        land.setCity(null);
+        land.save();
     }
 
     public Citizen getMayor() {
@@ -118,12 +147,47 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     @Override
     public void addCitizen(Citizen citizen) {
-        CitizenList.super.addCitizen(citizen);
+        System.out.println(getCitizens().size());
+
+        getCitizens().add(citizen);
+        citizen.setCity(this);
+
+        broadcast(Translator.of("city.citizen-added")
+                .replace("%city%", this.getName())
+                .replace("%citizen%", citizen.getName()), false);
+
+        citizen.save();
+
+        System.out.println(getCitizens().size());
     }
 
     @Override
-    public void removeCitizen(Citizen citizen) {
-        CitizenList.super.removeCitizen(citizen);
+    public void leaveCitizen(Citizen citizen) {
+
+        broadcast(Translator.of("city.citizen-leaved")
+                .replace("%city%", this.getName())
+                .replace("%citizen%", citizen.getName()), false);
+
+        getCitizens().remove(citizen);
+        citizen.setCity(null);
+
+
+        citizen.save();
+    }
+
+    @Override
+    public void kickCitizen(Citizen citizen1, Citizen citizen2) {
+
+        broadcast(Translator.of("city.citizen-kicked")
+                .replace("%city%", this.getName())
+                .replace("%citizen1%", citizen1.getName())
+                .replace("%citizen2%", citizen2.getName()), false);
+
+        getCitizens().remove(citizen1);
+        citizen1.setCity(null);
+
+
+        citizen1.save();
     }
 
 }

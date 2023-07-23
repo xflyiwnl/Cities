@@ -38,12 +38,12 @@ public class CountryDAO implements CitiesDAO<Country> {
     }
 
     @Override
-    public Citizen get(WiringResult result) {
+    public Country get(WiringResult result) {
         return null;
     }
 
     @Override
-    public Citizen get(Object key) {
+    public Country get(Object key) {
         return null;
     }
 

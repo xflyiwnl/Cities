@@ -4,14 +4,8 @@ import java.util.List;
 
 public interface Claimable {
 
-    List<Land> getLands();
+    void claimLand(Land land);
 
-    default void claimLand(Land land) {
-        getLands().add(land);
-    }
-
-    default void unclaimLand(Land land) {
-        getLands().remove(land);
-    }
+    void unclaimLand(Land land);
 
 }

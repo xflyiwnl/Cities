@@ -1,11 +1,9 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.City;
-import me.xflyiwnl.cities.object.Land;
-import me.xflyiwnl.cities.object.LandType;
-import me.xflyiwnl.cities.object.command.CitiesExecutor;
+import me.xflyiwnl.cities.object.confirmation.Confirmation;
+import me.xflyiwnl.cities.object.*;
+import me.xflyiwnl.cities.object.invite.CityInvite;
 import org.bukkit.Chunk;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
@@ -17,7 +15,6 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
-import java.util.Locale;
 
 public class CityCommand implements CommandExecutor, TabCompleter {
 
@@ -96,32 +93,40 @@ public class CityCommand implements CommandExecutor, TabCompleter {
     public void parseCityCommand(Citizen citizen, String[] args) {
 
         if (args.length == 0) {
-            // todo status screen
+            Translator.send(citizen)
+                    .path("command.not-enough-args")
+                    .run();
             return;
         }
 
         switch (args[0].toLowerCase()) {
             case "bank":
-                parseBankCommand(citizen, args);
+                bankCommand(citizen, args);
                 break;
             case "land":
-                parseLandCommand(citizen, args);
+                landCommand(citizen, args);
                 break;
             case "rank":
                 break;
             case "online":
                 break;
             case "broadcast":
+                broadcastCommand(citizen, args);
                 break;
             case "kick":
+                kickCommand(citizen, args);
                 break;
             case "invite":
+                inviteCommand(citizen, args);
                 break;
             case "add":
+                inviteCommand(citizen, args);
                 break;
             case "remove":
+                removeCity(citizen);
                 break;
             case "leave":
+                leaveCommand(citizen, args);
                 break;
             case "new":
                 createCity(citizen, args);
@@ -130,44 +135,348 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 createCity(citizen, args);
                 break;
             case "set":
-                parseSetCommand(citizen, args);
+                // todo
                 break;
             default:
+                Translator.send(citizen)
+                        .path("command.unknown-arg")
+                        .run();
                 break;
         }
 
     }
 
-    public boolean parseBankCommand(Citizen citizen, String[] args) {
-        return true;
+    public void kickCommand(Citizen citizen, String[] args) {
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("city.no-city")
+                    .run();
+            return;
+        }
+
+        if (args.length < 2) {
+            Translator.send(citizen)
+                    .path("command.not-enough-args")
+                    .run();
+        }
+
+        Citizen receiver = Cities.getInstance().getCitizen(args[1]);
+
+        if (receiver == null) {
+            Translator.send(citizen)
+                    .path("citizen.unknown-citizen")
+                    .run();
+            return;
+        }
+
+        citizen.getCity().kickCitizen(citizen, receiver);
+
     }
 
-    public boolean parseSetCommand(Citizen citizen, String[] args) {
-        return true;
+    public void leaveCommand(Citizen citizen, String[] args) {
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("city.no-city")
+                    .run();
+            return;
+        }
+
+        citizen.getCity().leaveCitizen(citizen);
+
     }
 
-    public boolean parseLandCommand(Citizen citizen, String[] args) {
-        return true;
+    public void inviteCommand(Citizen citizen, String[] args) {
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("city.no-city")
+                    .run();
+            return;
+        }
+
+        if (args.length < 2) {
+            Translator.send(citizen)
+                    .path("command.not-enough-args")
+                    .run();
+        }
+
+        Citizen receiver = Cities.getInstance().getCitizen(args[1]);
+
+        if (receiver == null) {
+            Translator.send(citizen)
+                    .path("citizen.unknown-citizen")
+                    .run();
+            return;
+        }
+
+        CityInvite invite = new CityInvite(
+                citizen.getCity(),
+                citizen, receiver
+        );
+        receiver.setInvite(invite);
+
     }
 
-    public boolean createCity(Citizen citizen, String[] args) {
+    public void broadcastCommand(Citizen citizen, String[] args) {
 
-        City city = new City(args[1], citizen, null, citizen.getPlayer().getLocation());
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("city.no-city")
+                    .run();
+            return;
+        }
+
+        if (args.length < 2) {
+            Translator.send(citizen)
+                    .path("command.not-enough-args")
+                    .run();
+            return;
+        }
+
+        StringBuilder sb = new StringBuilder();
+        for (int i = 2; i < args.length; i++) {
+            sb.append(i + 1 == args.length ? args[i] : args[i] + " ");
+        }
+
+        citizen.getCity().broadcast(sb.toString(), true);
+
+        Translator.send(citizen)
+                .path("city.broadcast-send")
+                .run();
+
+    }
+
+    public void bankCommand(Citizen citizen, String[] args) {
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("city.no-city")
+                    .run();
+            return;
+        }
+
+        if (args.length == 1) {
+            // todo open lands menu
+            return;
+        }
+
+        City city = citizen.getCity();
+
+        if (args.length < 3) {
+            Translator.send(citizen)
+                    .path("command.not-enough-args")
+                    .run();
+            return;
+        }
+
+        double amount = Double.valueOf(args[2]);
+
+        if (amount < 1 && amount > 1000000) {
+            Translator.send(citizen)
+                    .path("economy.amount-error")
+                    .run();
+            return;
+        }
+
+        switch (args[1].toLowerCase()) {
+            case "deposit":
+
+                city.getBank().deposit(amount);
+
+                city.broadcast(Translator.of("deposit-format")
+                        .replace("%city%", city.getName())
+                        .replace("%player%", citizen.getName())
+                        .replace("%amount%", String.valueOf(amount)), false);
+
+                break;
+            case "withdraw":
+
+                city.getBank().withdraw(amount);
+
+                city.broadcast(Translator.of("withdraw-format")
+                        .replace("%city%", city.getName())
+                        .replace("%player%", citizen.getName())
+                        .replace("%amount%", String.valueOf(amount)), false);
+
+                break;
+            default:
+                Translator.send(citizen)
+                        .path("command.unknown-arg")
+                        .run();
+                break;
+        }
+    }
+
+    public void landCommand(Citizen citizen, String[] args) {
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("city.no-city")
+                    .run();
+            return;
+        }
+
+        if (args.length == 1) {
+            // todo open lands menu
+            return;
+        }
 
         Chunk chunk = citizen.getPlayer().getChunk();
-        Land land = new Land(
-                chunk.getWorld(), chunk.getX(), chunk.getZ(), LandType.DEFAULT, city
+        WorldCord2 worldCord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());
+        Land claimed = Cities.getInstance().getLand(worldCord2);
+
+        switch (args[1].toLowerCase()) {
+            case "claim":
+
+                if (claimed != null) {
+                    Translator.send(citizen)
+                            .path("land.already-claimed")
+                            .replace("city", claimed.getCity().getName())
+                            .run();
+                    return;
+                }
+
+                Land land = new Land(
+                        worldCord2, LandType.DEFAULT, citizen.getCity()
                 );
-        city.getLands().add(land);
+                land.create(true);
 
-        citizen.setCity(city);
+                Translator.send(citizen)
+                        .path("land.land-claim")
+                        .replace("world", land.getCord2().getWorld().getName())
+                        .replace("x", String.valueOf(land.getCord2().getX()))
+                        .replace("z", String.valueOf(land.getCord2().getZ()))
+                        .run();
 
-        city.create(true);
+                break;
+            case "unclaim":
 
-        land.save();
-        citizen.save();
+                if (claimed == null) {
+                    Translator.send(citizen)
+                            .path("land.free-land")
+                            .run();
+                    return;
+                }
 
-        return true;
+                if (!claimed.getCity().equals(citizen.getCity())) {
+                    Translator.send(citizen)
+                            .path("land.already-claimed")
+                            .replace("city", claimed.getCity().getName())
+                            .run();
+                    return;
+                }
+
+                Translator.send(citizen)
+                        .path("land.land-unclaim")
+                        .replace("world", claimed.getCord2().getWorld().getName())
+                        .replace("x", String.valueOf(claimed.getCord2().getX()))
+                        .replace("z", String.valueOf(claimed.getCord2().getZ()))
+                        .run();
+
+                claimed.remove();
+
+                break;
+            default:
+                Translator.send(citizen)
+                        .path("command.unknown-arg")
+                        .run();
+                break;
+        }
+    }
+
+    public void createCity(Citizen citizen, String[] args) {
+
+        if (args.length < 2) {
+            Translator.send(citizen)
+                    .path("command.not-enough-args")
+                    .run();
+            return;
+        }
+
+        if (citizen.getCity() != null) {
+            Translator.send(citizen)
+                    .path("city.already-has-city")
+                    .replace("city", citizen.getCity().getName())
+                    .run();
+            return;
+        }
+
+        City city = new City(args[1], 0, citizen, null, citizen.getPlayer().getLocation());
+
+        Chunk chunk = citizen.getPlayer().getChunk();
+        WorldCord2 worldCord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());
+
+        Land land = new Land(
+                worldCord2, LandType.DEFAULT, city
+        );
+
+        Confirmation confirmation = new Confirmation(
+                citizen,
+                Translator.of("confirmation.confirmation-messages.city-create"),
+                () -> {
+                    land.create(true);
+
+                    citizen.setCity(city);
+                    citizen.save();
+
+
+                    city.addCitizen(citizen);
+                    city.create(true);
+
+                    Translator.send(citizen)
+                            .path("city.city-created")
+                            .replace("city", citizen.getCity().getName())
+                            .run();
+                },
+                () -> {}
+        );
+
+        citizen.setConfirmation(confirmation);
+
+    }
+
+    public void removeCity(Citizen citizen) {
+
+        if (citizen.getConfirmation() != null) {
+            Translator.send(citizen)
+                    .path("confirmation.has-confirmation")
+                    .run();
+            return;
+        }
+
+        City city = citizen.getCity();
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("citizen.no-city")
+                    .run();
+            return;
+        }
+
+        if (!citizen.isMayor()) {
+            Translator.send(citizen)
+                    .path("citizen.not-mayor")
+                    .run();
+            return;
+        }
+
+        Confirmation confirmation = new Confirmation(
+                citizen,
+                Translator.of("confirmation.confirmation-messages.city-remove"),
+                () -> {
+                    Translator.send(citizen)
+                            .path("city.city-removed")
+                            .replace("city", city.getName())
+                            .run();
+
+                    city.remove();
+                },
+                () -> {}
+        );
+        citizen.setConfirmation(confirmation);
+
     }
 
 }

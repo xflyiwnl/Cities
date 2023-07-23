@@ -1,0 +1,75 @@
+language:
+
+#   "#46CAB1&lCities &7› &f"
+
+  other:
+    broadcast-format: "{main}[%city%] &f%message%"
+
+  command:
+    not-enough-args: "{main}&lCities &7› &fНедостаточно аргументов для полноценной команды"
+    unknown-arg: "{main}&lCities &7› &fНеизвестный аргумент команды"
+
+  economy:
+    amount-error: "{main}&lCities &7› &fМожно пополнять от {main}1 &fдо {main}1 000 000 &fмонет"
+    deposit-format: "{main}[%city%] %player% &fпополнил банк на {main}%amount% монет"
+    withdraw-format: "{main}[%city%] %player% &fснял с банка {main}%amount% монет"
+
+  confirmation:
+    no-confirmations: "{main}&lCities &7› &fВам нечего подтверждать"
+    has-confirmation: "{main}&lCities &7› &fУ вас уже имеется подтверждение, ответьте на него и попробуйте опять"
+
+    on-accept: "{main}&lCities &7› &fВы приняли предложение"
+    on-decline: "{main}&lCities &7› &fВы отклонили предложение"
+    time-out: "{main}&lCities &7› &fВремя на подтверждение вышло"
+
+    message: "&f%message%"
+    accept: "&r     &a[Принять]       &r"
+    decline: "&c[Отклонить]"
+
+    confirmation-messages:
+      city-remove: "Вы действительно хотите удалить свой город?"
+      city-create: "Вы уверены, что хотите основать свой город?"
+
+  invite:
+    no-invite: "{main}&lCities &7› &fУ вас нет приглашений"
+    has-invite: "{main}&lCities &7› &fПолучатель уже приглашён куда-то, повторите попытку чуть позже"
+    invite-send: "{main}&lCities &7› &fВаше приглашение было отправлено"
+
+    on-accept-receiver: "{main}&lCities &7› &fВы приняли приглашение"
+    on-accept-sender: "{main}&lCities &7› &fВаше приглашение было принято"
+
+    on-decline-receiver: "{main}&lCities &7› &fВы отклонили приглашение"
+    on-decline-sender: "{main}&lCities &7› &fВаше приглашение было отклонено"
+
+    time-out: "{main}&lCities &7› &fВремя на подтверждение приглашения вышло"
+
+    message: "&f%message%"
+    accept: "&r     &a[Принять]       &r"
+    decline: "&c[Отклонить]"
+
+    invite-messages:
+      city: "Вы приглашены в город {main}%city% &fигроком {main}%sender%"
+
+  city:
+    unknown-city: "{main}&lCities &7› &fТакого города не существует"
+    already-has-city: "{main}&lCities &7› &fУ вас уже имеется город {main}%city%"
+
+    city-created: "{main}&lCities &7› &fГород {main}%city% &fбыл создан"
+    city-removed: "{main}&lCities &7› &fГород {main}%city% &fбыл удалён"
+
+    broadcast-send: "{main}&lCities &7› &fВаше объявление было отправлено"
+
+    citizen-added: "{main}[%city%] %citizen% &fприсоединился к городу"
+    citizen-leaved: "{main}[%city%] %citizen% &fпокинул город"
+    citizen-kicked: "{main}[%city%] %citizen1% &fбыл кикнут {main}%citizen2%"
+
+  citizen:
+    no-city: "{main}&lCities &7› &fУ вас нет города"
+    not-mayor: "{main}&lCities &7› &fВы не являетесь мэром"
+    unknown-citizen: "{main}&lCities &7› &fТакого игрока не существует"
+
+  land:
+    already-claimed: "{main}&lCities &7› &fЭта территория принадлежит городу {main}%city%"
+    land-claim: "{main}&lCities &7› &fВы успешно колонизировали территорию {main}(%world%, %x%, %z%)"
+    free-land: "{main}&lCities &7› &fДанная территория никем не занята"
+    land-unclaim: "{main}&lCities &7› &fВы успешно де-колонизировали территорию {main}(%world%, %x%, %z%)"

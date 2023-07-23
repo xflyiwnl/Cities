@@ -6,12 +6,8 @@ public interface CitizenList {
 
     List<Citizen> getCitizens();
 
-    default void addCitizen(Citizen citizen) {
-        getCitizens().add(citizen);
-    }
-
-    default void removeCitizen(Citizen citizen) {
-        getCitizens().remove(citizen);
-    }
+    void addCitizen(Citizen citizen);
+    void kickCitizen(Citizen citizen1, Citizen citizen2);
+    void leaveCitizen(Citizen citizen);
 
 }

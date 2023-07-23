@@ -12,8 +12,8 @@ public interface CitiesDAO<T> {
 
     void create();
 
-    Citizen get(Object key);
-    Citizen get(WiringResult result);
+    T get(Object key);
+    T get(WiringResult result);
 
     void save(T object);
     void remove(T object);

@@ -4,21 +4,34 @@ import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.database.SQLDataSource;
 import org.bukkit.World;
 
+import java.util.UUID;
+
 public class Land extends CitiesObject implements Saveable {
 
-    private World world;
-    private double x, z;
+    private WorldCord2 cord2;
 
     private LandType type;
     private City city;
 
-    public Land(World world, double x, double z, LandType type, City city) {
+    public Land(WorldCord2 cord2, LandType type, City city) {
         super("");
-        this.world = world;
-        this.x = x;
-        this.z = z;
+        this.cord2 = cord2;
         this.type = type;
         this.city = city;
+    }
+
+    public Land(UUID uuid, WorldCord2 cord2, LandType type, City city) {
+        super(uuid);
+        this.cord2 = cord2;
+        this.type = type;
+        this.city = city;
+    }
+
+    public void create(boolean save) {
+        Cities.getInstance().getLands().add(this);
+        if (save) {
+            save();
+        }
     }
 
     @Override
@@ -29,32 +42,19 @@ public class Land extends CitiesObject implements Saveable {
 
     @Override
     public void remove() {
+
+        Cities.getInstance().getLands().remove(this);
+
         SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
         source.getLandDAO().remove(this);
     }
 
-    public World getWorld() {
-        return world;
+    public WorldCord2 getCord2() {
+        return cord2;
     }
 
-    public void setWorld(World world) {
-        this.world = world;
-    }
-
-    public double getX() {
-        return x;
-    }
-
-    public void setX(double x) {
-        this.x = x;
-    }
-
-    public double getZ() {
-        return z;
-    }
-
-    public void setZ(double z) {
-        this.z = z;
+    public void setCord2(WorldCord2 cord2) {
+        this.cord2 = cord2;
     }
 
     public LandType getType() {

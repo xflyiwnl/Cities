@@ -1,17 +1,17 @@
 package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.command.CityCommand;
+import me.xflyiwnl.cities.command.ConfirmationCommand;
+import me.xflyiwnl.cities.command.InviteCommand;
 import me.xflyiwnl.cities.database.CitiesDatabase;
 import me.xflyiwnl.cities.database.DatabaseType;
 import me.xflyiwnl.cities.listener.PlayerListener;
-import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.City;
-import me.xflyiwnl.cities.object.Country;
-import me.xflyiwnl.cities.object.Land;
+import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.timer.ActionTimer;
 import net.kyori.adventure.text.Component;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
+import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
@@ -26,11 +26,13 @@ public final class Cities extends JavaPlugin {
     private static Cities instance;
 
     private CitiesDatabase database;
+    private FileManager fileManager;
     private Economy economy;
 
     private List<Country> countries = new ArrayList<Country>();
     private List<City> cities = new ArrayList<City>();
     private List<Citizen> citizens = new ArrayList<Citizen>();
+    private List<Land> lands = new ArrayList<Land>();
 
     @Override
     public void onEnable() {
@@ -44,6 +46,8 @@ public final class Cities extends JavaPlugin {
 
         database = new CitiesDatabase(DatabaseType.SQL);
 
+        fileManager = new FileManager();
+        fileManager.create();
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Citizen citizen = Cities.getInstance().getCitizen(player);
@@ -55,7 +59,7 @@ public final class Cities extends JavaPlugin {
             }
         }
 
-        ActionTimer timer = new ActionTimer( 20);
+        new ActionTimer( 20);
 
         registerCommands();
         registerListeners();
@@ -74,27 +78,42 @@ public final class Cities extends JavaPlugin {
     public void registerCommands() {
         getCommand("city").setExecutor(new CityCommand());
         getCommand("city").setTabCompleter(new CityCommand());
+
+        getCommand("confirmation").setExecutor(new ConfirmationCommand());
+        getCommand("confirmation").setTabCompleter(new ConfirmationCommand());
+
+        getCommand("invite").setExecutor(new InviteCommand());
+        getCommand("invite").setTabCompleter(new InviteCommand());
     }
 
     public City getCityByLand(Citizen citizen) {
-        for (City city : cities) {
-            for (Land land : city.getLands()) {
-                if (land.getX() == citizen.getPlayer().getChunk().getX() &&
-                        land.getZ() == citizen.getPlayer().getChunk().getZ()) {
-                    return city;
-                }
-            }
+        return getCityByLand(citizen.getPlayer());
+    }
+
+    public City getCityByLand(Player player) {
+        Chunk chunk = player.getChunk();
+        Land land = getLand(new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ()));
+        if (land != null) {
+            return land.getCity();
         }
         return null;
     }
 
-    public City getCityByLand(Player player) {
-        for (City city : cities) {
-            for (Land land : city.getLands()) {
-                if (land.getX() == player.getChunk().getX() &&
-                        land.getZ() == player.getChunk().getZ()) {
-                    return city;
-                }
+    public List<Land> getCityLands(City city) {
+        List<Land> lands = new ArrayList<>();
+        for (Land land : this.lands) {
+            if (land.getCity() != null && land.getCity().equals(city)) {
+                lands.add(land);
+            }
+        }
+        return lands;
+    }
+
+    public Land getLand(WorldCord2 cord2) {
+        for (Land land : lands) {
+            if (land.getCord2().getWorld().getName().equals(cord2.getWorld().getName()) && land.getCord2().getX() == cord2.getX() &&
+                    land.getCord2().getZ() == cord2.getZ()) {
+                return land;
             }
         }
         return null;
@@ -170,7 +189,9 @@ public final class Cities extends JavaPlugin {
         return economy != null;
     }
 
-
+    public FileManager getFileManager() {
+        return fileManager;
+    }
 
     public CitiesDatabase getDatabase() {
         return database;
@@ -186,6 +207,10 @@ public final class Cities extends JavaPlugin {
 
     public List<Citizen> getCitizens() {
         return citizens;
+    }
+
+    public List<Land> getLands() {
+        return lands;
     }
 
     public static Cities getInstance() {
