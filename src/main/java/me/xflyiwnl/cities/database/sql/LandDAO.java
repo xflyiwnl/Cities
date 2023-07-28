@@ -59,7 +59,7 @@ public class LandDAO implements CitiesDAO<Land> {
         api.insert("cities")
                 .table("lands")
                 .column("uuid", object.getUniqueId().toString())
-                .column("world", object.getCord2().getWorld().getName() + "," + object.getCord2().getX() + "." + object.getCord2().getZ())
+                .column("cord2", object.getCord2().getWorld().getName() + "," + object.getCord2().getX() + "," + object.getCord2().getZ())
                 .column("type", object.getType().toString())
                 .column("city", object.getCity() == null ? null : object.getCity().getUniqueId().toString())
                 .execute();

@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.gui.TestProvider;
 import me.xflyiwnl.cities.object.confirmation.Confirmation;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.invite.CityInvite;
@@ -150,7 +151,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         if (!citizen.hasCity()) {
             Translator.send(citizen)
-                    .path("city.no-city")
+                    .path("citizen.no-city")
                     .run();
             return;
         }
@@ -159,6 +160,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             Translator.send(citizen)
                     .path("command.not-enough-args")
                     .run();
+            return;
         }
 
         Citizen receiver = Cities.getInstance().getCitizen(args[1]);
@@ -170,7 +172,38 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        citizen.getCity().kickCitizen(citizen, receiver);
+        if (receiver.equals(citizen)) {
+            Translator.send(citizen)
+                    .path("citizen.kick-self")
+                    .run();
+            return;
+        }
+
+        if (!receiver.hasCity()) {
+            Translator.send(citizen)
+                    .path("citizen.kick-error")
+                    .run();
+            return;
+        }
+
+        if (!receiver.getCity().equals(citizen.getCity())) {
+            Translator.send(citizen)
+                    .path("citizen.kick-error")
+                    .run();
+            return;
+        }
+
+        if (receiver.isMayor()) {
+            Translator.send(citizen)
+                    .path("citizen.kick-mayor")
+                    .run();
+            return;
+        }
+
+        City city = citizen.getCity();
+
+        city.kickCitizen(citizen, receiver);
+        city.save();
 
     }
 
@@ -183,7 +216,17 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        citizen.getCity().leaveCitizen(citizen);
+        if (citizen.isMayor()) {
+            Translator.send(citizen)
+                    .path("city.mayor-leave-city")
+                    .run();
+            return;
+        }
+
+        City city = citizen.getCity();
+
+        city.leaveCitizen(citizen);
+        city.save();
 
     }
 
@@ -200,6 +243,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             Translator.send(citizen)
                     .path("command.not-enough-args")
                     .run();
+            return;
         }
 
         Citizen receiver = Cities.getInstance().getCitizen(args[1]);
@@ -207,6 +251,28 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         if (receiver == null) {
             Translator.send(citizen)
                     .path("citizen.unknown-citizen")
+                    .run();
+            return;
+        }
+
+        if (receiver.equals(citizen)) {
+            Translator.send(citizen)
+                    .path("invite.invite-self")
+                    .run();
+            return;
+        }
+
+        if (receiver.hasCity()) {
+            Translator.send(citizen)
+                    .path("invite.receiver-has-city")
+                    .replace("city", receiver.getCity().getName())
+                    .run();
+            return;
+        }
+
+        if (receiver.hasInvite()) {
+            Translator.send(citizen)
+                    .path("invite.receiver-has-invite")
                     .run();
             return;
         }
@@ -236,7 +302,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         StringBuilder sb = new StringBuilder();
-        for (int i = 2; i < args.length; i++) {
+        for (int i = 1; i < args.length; i++) {
             sb.append(i + 1 == args.length ? args[i] : args[i] + " ");
         }
 
@@ -283,9 +349,16 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         switch (args[1].toLowerCase()) {
             case "deposit":
 
-                city.getBank().deposit(amount);
+                if (citizen.getBank().current() < amount) {
+                    Translator.send(citizen)
+                            .path("economy.not-enough-money")
+                            .run();
+                    return;
+                }
 
-                city.broadcast(Translator.of("deposit-format")
+                citizen.getBank().pay(city.getBank(), amount);
+
+                city.broadcast(Translator.of("economy.deposit-format")
                         .replace("%city%", city.getName())
                         .replace("%player%", citizen.getName())
                         .replace("%amount%", String.valueOf(amount)), false);
@@ -293,9 +366,16 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 break;
             case "withdraw":
 
-                city.getBank().withdraw(amount);
+                if (city.getBank().current() < amount) {
+                    Translator.send(citizen)
+                            .path("economy.not-enough-money-city")
+                            .run();
+                    return;
+                }
 
-                city.broadcast(Translator.of("withdraw-format")
+                city.getBank().pay(citizen.getBank(), amount);
+
+                city.broadcast(Translator.of("economy.withdraw-format")
                         .replace("%city%", city.getName())
                         .replace("%player%", citizen.getName())
                         .replace("%amount%", String.valueOf(amount)), false);
@@ -307,6 +387,9 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                         .run();
                 break;
         }
+
+        city.save();
+
     }
 
     public void landCommand(Citizen citizen, String[] args) {
@@ -319,7 +402,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            // todo open lands menu
+            TestProvider.showGUI(citizen.getPlayer());
             return;
         }
 
@@ -384,6 +467,9 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                         .run();
                 break;
         }
+
+        citizen.save();
+
     }
 
     public void createCity(Citizen citizen, String[] args) {
@@ -399,6 +485,23 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             Translator.send(citizen)
                     .path("city.already-has-city")
                     .replace("city", citizen.getCity().getName())
+                    .run();
+            return;
+        }
+
+        if (Cities.getInstance().getCity(args[1]) != null) {
+            Translator.send(citizen)
+                    .path("city.creation-name-error")
+                    .run();
+            return;
+        }
+
+        City landCity = Cities.getInstance().getCityByLand(citizen);
+
+        if (landCity != null) {
+            Translator.send(citizen)
+                    .path("land.already-claimed")
+                    .replace("city", landCity.getName())
                     .run();
             return;
         }
@@ -420,7 +523,6 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
                     citizen.setCity(city);
                     citizen.save();
-
 
                     city.addCitizen(citizen);
                     city.create(true);

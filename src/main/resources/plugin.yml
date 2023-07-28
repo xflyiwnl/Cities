@@ -4,6 +4,7 @@ main: me.xflyiwnl.cities.Cities
 api-version: '1.16'
 depend:
   - Vault
+  - dynmap
 
 commands:
   city:

@@ -10,6 +10,8 @@ language:
     unknown-arg: "{main}&lCities &7› &fНеизвестный аргумент команды"
 
   economy:
+    not-enough-money: "{main}&lCities &7› &fУ вас нет столько монет"
+    not-enough-money-city: "{main}&lCities &7› &fВ городе нет столько монет"
     amount-error: "{main}&lCities &7› &fМожно пополнять от {main}1 &fдо {main}1 000 000 &fмонет"
     deposit-format: "{main}[%city%] %player% &fпополнил банк на {main}%amount% монет"
     withdraw-format: "{main}[%city%] %player% &fснял с банка {main}%amount% монет"
@@ -31,6 +33,10 @@ language:
       city-create: "Вы уверены, что хотите основать свой город?"
 
   invite:
+    invite-self: "{main}&lCities &7› &fВы не сможете отправить приглашение самому себе"
+    receiver-has-city: "{main}&lCities &7› &fИгрок уже состоит в городе {main}%city%"
+    receiver-has-invite: "{main}&lCities &7› &fИгрок уже приглашён куда-то, повторите попытку позже"
+
     no-invite: "{main}&lCities &7› &fУ вас нет приглашений"
     has-invite: "{main}&lCities &7› &fПолучатель уже приглашён куда-то, повторите попытку чуть позже"
     invite-send: "{main}&lCities &7› &fВаше приглашение было отправлено"
@@ -51,6 +57,8 @@ language:
       city: "Вы приглашены в город {main}%city% &fигроком {main}%sender%"
 
   city:
+    creation-name-error: "{main}&lCities &7› &fГород с таким именем уже существует"
+
     unknown-city: "{main}&lCities &7› &fТакого города не существует"
     already-has-city: "{main}&lCities &7› &fУ вас уже имеется город {main}%city%"
 
@@ -63,10 +71,17 @@ language:
     citizen-leaved: "{main}[%city%] %citizen% &fпокинул город"
     citizen-kicked: "{main}[%city%] %citizen1% &fбыл кикнут {main}%citizen2%"
 
+    mayor-leave-city: "{main}&lCities &7› &fВы не сможете выйти из города, когда вы мэр"
+
   citizen:
     no-city: "{main}&lCities &7› &fУ вас нет города"
     not-mayor: "{main}&lCities &7› &fВы не являетесь мэром"
     unknown-citizen: "{main}&lCities &7› &fТакого игрока не существует"
+    other-city: "{main}&lCities &7› &fЭтот игрок из другого города"
+
+    kick-error: "{main}&lCities &7› &fИгрок не в вашем городе"
+    kick-self: "{main}&lCities &7› &fВы не сможете кикнуть самого себя"
+    kick-mayor: "{main}&lCities &7› &fЭтот игрок является мэром вашего города"
 
   land:
     already-claimed: "{main}&lCities &7› &fЭта территория принадлежит городу {main}%city%"

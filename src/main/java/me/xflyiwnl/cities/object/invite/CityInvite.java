@@ -61,7 +61,7 @@ public class CityInvite implements Invite {
                 .run();
 
         if (sender.isOnline()) {
-            Translator.send(receiver)
+            Translator.send(sender)
                     .path("invite.on-accept-sender")
                     .run();
         }
@@ -88,7 +88,7 @@ public class CityInvite implements Invite {
                 .run();
 
         if (sender.isOnline()) {
-            Translator.send(receiver)
+            Translator.send(sender)
                     .path("invite.on-decline-sender")
                     .run();
         }

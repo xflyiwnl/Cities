@@ -5,17 +5,18 @@ import me.xflyiwnl.cities.command.ConfirmationCommand;
 import me.xflyiwnl.cities.command.InviteCommand;
 import me.xflyiwnl.cities.database.CitiesDatabase;
 import me.xflyiwnl.cities.database.DatabaseType;
+import me.xflyiwnl.cities.dynmap.DynmapDrawer;
 import me.xflyiwnl.cities.listener.PlayerListener;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.timer.ActionTimer;
-import net.kyori.adventure.text.Component;
+import me.xflyiwnl.cities.object.timer.DynmapTimer;
+import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.scheduler.BukkitRunnable;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -28,6 +29,8 @@ public final class Cities extends JavaPlugin {
     private CitiesDatabase database;
     private FileManager fileManager;
     private Economy economy;
+    private DynmapDrawer dynmapDrawer;
+    private ColorfulGUI colorfulGUI;
 
     private List<Country> countries = new ArrayList<Country>();
     private List<City> cities = new ArrayList<City>();
@@ -45,6 +48,7 @@ public final class Cities extends JavaPlugin {
         }
 
         database = new CitiesDatabase(DatabaseType.SQL);
+        colorfulGUI = new ColorfulGUI(this);
 
         fileManager = new FileManager();
         fileManager.create();
@@ -64,10 +68,20 @@ public final class Cities extends JavaPlugin {
         registerCommands();
         registerListeners();
 
+        dynmapDrawer = new DynmapDrawer();
+        try {
+            dynmapDrawer.enable();
+        } catch (Exception e) {
+            throw new RuntimeException(e);
+        }
+
+        new DynmapTimer(100);
+
     }
 
     @Override
     public void onDisable() {
+        dynmapDrawer.disable();
         database.getSource().end();
     }
 
@@ -223,5 +237,13 @@ public final class Cities extends JavaPlugin {
 
     public Economy getEconomy() {
         return economy;
+    }
+
+    public DynmapDrawer getDynmapDrawer() {
+        return dynmapDrawer;
+    }
+
+    public ColorfulGUI getColorfulGUI() {
+        return colorfulGUI;
     }
 }

@@ -180,14 +180,13 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
         broadcast(Translator.of("city.citizen-kicked")
                 .replace("%city%", this.getName())
-                .replace("%citizen1%", citizen1.getName())
-                .replace("%citizen2%", citizen2.getName()), false);
+                .replace("%citizen1%", citizen2.getName())
+                .replace("%citizen2%", citizen1.getName()), false);
 
-        getCitizens().remove(citizen1);
-        citizen1.setCity(null);
+        getCitizens().remove(citizen2);
+        citizen2.setCity(null);
 
-
-        citizen1.save();
+        citizen2.save();
     }
 
 }

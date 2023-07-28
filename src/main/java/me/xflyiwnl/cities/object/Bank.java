@@ -70,13 +70,13 @@ public class Bank {
     }
 
     public void pay(Bank to, double amount) {
-        withdraw(amount);
+        this.withdraw(amount);
         to.deposit(amount);
     }
 
     public void pay(Citizen citizen, double amount) {
         withdraw(amount);
-        OfflinePlayer player = Bukkit.getOfflinePlayer(((Citizen) who).getUniqueId());
+        OfflinePlayer player = Bukkit.getOfflinePlayer(citizen.getUniqueId());
         Cities.getInstance().getEconomy().depositPlayer(player, amount);
     }
 
