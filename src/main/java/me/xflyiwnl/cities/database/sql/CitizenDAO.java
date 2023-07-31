@@ -27,6 +27,8 @@ public class CitizenDAO implements CitiesDAO<Citizen> {
                 .column(new Column("uuid", ColumnType.VARCHAR).primaryKey().notNull())
                 .column(new Column("name", ColumnType.VARCHAR).notNull())
                 .column(new Column("city", ColumnType.VARCHAR))
+                .column(new Column("registered", ColumnType.VARCHAR).notNull())
+                .column(new Column("joinedCity", ColumnType.VARCHAR))
                 .execute();
     }
 
@@ -43,7 +45,7 @@ public class CitizenDAO implements CitiesDAO<Citizen> {
     @Override
     public Citizen get(WiringResult result) {
         return new Citizen(
-                UUID.fromString(result.get("uuid").toString()), null
+                UUID.fromString(result.get("uuid").toString()), null, result.get("registered").toString(), result.get("joinedCity").toString()
         );
     }
 
@@ -54,6 +56,8 @@ public class CitizenDAO implements CitiesDAO<Citizen> {
                 .column("uuid", object.getUniqueId().toString())
                 .column("name", object.getName())
                 .column("city", object.getCity() == null ? null : object.getCity().getUniqueId().toString())
+                .column("registered", object.getRegistered())
+                .column("joinedCity", object.getJoinedCity())
                 .execute();
     }
 

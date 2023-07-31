@@ -31,6 +31,7 @@ public class LandDAO implements CitiesDAO<Land> {
                 .column(new Column("cord2", ColumnType.VARCHAR).notNull())
                 .column(new Column("type", ColumnType.VARCHAR).notNull())
                 .column(new Column("city", ColumnType.VARCHAR))
+                .column(new Column("spawnLand", ColumnType.VARCHAR))
                 .execute();
     }
 
@@ -42,7 +43,8 @@ public class LandDAO implements CitiesDAO<Land> {
                 UUID.fromString(result.get("uuid").toString()),
                 cord2,
                 LandType.valueOf(result.get("type").toString().toUpperCase()),
-                Cities.getInstance().getCity(UUID.fromString(result.get("city").toString())) == null ? null : Cities.getInstance().getCity(UUID.fromString(result.get("city").toString()))
+                Cities.getInstance().getCity(UUID.fromString(result.get("city").toString())) == null ? null : Cities.getInstance().getCity(UUID.fromString(result.get("city").toString())),
+                Boolean.parseBoolean(result.get("spawnLand").toString())
         );
     }
 
@@ -62,6 +64,7 @@ public class LandDAO implements CitiesDAO<Land> {
                 .column("cord2", object.getCord2().getWorld().getName() + "," + object.getCord2().getX() + "," + object.getCord2().getZ())
                 .column("type", object.getType().toString())
                 .column("city", object.getCity() == null ? null : object.getCity().getUniqueId().toString())
+                .column("spawnLand", object.isSpawnLand())
                 .execute();
     }
 
@@ -83,6 +86,9 @@ public class LandDAO implements CitiesDAO<Land> {
 
         for (WiringResult result : results) {
             Land land = get(result);
+            if (land.isSpawnLand()) {
+                land.getCity().setSpawnLand(land);
+            }
             lands.add(land);
         }
 

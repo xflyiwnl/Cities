@@ -8,6 +8,7 @@
     <artifactId>Cities</artifactId>
     <version>1.0-SNAPSHOT</version>
     <packaging>jar</packaging>
+    <description>Плагин на города и страны</description>
 
     <name>Cities</name>
 
@@ -123,7 +124,7 @@
         <dependency>
             <groupId>com.github.xflyiwnl</groupId>
             <artifactId>ColorfulGUI</artifactId>
-            <version>v1.0</version>
+            <version>v1.1</version>
         </dependency>
 
     </dependencies>

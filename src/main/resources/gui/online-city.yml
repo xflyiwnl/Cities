@@ -1,0 +1,44 @@
+gui:
+  title: "Онлайн города: %city%"
+  rows: 5
+  mask:
+    - "BBBBBBBBB"
+    - "BOOOOOOOB"
+    - "BOOOOOOOB"
+    - "BOOOOOOOB"
+    - "BBBPBNBBB"
+
+online-item:
+  display-name: "#46CAB1%name%"
+  lore:
+    - " "
+    - " &fРанг: #46CAB1%rank%"
+    - " &fВступил: #46CAB1%joined%"
+    - " "
+
+items:
+  border-item:
+    material: black_stained_glass_pane
+    amount: 1
+    display-name: " "
+    lore:
+      - " "
+    mask: "B"
+  next-item:
+    material: lime_stained_glass_pane
+    amount: 1
+    display-name: "#46CAB1Следующая страница"
+    lore:
+      - " "
+    mask: "N"
+    action:
+      - "[next]"
+  prev-item:
+    material: red_stained_glass_pane
+    amount: 1
+    display-name: "#46CAB1Предыдущая страница"
+    lore:
+      - " "
+    mask: "P"
+    action:
+      - "[previous]"

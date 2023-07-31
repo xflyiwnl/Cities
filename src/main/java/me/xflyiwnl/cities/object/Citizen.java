@@ -8,6 +8,8 @@ import me.xflyiwnl.cities.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.UUID;
 
 public class Citizen extends CitiesObject implements BankHandler, Saveable, Inviteable {
@@ -18,6 +20,9 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
     private Confirmation confirmation;
     private Invite invite;
 
+    private String registered = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
+    private String joinedCity;
+
     public Citizen() {}
 
     public Citizen(UUID uuid) {
@@ -27,6 +32,13 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
     public Citizen(UUID uuid, City city) {
         super(uuid);
         this.city = city;
+    }
+
+    public Citizen(UUID uuid, City city, String registered, String joinedCity) {
+        super(uuid);
+        this.city = city;
+        this.registered = registered;
+        this.joinedCity = joinedCity;
     }
 
     public void sendMessage(String text) {
@@ -62,10 +74,44 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
         return true;
     }
 
+    public boolean isKing() {
+        if (city == null) {
+            return false;
+        }
+        if (!city.hasCountry()) {
+            return false;
+        }
+        if (!city.getCountry().getMayor().equals(this)) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean hasCountry() {
+        if (city == null) {
+            return false;
+        }
+        if (!city.hasCountry()) {
+            return false;
+        }
+        return true;
+    }
+
+    public Country getCountry() {
+        if (city == null) {
+            return null;
+        }
+        if (!city.hasCountry()) {
+            return null;
+        }
+        return city.getCountry();
+    }
+
     public boolean hasConfirmation() {
         return confirmation == null ? false : true;
     }
 
+    @Override
     public boolean hasInvite() {
         return invite == null ? false : true;
     }
@@ -136,4 +182,19 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
         this.invite = invite;
     }
 
+    public String getRegistered() {
+        return registered;
+    }
+
+    public void setRegistered(String registered) {
+        this.registered = registered;
+    }
+
+    public String getJoinedCity() {
+        return joinedCity;
+    }
+
+    public void setJoinedCity(String joinedCity) {
+        this.joinedCity = joinedCity;
+    }
 }

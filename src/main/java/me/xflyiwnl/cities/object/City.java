@@ -2,18 +2,26 @@ package me.xflyiwnl.cities.object;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.database.SQLDataSource;
+import me.xflyiwnl.cities.object.invite.Invite;
+import org.bukkit.Chunk;
 import org.bukkit.Location;
 
+import java.time.LocalDateTime;
+import java.time.format.DateTimeFormatter;
 import java.util.ArrayList;
 import java.util.List;
 import java.util.UUID;
 
-public class City extends Government implements CitizenList, Spawnable, Claimable {
+public class City extends Government implements CitizenList, Spawnable, Claimable, Inviteable {
 
     private Citizen mayor;
     private Country country;
 
     private Location spawn;
+    private Land spawnLand;
+
+    private Invite invite;
+    private String board;
 
     private List<Citizen> citizens = new ArrayList<Citizen>();
 
@@ -33,12 +41,22 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         this.spawn = spawn;
     }
 
-    public City(String name, UUID uuid, double bank, Citizen mayor, Country country, Location spawn) {
+    public City(String name, double bank, Citizen mayor, Country country, Location spawn, String board) {
+        super(name);
+        setBank(new Bank(this, bank));
+        this.mayor = mayor;
+        this.country = country;
+        this.spawn = spawn;
+        this.board = board;
+    }
+
+    public City(String name, UUID uuid, double bank, Citizen mayor, Country country, Location spawn, String board) {
         super(name, uuid);
         setBank(new Bank(this, bank));
         this.mayor = mayor;
         this.country = country;
         this.spawn = spawn;
+        this.board = board;
     }
 
     public void create(boolean save) {
@@ -59,6 +77,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
         for (Citizen citizen : citizens) {
             citizen.setCity(null);
+            citizen.setJoinedCity(null);
             citizen.save();
         }
 
@@ -101,6 +120,31 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         land.save();
     }
 
+    public boolean hasCountry() {
+        if (country == null) {
+            return false;
+        }
+        return true;
+    }
+
+    public boolean isCapital() {
+        if (!hasCountry()) {
+            return false;
+        }
+        if (!getCountry().getCapital().equals(this)) {
+            return false;
+        }
+        return true;
+    }
+
+    @Override
+    public boolean hasInvite() {
+        if (invite == null) {
+            return true;
+        }
+        return false;
+    }
+
     public Citizen getMayor() {
         return mayor;
     }
@@ -124,6 +168,10 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     public void setSpawn(Location spawn) {
         this.spawn = spawn;
+
+        Chunk chunk = spawn.getChunk();
+        WorldCord2 cord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());
+        spawnLand = Cities.getInstance().getLand(cord2);
     }
 
     @Override
@@ -155,6 +203,8 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         broadcast(Translator.of("city.citizen-added")
                 .replace("%city%", this.getName())
                 .replace("%citizen%", citizen.getName()), false);
+
+        citizen.setJoinedCity(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
 
         citizen.save();
 
@@ -189,4 +239,29 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         citizen2.save();
     }
 
+    @Override
+    public Invite getInvite() {
+        return invite;
+    }
+
+    public void setInvite(Invite invite) {
+        this.invite = invite;
+    }
+
+    @Override
+    public Land getSpawnLand() {
+        return spawnLand;
+    }
+
+    public void setSpawnLand(Land spawnLand) {
+        this.spawnLand = spawnLand;
+    }
+
+    public String getBoard() {
+        return board;
+    }
+
+    public void setBoard(String board) {
+        this.board = board;
+    }
 }

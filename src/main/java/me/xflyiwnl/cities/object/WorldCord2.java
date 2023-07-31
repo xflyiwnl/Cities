@@ -13,6 +13,11 @@ public class WorldCord2 {
         this.z = z;
     }
 
+    @Override
+    public String toString() {
+        return world.getName() + "," + x + "," + z;
+    }
+
     public WorldCord2 clone() {
         WorldCord2 cloned = new WorldCord2(world, x, z);
         return cloned;

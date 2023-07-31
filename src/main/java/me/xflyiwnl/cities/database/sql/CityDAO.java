@@ -37,6 +37,7 @@ public class CityDAO implements CitiesDAO<City> {
                 .column(new Column("mayor", ColumnType.VARCHAR).notNull())
                 .column(new Column("country", ColumnType.VARCHAR))
                 .column(new Column("spawn", ColumnType.VARCHAR).notNull())
+                .column(new Column("board", ColumnType.VARCHAR).notNull())
                 .column(new Column("citizens", ColumnType.VARCHAR))
                 .execute();
     }
@@ -52,8 +53,8 @@ public class CityDAO implements CitiesDAO<City> {
                 (double) result.get("bank"),
                 Cities.getInstance().getCitizen(UUID.fromString(result.get("mayor").toString())),
                 null,
-                location
-
+                location,
+                result.get("board").toString()
         );
 
         List<Citizen> citizens = new ArrayList<Citizen>();
@@ -107,6 +108,7 @@ public class CityDAO implements CitiesDAO<City> {
                                 + object.getSpawn().getYaw() + ","
                                 + object.getSpawn().getPitch()
                         )
+                .column("board", object.getBoard())
                 .column("citizens", fc.isEmpty() == true ? null : fc.toString())
                 .execute();
     }

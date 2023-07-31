@@ -14,8 +14,26 @@ public class Country extends Government implements CitiesList {
 
     private List<City> cities = new ArrayList<City>();
 
-    public Country(String name) {
+    public Country() {
+    }
+
+    public Country(String name, Citizen mayor, City capital) {
         super(name);
+        this.mayor = mayor;
+        this.capital = capital;
+    }
+
+    public void broadcast(String message, boolean formatted) {
+        cities.forEach(city -> {
+            city.broadcast(message, formatted);
+        });
+    }
+
+    public void create(boolean save) {
+        Cities.getInstance().getCountries().add(this);
+        if (save) {
+            save();
+        }
     }
 
     @Override
@@ -26,6 +44,14 @@ public class Country extends Government implements CitiesList {
 
     @Override
     public void remove() {
+
+        cities.forEach(city -> {
+            city.setCountry(null);
+            city.save();
+        });
+
+        Cities.getInstance().getCountries().remove(this);
+
         SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
         source.getCountryDAO().remove(this);
     }

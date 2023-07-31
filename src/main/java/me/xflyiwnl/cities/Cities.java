@@ -2,6 +2,7 @@ package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.command.CityCommand;
 import me.xflyiwnl.cities.command.ConfirmationCommand;
+import me.xflyiwnl.cities.command.CountryCommand;
 import me.xflyiwnl.cities.command.InviteCommand;
 import me.xflyiwnl.cities.database.CitiesDatabase;
 import me.xflyiwnl.cities.database.DatabaseType;
@@ -28,6 +29,7 @@ public final class Cities extends JavaPlugin {
 
     private CitiesDatabase database;
     private FileManager fileManager;
+    private CitiesSettings settings;
     private Economy economy;
     private DynmapDrawer dynmapDrawer;
     private ColorfulGUI colorfulGUI;
@@ -52,6 +54,8 @@ public final class Cities extends JavaPlugin {
 
         fileManager = new FileManager();
         fileManager.create();
+
+        settings = new CitiesSettings(fileManager.getSettings().yaml());
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Citizen citizen = Cities.getInstance().getCitizen(player);
@@ -92,6 +96,9 @@ public final class Cities extends JavaPlugin {
     public void registerCommands() {
         getCommand("city").setExecutor(new CityCommand());
         getCommand("city").setTabCompleter(new CityCommand());
+
+        getCommand("country").setExecutor(new CountryCommand());
+        getCommand("country").setTabCompleter(new CountryCommand());
 
         getCommand("confirmation").setExecutor(new ConfirmationCommand());
         getCommand("confirmation").setTabCompleter(new ConfirmationCommand());
@@ -245,5 +252,9 @@ public final class Cities extends JavaPlugin {
 
     public ColorfulGUI getColorfulGUI() {
         return colorfulGUI;
+    }
+
+    public CitiesSettings getSettings() {
+        return settings;
     }
 }

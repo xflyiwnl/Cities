@@ -8,5 +8,6 @@ depend:
 
 commands:
   city:
+  country:
   confirmation:
   invite:

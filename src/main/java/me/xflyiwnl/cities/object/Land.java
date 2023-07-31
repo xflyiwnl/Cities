@@ -13,6 +13,8 @@ public class Land extends CitiesObject implements Saveable {
     private LandType type;
     private City city;
 
+    private boolean isSpawnLand = false;
+
     public Land(WorldCord2 cord2, LandType type, City city) {
         super("");
         this.cord2 = cord2;
@@ -25,6 +27,46 @@ public class Land extends CitiesObject implements Saveable {
         this.cord2 = cord2;
         this.type = type;
         this.city = city;
+    }
+
+    public Land(UUID uuid, WorldCord2 cord2, LandType type, City city, boolean isSpawnLand) {
+        super(uuid);
+        this.cord2 = cord2;
+        this.type = type;
+        this.city = city;
+        this.isSpawnLand = isSpawnLand;
+    }
+
+    public boolean connected() {
+
+        WorldCord2 cord = null;
+        Land land = null;
+
+        cord = cord2.clone();
+        land = Cities.getInstance().getLand(cord.setZ(cord.getZ() + 1));
+        if (land != null && land.getCity().equals(city)) {
+            return true;
+        }
+
+        cord = cord2.clone();
+        land = Cities.getInstance().getLand(cord.setZ(cord.getZ() - 1));
+        if (land != null && land.getCity().equals(city)) {
+            return true;
+        }
+
+        cord = cord2.clone();
+        land = Cities.getInstance().getLand(cord.setX(cord.getX() + 1));
+        if (land != null && land.getCity().equals(city)) {
+            return true;
+        }
+
+        cord = cord2.clone();
+        land = Cities.getInstance().getLand(cord.setX(cord.getX() - 1));
+        if (land != null && land.getCity().equals(city)) {
+            return true;
+        }
+
+        return false;
     }
 
     public void create(boolean save) {
@@ -71,5 +113,13 @@ public class Land extends CitiesObject implements Saveable {
 
     public void setCity(City city) {
         this.city = city;
+    }
+
+    public boolean isSpawnLand() {
+        return isSpawnLand;
+    }
+
+    public void setSpawnLand(boolean spawnLand) {
+        isSpawnLand = spawnLand;
     }
 }

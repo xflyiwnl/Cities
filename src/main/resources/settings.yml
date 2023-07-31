@@ -1,2 +1,5 @@
 settings:
 
+  board:
+    default: "Я люблю Cities"
+
