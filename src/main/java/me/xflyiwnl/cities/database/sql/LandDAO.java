@@ -16,16 +16,18 @@ import java.util.UUID;
 public class LandDAO implements CitiesDAO<Land> {
 
     private WiringAPI api;
+    private String database;
 
-    public LandDAO(WiringAPI api) {
+    public LandDAO(WiringAPI api, String database) {
         this.api = api;
+        this.database = database;
 
         create();
     }
 
     @Override
     public void create() {
-        api.getDatabase("cities")
+        api.getDatabase(database)
                 .createTable("lands")
                 .column(new Column("uuid", ColumnType.VARCHAR).primaryKey().notNull())
                 .column(new Column("cord2", ColumnType.VARCHAR).notNull())
@@ -50,7 +52,7 @@ public class LandDAO implements CitiesDAO<Land> {
 
     @Override
     public Land get(Object key) {
-        WiringResult result = api.select("cities")
+        WiringResult result = api.select(database)
                 .table("lands")
                 .execute();
         return get(result);
@@ -58,7 +60,7 @@ public class LandDAO implements CitiesDAO<Land> {
 
     @Override
     public void save(Land object) {
-        api.insert("cities")
+        api.insert(database)
                 .table("lands")
                 .column("uuid", object.getUniqueId().toString())
                 .column("cord2", object.getCord2().getWorld().getName() + "," + object.getCord2().getX() + "," + object.getCord2().getZ())
@@ -70,7 +72,7 @@ public class LandDAO implements CitiesDAO<Land> {
 
     @Override
     public void remove(Land object) {
-        api.delete("cities")
+        api.delete(database)
                 .table("lands")
                 .value(object.getUniqueId().toString())
                 .execute();
@@ -80,7 +82,7 @@ public class LandDAO implements CitiesDAO<Land> {
     public List<Land> all() {
         List<Land> lands = new ArrayList<Land>();
 
-        List<WiringResult> results = api.selectAll("cities")
+        List<WiringResult> results = api.selectAll(database)
                 .table("lands")
                 .execute();
 

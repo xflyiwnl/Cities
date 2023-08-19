@@ -22,6 +22,7 @@ public class Confirmation {
         this.message = message;
         this.accept = accept;
         this.decline = decline;
+        citizen.setConfirmation(this);
         this.timer = new ConfirmationTimer(this, 15);
 
         sendMessages();
@@ -64,7 +65,7 @@ public class Confirmation {
 
     public void timeOut() {
         Translator.send(citizen)
-                .path("confirmation.timer-out")
+                .path("confirmation.time-out")
                 .run();
         remove();
     }

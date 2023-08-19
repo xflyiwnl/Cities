@@ -1,19 +1,24 @@
 package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.config.YAML;
-import org.bukkit.plugin.java.JavaPlugin;
 
 public class FileManager {
 
     private YAML language;
     private YAML settings;
 
-    private YAML cityOnline;
-
     public void create() {
         language = new YAML("language.yml");
         settings = new YAML("settings.yml");
-        cityOnline = new YAML("gui/online-city.yml");
+
+        new YAML("gui/city/online-city.yml");
+
+        new YAML("gui/rank/rank.yml");
+        new YAML("gui/rank/rank-edit.yml");
+    }
+
+    public YAML get(String path) {
+        return new YAML(path);
     }
 
     public YAML getLanguage() {
@@ -24,7 +29,4 @@ public class FileManager {
         return settings;
     }
 
-    public YAML getCityOnline() {
-        return cityOnline;
-    }
 }

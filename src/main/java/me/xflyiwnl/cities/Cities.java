@@ -11,6 +11,7 @@ import me.xflyiwnl.cities.listener.PlayerListener;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.timer.ActionTimer;
 import me.xflyiwnl.cities.object.timer.DynmapTimer;
+import me.xflyiwnl.cities.object.timer.PacketTimer;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -18,6 +19,7 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
+import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -38,6 +40,7 @@ public final class Cities extends JavaPlugin {
     private List<City> cities = new ArrayList<City>();
     private List<Citizen> citizens = new ArrayList<Citizen>();
     private List<Land> lands = new ArrayList<Land>();
+    private List<Rank> ranks = new ArrayList<Rank>();
 
     @Override
     public void onEnable() {
@@ -49,13 +52,13 @@ public final class Cities extends JavaPlugin {
             return;
         }
 
-        database = new CitiesDatabase(DatabaseType.SQL);
         colorfulGUI = new ColorfulGUI(this);
 
         fileManager = new FileManager();
         fileManager.create();
 
         settings = new CitiesSettings(fileManager.getSettings().yaml());
+        database = new CitiesDatabase(DatabaseType.SQL);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Citizen citizen = Cities.getInstance().getCitizen(player);
@@ -80,6 +83,9 @@ public final class Cities extends JavaPlugin {
         }
 
         new DynmapTimer(100);
+
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "cities:city");
+        new PacketTimer(1);
 
     }
 
@@ -198,6 +204,48 @@ public final class Cities extends JavaPlugin {
         return null;
     }
 
+    public Rank getRank(Government government, String title) {
+        for (Rank rank : ranks) {
+            if (rank.getGovernment().equals(government) && rank.getTitle().equalsIgnoreCase(title)) {
+                return rank;
+            }
+        }
+        return null;
+    }
+
+    public Rank getRank(UUID uuid) {
+        for (Rank rank : ranks) {
+            if (rank.getUniqueId().equals(uuid)) {
+                return rank;
+            }
+        }
+        return null;
+    }
+
+    public List<Rank> getRanks(Government government) {
+        List<Rank> ranks = new ArrayList<Rank>();
+        for (Rank rank : this.ranks) {
+            if (rank.getGovernment().equals(government)) {
+                ranks.add(rank);
+            }
+        }
+        return ranks;
+    }
+
+    public Government getGovernment(UUID uuid) {
+        for (Government government : cities) {
+            if (government.getUniqueId().equals(uuid)) {
+                return government;
+            }
+        }
+        for (Government government : countries) {
+            if (government.getUniqueId().equals(uuid)) {
+                return government;
+            }
+        }
+        return null;
+    }
+
     private boolean setupEconomy() {
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -256,5 +304,9 @@ public final class Cities extends JavaPlugin {
 
     public CitiesSettings getSettings() {
         return settings;
+    }
+
+    public List<Rank> getRanks() {
+        return ranks;
     }
 }

@@ -2,6 +2,7 @@ package me.xflyiwnl.cities.object;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.database.SQLDataSource;
+import me.xflyiwnl.cities.object.bank.GovernmentBank;
 import me.xflyiwnl.cities.object.invite.Invite;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -35,7 +36,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     public City(String name, double bank, Citizen mayor, Country country, Location spawn) {
         super(name);
-        setBank(new Bank(this, bank));
+        setBank(new GovernmentBank(this, bank));
         this.mayor = mayor;
         this.country = country;
         this.spawn = spawn;
@@ -43,7 +44,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     public City(String name, double bank, Citizen mayor, Country country, Location spawn, String board) {
         super(name);
-        setBank(new Bank(this, bank));
+        setBank(new GovernmentBank(this, bank));
         this.mayor = mayor;
         this.country = country;
         this.spawn = spawn;
@@ -52,7 +53,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     public City(String name, UUID uuid, double bank, Citizen mayor, Country country, Location spawn, String board) {
         super(name, uuid);
-        setBank(new Bank(this, bank));
+        setBank(new GovernmentBank(this, bank));
         this.mayor = mayor;
         this.country = country;
         this.spawn = spawn;

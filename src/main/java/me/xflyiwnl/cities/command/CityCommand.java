@@ -1,7 +1,9 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.gui.CityOnlineGUI;
+import me.xflyiwnl.cities.gui.city.CitizensGUI;
+import me.xflyiwnl.cities.gui.city.CityOnlineGUI;
+import me.xflyiwnl.cities.gui.rank.RankGUI;
 import me.xflyiwnl.cities.object.confirmation.Confirmation;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.invite.CityInvite;
@@ -36,7 +38,8 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             "leave",
             "remove",
             "spawn",
-            "set"
+            "set",
+            "citizens"
     );
 
     private List<String> citySetTabCompletes = Arrays.asList(
@@ -121,6 +124,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 landCommand(citizen, args);
                 break;
             case "rank":
+                rankCommand(citizen, args);
                 break;
             case "online":
                 onlineCommand(citizen, args);
@@ -154,6 +158,9 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 break;
             case "set":
                 setCommand(citizen, args);
+                break;
+            case "citizens":
+                citizensCommand(citizen, args);
                 break;
             default:
                 Translator.send(citizen)
@@ -289,6 +296,36 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         Translator.send(citizen)
                 .path("city.set.spawn")
                 .run();
+
+    }
+
+    public void citizensCommand(Citizen citizen, String[] args) {
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("citizen.no-city")
+                    .run();
+            return;
+        }
+
+        City city = citizen.getCity();
+
+        CitizensGUI.showGUI(citizen.getPlayer(), city, null);
+
+    }
+
+    public void rankCommand(Citizen citizen, String[] args) {
+
+        if (!citizen.hasCity()) {
+            Translator.send(citizen)
+                    .path("citizen.no-city")
+                    .run();
+            return;
+        }
+
+        City city = citizen.getCity();
+
+        RankGUI.showGUI(citizen.getPlayer(), city);
 
     }
 
@@ -460,7 +497,6 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 citizen.getCity(),
                 citizen, receiver
         );
-        receiver.setInvite(invite);
 
     }
 
@@ -731,8 +767,6 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 () -> {}
         );
 
-        citizen.setConfirmation(confirmation);
-
     }
 
     public void removeCity(Citizen citizen) {
@@ -773,7 +807,6 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 },
                 () -> {}
         );
-        citizen.setConfirmation(confirmation);
 
     }
 

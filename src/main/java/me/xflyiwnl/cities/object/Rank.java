@@ -1,44 +1,63 @@
 package me.xflyiwnl.cities.object;
 
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.database.SQLDataSource;
 
-public class Rank {
+import java.util.*;
+
+public class Rank implements Identifyable, Saveable {
 
     private UUID uuid = UUID.randomUUID();
-    private City city;
+    private Government government;
 
     private String title;
-    private Map<PermissionNode, Boolean> nodes = new HashMap<PermissionNode, Boolean>();
+    private List<PermissionNode> nodes = new ArrayList<PermissionNode>();
+    private List<Citizen> citizens = new ArrayList<Citizen>();
 
     public Rank() {
     }
 
-    public Rank(City city, String title) {
-        this.city = city;
+    public Rank(Government government, String title) {
+        this.government = government;
         this.title = title;
     }
 
-    public Rank(UUID uuid, City city, String title, Map<PermissionNode, Boolean> nodes) {
+    public Rank(UUID uuid, Government government, String title, List<PermissionNode> nodes, List<Citizen> citizens) {
         this.uuid = uuid;
-        this.city = city;
+        this.government = government;
         this.title = title;
         this.nodes = nodes;
+        this.citizens = citizens;
+    }
+
+    public void create(boolean save) {
+        Cities.getInstance().getRanks().add(this);
+        if (save) {
+            save();
+        }
+    }
+
+    @Override
+    public void save() {
+        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
+        source.getRankDAO().save(this);
+    }
+
+    @Override
+    public void remove() {
+        Cities.getInstance().getRanks().remove(this);
+        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
+        source.getRankDAO().remove(this);
     }
 
     public boolean hasPermission(PermissionNode node) {
-        if (!nodes.containsKey(node)) {
+        if (!nodes.contains(node)) {
             return false;
         }
-        return nodes.get(node);
+        return true;
     }
 
-    public UUID getUuid() {
-        return uuid;
-    }
-
-    public void setUuid(UUID uuid) {
+    public void setUniqueId(UUID uuid) {
         this.uuid = uuid;
     }
 
@@ -50,11 +69,32 @@ public class Rank {
         this.title = title;
     }
 
-    public Map<PermissionNode, Boolean> getNodes() {
+    public List<PermissionNode> getNodes() {
         return nodes;
     }
 
-    public void setNodes(Map<PermissionNode, Boolean> nodes) {
+    public void setNodes(List<PermissionNode> nodes) {
         this.nodes = nodes;
+    }
+
+    public Government getGovernment() {
+        return government;
+    }
+
+    public void setGovernment(Government government) {
+        this.government = government;
+    }
+
+    @Override
+    public UUID getUniqueId() {
+        return uuid;
+    }
+
+    public List<Citizen> getCitizens() {
+        return citizens;
+    }
+
+    public void setCitizens(List<Citizen> citizens) {
+        this.citizens = citizens;
     }
 }

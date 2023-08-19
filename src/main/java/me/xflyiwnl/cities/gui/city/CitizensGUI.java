@@ -1,8 +1,10 @@
-package me.xflyiwnl.cities.gui;
+package me.xflyiwnl.cities.gui.city;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.City;
+import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.object.ask.Ask;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
 import me.xflyiwnl.colorfulgui.object.GuiItem;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
@@ -13,19 +15,23 @@ import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
-import java.util.Arrays;
 import java.util.List;
 
-public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
+public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
 
+    private Citizen citizen;
     private City city;
+    private String search;
+
     private FileConfiguration yaml;
 
-    public CityOnlineGUI(Player player, City city) {
+    public CitizensGUI(Player player, City city, String search) {
         super(player);
         this.city = city;
+        this.search = search;
 
-        yaml = Cities.getInstance().getFileManager().getCityOnline().yaml();
+        citizen = Cities.getInstance().getCitizen(player);
+        yaml = Cities.getInstance().getFileManager().get("gui/city/citizens.yml").yaml();
     }
 
     @Override
@@ -73,6 +79,20 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
                                     getGui().next();
                                 } else if (action.equalsIgnoreCase("[previous]")) {
                                     getGui().previous();
+                                } else if (action.equalsIgnoreCase("[search]")) {
+                                    getPlayer().closeInventory();
+
+                                    new Ask(
+                                            citizen,
+                                            Translator.of("ask.ask-messages.search-citizen"),
+                                            ask -> {
+                                                CitizensGUI.showGUI(getPlayer(), city, ask.getMessage().getValue());
+                                            },
+                                            () -> {
+                                                CitizensGUI.showGUI(getPlayer(), city, search);
+                                            }
+                                    );
+
                                 }
                             }
                         }
@@ -95,11 +115,13 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
 
         for (Citizen citizen : city.getCitizens()) {
 
-            if (!citizen.isOnline()) {
-                continue;
+            if (search != null) {
+                if (!citizen.getName().startsWith(search)) {
+                    continue;
+                }
             }
 
-            String path = "online-item.";
+            String path = "citizen-item.";
 
             String name = yaml.getString(path + "display-name")
                     .replace("%city%", city.getName())
@@ -113,24 +135,24 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
                     .replace("%rank%", "Президент")
                     .replace("%joined%", citizen.getJoinedCity()));
 
-            GuiItem onlineItem = Cities.getInstance().getColorfulGUI()
+            GuiItem citizenItem = Cities.getInstance().getColorfulGUI()
                     .item()
                     .material(Material.PLAYER_HEAD)
                     .name(name)
                     .lore(lore)
                     .skull(citizen.getPlayer())
                     .build();
-            getGui().addItem(onlineItem);
+            getGui().addItem(citizenItem);
 
         }
 
     }
 
-    public static void showGUI(Player player, City city) {
-        FileConfiguration yaml = Cities.getInstance().getFileManager().getCityOnline().yaml();
+    public static void showGUI(Player player, City city, String searchOrNull) {
+        FileConfiguration yaml = Cities.getInstance().getFileManager().get("gui/city/citizens.yml").yaml();
         DynamicGuiBuilder builder = Cities.getInstance().getColorfulGUI()
                 .paginated()
-                .holder(new CityOnlineGUI(player, city))
+                .holder(new CitizensGUI(player, city, searchOrNull))
                 .title(
                         yaml.getString("gui.title")
                                 .replace("%city%", city.getName())

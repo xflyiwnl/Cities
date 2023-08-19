@@ -20,6 +20,7 @@ public class CityInvite implements Invite {
         this.city = city;
         this.sender = sender;
         this.receiver = receiver;
+        receiver.setInvite(this);
         this.timer = new InviteTimer(this, 15);
 
         sendMessages();

@@ -17,19 +17,21 @@ import java.util.UUID;
 public class CityDAO implements CitiesDAO<City> {
 
     private WiringAPI api;
+    private String database;
 
-    public CityDAO(WiringAPI api) {
+    public CityDAO(WiringAPI api, String database) {
         this.api = api;
+        this.database = database;
 
         create();
     }
 
     @Override
     public void create() {
-        if (!api.existsDatabase("cities")) {
+        if (!api.existsDatabase(database)) {
             return;
         }
-        api.getDatabase("cities")
+        api.getDatabase(database)
                 .createTable("cities")
                 .column(new Column("uuid", ColumnType.VARCHAR).primaryKey().notNull())
                 .column(new Column("name", ColumnType.VARCHAR).notNull())
@@ -79,7 +81,7 @@ public class CityDAO implements CitiesDAO<City> {
 
     @Override
     public City get(Object key) {
-        WiringResult result = api.select("cities")
+        WiringResult result = api.select(database)
                 .table("cities")
                 .value(key)
                 .execute();
@@ -93,7 +95,7 @@ public class CityDAO implements CitiesDAO<City> {
             fc.append(citizen.getUniqueId().toString()).append(",");
         });
 
-        api.insert("cities")
+        api.insert(database)
                 .table("cities")
                 .column("uuid", object.getUniqueId().toString())
                 .column("name", object.getName())
@@ -115,7 +117,7 @@ public class CityDAO implements CitiesDAO<City> {
 
     @Override
     public void remove(City object) {
-        api.delete("cities")
+        api.delete(database)
                 .table("cities")
                 .value(object.getUniqueId().toString())
                 .execute();
@@ -125,7 +127,7 @@ public class CityDAO implements CitiesDAO<City> {
     public List<City> all() {
         List<City> cities = new ArrayList<City>();
 
-        List<WiringResult> results = api.selectAll("cities")
+        List<WiringResult> results = api.selectAll(database)
                 .table("cities")
                 .execute();
 

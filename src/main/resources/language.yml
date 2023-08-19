@@ -18,6 +18,24 @@ language:
     deposit-format: "{main}[%name%] %player% &fпополнил банк на {main}%amount% монет"
     withdraw-format: "{main}[%name%] %player% &fснял с банка {main}%amount% монет"
 
+  rank:
+    create-rank: "{main}&lCities &7› &fВы успешно создали ранг: {main}%rank%"
+    title-format: "{main}&lCities &7› &fВ названии ранга не должно быть пробелов и прочих символов"
+    rank-exists: "{main}&lCities &7› &fТакой ранг уже существует"
+    rank-remove: "{main}&lCities &7› &fВы успешно удалили ранг: {main}%rank%"
+
+  ask:
+    has-ask: "{main}&lCities &7› &fУ вас уже есть вопрос, ответьте на него"
+
+    on-cancel: "{main}&lCities &7› &fВы отклонили вопрос"
+    time-out: "{main}&lCities &7› &fВремя на вопрос вышло"
+
+    message: "&f%message%\n&fИли напишите в чат &cотмена&f, если хотите отказаться от вопроса"
+
+    ask-messages:
+      rank-create: "Введите в чат название ранга"
+      search-citizen: "Введите в чат никнейм игрока &7(xfl, xfly, xflyiwnl)"
+
   confirmation:
     no-confirmations: "{main}&lCities &7› &fВам нечего подтверждать"
     has-confirmation: "{main}&lCities &7› &fУ вас уже имеется подтверждение, ответьте на него и попробуйте опять"

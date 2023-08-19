@@ -14,19 +14,21 @@ import java.util.List;
 public class CountryDAO implements CitiesDAO<Country> {
 
     private WiringAPI api;
+    private String database;
 
-    public CountryDAO(WiringAPI api) {
+    public CountryDAO(WiringAPI api, String database) {
         this.api = api;
+        this.database = database;
 
         create();
     }
 
     @Override
     public void create() {
-        if (!api.existsDatabase("cities")) {
+        if (!api.existsDatabase(database)) {
             return;
         }
-        api.getDatabase("cities")
+        api.getDatabase(database)
                 .createTable("countries")
                 .column(new Column("uuid", ColumnType.VARCHAR).primaryKey().notNull())
                 .column(new Column("name", ColumnType.VARCHAR).notNull())

@@ -1,6 +1,8 @@
 package me.xflyiwnl.cities.object;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.object.ask.Ask;
+import me.xflyiwnl.cities.object.bank.CitizenBank;
 import me.xflyiwnl.cities.object.confirmation.Confirmation;
 import me.xflyiwnl.cities.database.SQLDataSource;
 import me.xflyiwnl.cities.object.invite.Invite;
@@ -14,9 +16,12 @@ import java.util.UUID;
 
 public class Citizen extends CitiesObject implements BankHandler, Saveable, Inviteable {
 
-    private Bank bank = new Bank(this, BankType.CITIZEN);
+    private Bank bank = new CitizenBank(this);
     private City city;
 
+    private Rank rank;
+
+    private Ask ask;
     private Confirmation confirmation;
     private Invite invite;
 
@@ -34,9 +39,10 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
         this.city = city;
     }
 
-    public Citizen(UUID uuid, City city, String registered, String joinedCity) {
+    public Citizen(UUID uuid, City city, Rank rank, String registered, String joinedCity) {
         super(uuid);
         this.city = city;
+        this.rank = rank;
         this.registered = registered;
         this.joinedCity = joinedCity;
     }
@@ -105,6 +111,10 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
             return null;
         }
         return city.getCountry();
+    }
+
+    public boolean hasAsk() {
+        return ask == null ? false : true;
     }
 
     public boolean hasConfirmation() {
@@ -196,5 +206,21 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
 
     public void setJoinedCity(String joinedCity) {
         this.joinedCity = joinedCity;
+    }
+
+    public Ask getAsk() {
+        return ask;
+    }
+
+    public void setAsk(Ask ask) {
+        this.ask = ask;
+    }
+
+    public Rank getRank() {
+        return rank;
+    }
+
+    public void setRank(Rank rank) {
+        this.rank = rank;
     }
 }

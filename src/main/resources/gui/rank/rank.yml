@@ -1,0 +1,53 @@
+gui:
+  title: "Ранги: %government%"
+  rows: 5
+  mask:
+    - "BBBBBBBBB"
+    - "BOOOOOOOB"
+    - "BOOOOOOOB"
+    - "BOOOOOOOB"
+    - "BBBPBNBBC"
+
+rank-item:
+  display-name: "#46CAB1%name%"
+  lore:
+    - " "
+    - " #46CAB1ЛКМ &7- &fредактировать"
+    - " #46CAB1ПКМ &7- &fудалить"
+    - " "
+
+items:
+  border-item:
+    material: black_stained_glass_pane
+    amount: 1
+    display-name: " "
+    lore:
+      - " "
+    mask: "B"
+  create-item:
+    material: writable_book
+    amount: 1
+    display-name: "#46CAB1Создать ранг"
+    lore:
+      - " "
+    mask: "C"
+    action:
+      - "[create]"
+  next-item:
+    material: lime_stained_glass_pane
+    amount: 1
+    display-name: "#46CAB1Следующая страница"
+    lore:
+      - " "
+    mask: "N"
+    action:
+      - "[next]"
+  prev-item:
+    material: red_stained_glass_pane
+    amount: 1
+    display-name: "#46CAB1Предыдущая страница"
+    lore:
+      - " "
+    mask: "P"
+    action:
+      - "[previous]"

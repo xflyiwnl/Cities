@@ -6,13 +6,12 @@ import com.wiring.api.entity.ColumnType;
 import com.zaxxer.hikari.HikariConfig;
 import com.zaxxer.hikari.HikariDataSource;
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.database.sql.CitizenDAO;
-import me.xflyiwnl.cities.database.sql.CityDAO;
-import me.xflyiwnl.cities.database.sql.CountryDAO;
-import me.xflyiwnl.cities.database.sql.LandDAO;
+import me.xflyiwnl.cities.CitiesSettings;
+import me.xflyiwnl.cities.database.sql.*;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.City;
 import me.xflyiwnl.cities.object.Land;
+import me.xflyiwnl.cities.object.Rank;
 
 import java.util.List;
 
@@ -25,19 +24,30 @@ public class SQLDataSource implements CitiesDataSource {
     private CityDAO cityDAO;
     private CitizenDAO citizenDAO;
     private LandDAO landDAO;
+    private RankDAO rankDAO;
 
     @Override
     public void start() {
 
-        api = new WiringAPI("localhost", "root", "1234");
+        api = new WiringAPI(
+                Cities.getInstance().getSettings().ofString("mysql.host"),
+                Cities.getInstance().getSettings().ofInt("mysql.port"),
+                Cities.getInstance().getSettings().ofString("mysql.user"),
+                Cities.getInstance().getSettings().ofString("mysql.password"),
+                null);
 
-        api.createDatabase("cities")
-                .execute();
 
-        countryDAO = new CountryDAO(api);
-        cityDAO = new CityDAO(api);
-        citizenDAO = new CitizenDAO(api);
-        landDAO = new LandDAO(api);
+        String database = Cities.getInstance().getSettings().ofString("mysql.database");
+        if (!api.existsDatabase(database)) {
+            api.createDatabase(database)
+                    .execute();
+        }
+
+        countryDAO = new CountryDAO(api, database);
+        cityDAO = new CityDAO(api, database);
+        citizenDAO = new CitizenDAO(api, database);
+        landDAO = new LandDAO(api, database);
+        rankDAO = new RankDAO(api, database);
 
         loadAll();
     }
@@ -57,18 +67,22 @@ public class SQLDataSource implements CitiesDataSource {
     public void loadAll() {
         Cities.getInstance().getCitizens().addAll(citizenDAO.all());
 
-        List<City> cities = cityDAO.all();
-        cities.forEach(city -> {
+        Cities.getInstance().getCities().addAll(cityDAO.all());
+        Cities.getInstance().getCities().forEach(city -> {
             for (Citizen citizen : city.getCitizens()) {
-                if (citizen.getCity() == null) {
-                    citizen.setCity(city);
-                }
+                citizen.setCity(city);
             }
-
         });
-        Cities.getInstance().getCities().addAll(cities);
 
         Cities.getInstance().getLands().addAll(landDAO.all());
+
+        Cities.getInstance().getRanks().addAll(rankDAO.all());
+        Cities.getInstance().getRanks().forEach(rank -> {
+            for (Citizen citizen : rank.getCitizens()) {
+                citizen.setRank(rank);
+            }
+        });
+
     }
 
     public CountryDAO getCountryDAO() {
@@ -87,4 +101,11 @@ public class SQLDataSource implements CitiesDataSource {
         return landDAO;
     }
 
+    public WiringAPI getApi() {
+        return api;
+    }
+
+    public RankDAO getRankDAO() {
+        return rankDAO;
+    }
 }
