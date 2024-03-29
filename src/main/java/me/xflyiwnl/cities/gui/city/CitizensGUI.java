@@ -2,11 +2,10 @@ package me.xflyiwnl.cities.gui.city;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.ask.Ask;
+import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
-import me.xflyiwnl.colorfulgui.object.GuiItem;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;

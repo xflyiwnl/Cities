@@ -1,13 +1,14 @@
 package me.xflyiwnl.cities.object.rank;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.database.SQLDataSource;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Identifyable;
 import me.xflyiwnl.cities.object.Saveable;
 
-import java.util.*;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.UUID;
 
 public class Rank implements Identifyable, Saveable {
 
@@ -41,15 +42,11 @@ public class Rank implements Identifyable, Saveable {
 
     @Override
     public void save() {
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getRankDAO().save(this);
     }
 
     @Override
     public void remove() {
         Cities.getInstance().getRanks().remove(this);
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getRankDAO().remove(this);
     }
 
     public boolean hasPermission(PermissionNode node) {

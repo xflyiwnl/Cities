@@ -1,10 +1,8 @@
 package me.xflyiwnl.cities.buffer;
 
-import com.google.common.io.ByteArrayDataOutput;
 import org.jetbrains.annotations.NotNull;
 
 import java.io.ByteArrayOutputStream;
-import java.io.OutputStream;
 import java.nio.charset.StandardCharsets;
 
 public class CitiesBuffer {

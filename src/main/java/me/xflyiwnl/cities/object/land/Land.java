@@ -1,7 +1,6 @@
 package me.xflyiwnl.cities.object.land;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.database.SQLDataSource;
 import me.xflyiwnl.cities.object.CitiesObject;
 import me.xflyiwnl.cities.object.Saveable;
 import me.xflyiwnl.cities.object.WorldCord2;
@@ -79,16 +78,11 @@ public class Land extends CitiesObject implements Saveable {
 
     @Override
     public void save() {
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getLandDAO().save(this);
     }
 
     @Override
     public void remove() {
         Cities.getInstance().getLands().remove(this);
-
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getLandDAO().remove(this);
     }
 
     public WorldCord2 getCord2() {

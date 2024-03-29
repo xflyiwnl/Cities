@@ -1,14 +1,15 @@
 package me.xflyiwnl.cities.object.country;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.database.SQLDataSource;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Saveable;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.city.City;
 
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 
 public class Country extends Government implements CitiesList, Saveable {
@@ -40,8 +41,6 @@ public class Country extends Government implements CitiesList, Saveable {
 
     @Override
     public void save() {
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getCountryDAO().save(this);
     }
 
     @Override
@@ -53,9 +52,6 @@ public class Country extends Government implements CitiesList, Saveable {
         });
 
         Cities.getInstance().getCountries().remove(this);
-
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getCountryDAO().remove(this);
     }
 
     public Citizen getMayor() {

@@ -4,36 +4,36 @@ import me.xflyiwnl.cities.command.CityCommand;
 import me.xflyiwnl.cities.command.ConfirmationCommand;
 import me.xflyiwnl.cities.command.CountryCommand;
 import me.xflyiwnl.cities.command.InviteCommand;
-import me.xflyiwnl.cities.database.CitiesDatabase;
-import me.xflyiwnl.cities.database.DatabaseType;
 import me.xflyiwnl.cities.dynmap.DynmapDrawer;
 import me.xflyiwnl.cities.listener.PlayerListener;
-import me.xflyiwnl.cities.object.*;
+import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.Government;
+import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.land.Land;
 import me.xflyiwnl.cities.object.rank.Rank;
+import me.xflyiwnl.cities.object.tool.ToolBar;
+import me.xflyiwnl.cities.object.tool.ToolBoard;
 import me.xflyiwnl.cities.timer.DynmapTimer;
 import me.xflyiwnl.cities.timer.PacketTimer;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
+import org.bukkit.boss.BarColor;
+import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public final class Cities extends JavaPlugin {
 
     private static Cities instance;
 
-    private CitiesDatabase database;
     private FileManager fileManager;
-    private CitiesSettings settings;
     private Economy economy;
     private DynmapDrawer dynmapDrawer;
     private ColorfulGUI colorfulGUI;
@@ -43,6 +43,9 @@ public final class Cities extends JavaPlugin {
     private List<Citizen> citizens = new ArrayList<Citizen>();
     private List<Land> lands = new ArrayList<Land>();
     private List<Rank> ranks = new ArrayList<Rank>();
+
+    private List<ToolBoard> boards = new ArrayList<>();
+    private List<ToolBar> bars = new ArrayList<>();
 
     @Override
     public void onEnable() {
@@ -58,9 +61,6 @@ public final class Cities extends JavaPlugin {
 
         fileManager = new FileManager();
         fileManager.create();
-
-        settings = new CitiesSettings(fileManager.getSettings().yaml());
-        database = new CitiesDatabase(DatabaseType.SQL);
 
         for (Player player : Bukkit.getOnlinePlayers()) {
             Citizen citizen = Cities.getInstance().getCitizen(player);
@@ -94,7 +94,6 @@ public final class Cities extends JavaPlugin {
     @Override
     public void onDisable() {
         dynmapDrawer.disable();
-        database.getSource().end();
     }
 
     public void registerListeners() {
@@ -248,6 +247,30 @@ public final class Cities extends JavaPlugin {
         return null;
     }
 
+    public ToolBar createBar(String text, float progress, BarColor color, BarStyle style) {
+        ToolBar bar = new ToolBar(text, progress, color, style);
+        bars.add(bar);
+        return bar;
+    }
+
+    public ToolBar createBar() {
+        ToolBar bar = new ToolBar();
+        bars.add(bar);
+        return bar;
+    }
+
+    public ToolBoard createBoard(String title) {
+        ToolBoard board = new ToolBoard(title);
+        boards.add(board);
+        return board;
+    }
+
+    public ToolBoard createBoard() {
+        ToolBoard board = new ToolBoard();
+        boards.add(board);
+        return board;
+    }
+
     private boolean setupEconomy() {
         if (Bukkit.getPluginManager().getPlugin("Vault") == null) {
             return false;
@@ -262,10 +285,6 @@ public final class Cities extends JavaPlugin {
 
     public FileManager getFileManager() {
         return fileManager;
-    }
-
-    public CitiesDatabase getDatabase() {
-        return database;
     }
 
     public List<Country> getCountries() {
@@ -304,11 +323,15 @@ public final class Cities extends JavaPlugin {
         return colorfulGUI;
     }
 
-    public CitiesSettings getSettings() {
-        return settings;
-    }
-
     public List<Rank> getRanks() {
         return ranks;
+    }
+
+    public List<ToolBoard> getBoards() {
+        return boards;
+    }
+
+    public List<ToolBar> getBars() {
+        return bars;
     }
 }

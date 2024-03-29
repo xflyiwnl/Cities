@@ -4,13 +4,15 @@ import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.gui.city.CitizensGUI;
 import me.xflyiwnl.cities.gui.city.CityOnlineGUI;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
+import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.confirmation.Confirmation;
-import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.invite.types.CityInvite;
-
 import me.xflyiwnl.cities.object.land.Land;
 import me.xflyiwnl.cities.object.land.LandType;
+import me.xflyiwnl.cities.util.Settinger;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -18,7 +20,6 @@ import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;
 import org.bukkit.command.TabCompleter;
 import org.bukkit.entity.Player;
-
 import org.jetbrains.annotations.NotNull;
 import org.jetbrains.annotations.Nullable;
 
@@ -629,7 +630,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        City city = new City(args[1], 0, citizen, null, citizen.getPlayer().getLocation(), Cities.getInstance().getSettings().ofString("board.default"));
+        City city = new City(args[1], 0, citizen, null, citizen.getPlayer().getLocation(), Settinger.ofString("board.default"));
 
         Chunk chunk = citizen.getPlayer().getChunk();
         WorldCord2 worldCord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());

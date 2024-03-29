@@ -80,24 +80,24 @@
             <scope>provided</scope>
         </dependency>
 
-        <!-- https://mvnrepository.com/artifact/mysql/mysql-connector-java -->
-        <dependency>
-            <groupId>mysql</groupId>
-            <artifactId>mysql-connector-java</artifactId>
-            <version>8.0.33</version>
-        </dependency>
+<!--        &lt;!&ndash; https://mvnrepository.com/artifact/mysql/mysql-connector-java &ndash;&gt;-->
+<!--        <dependency>-->
+<!--            <groupId>mysql</groupId>-->
+<!--            <artifactId>mysql-connector-java</artifactId>-->
+<!--            <version>8.0.33</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.zaxxer</groupId>
-            <artifactId>HikariCP</artifactId>
-            <version>5.0.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.zaxxer</groupId>-->
+<!--            <artifactId>HikariCP</artifactId>-->
+<!--            <version>5.0.1</version>-->
+<!--        </dependency>-->
 
-        <dependency>
-            <groupId>com.github.xflyiwnl</groupId>
-            <artifactId>WiringAPI</artifactId>
-            <version>v1.1</version>
-        </dependency>
+<!--        <dependency>-->
+<!--            <groupId>com.github.xflyiwnl</groupId>-->
+<!--            <artifactId>WiringAPI</artifactId>-->
+<!--            <version>v1.1</version>-->
+<!--        </dependency>-->
 
         <dependency>
             <groupId>com.github.MilkBowl</groupId>
@@ -127,5 +127,11 @@
             <version>3.0-fixed</version>
         </dependency>
 
+        <dependency>
+            <groupId>me.neznamy</groupId>
+            <artifactId>tab-api</artifactId>
+            <version>4.0.2</version>
+            <scope>provided</scope>
+        </dependency>
     </dependencies>
 </project>

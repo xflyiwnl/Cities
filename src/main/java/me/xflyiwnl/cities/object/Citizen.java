@@ -7,7 +7,6 @@ import me.xflyiwnl.cities.object.bank.BankHandler;
 import me.xflyiwnl.cities.object.bank.types.CitizenBank;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.confirmation.Confirmation;
-import me.xflyiwnl.cities.database.SQLDataSource;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.rank.Rank;
@@ -103,14 +102,10 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
 
     @Override
     public void save() {
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getCitizenDAO().save(this);
     }
 
     @Override
     public void remove() {
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getCitizenDAO().remove(this);
     }
 
     @Override

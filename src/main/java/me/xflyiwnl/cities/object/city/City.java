@@ -1,7 +1,6 @@
 package me.xflyiwnl.cities.object.city;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.database.SQLDataSource;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
@@ -13,7 +12,9 @@ import org.bukkit.Location;
 
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
-import java.util.*;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.UUID;
 
 public class City extends Government implements CitizenList, Spawnable, Claimable, Inviteable, Saveable {
 
@@ -69,8 +70,6 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     @Override
     public void save() {
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getCityDAO().save(this);
     }
 
     @Override
@@ -87,9 +86,6 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         }
 
         Cities.getInstance().getCities().remove(this);
-
-        SQLDataSource source = (SQLDataSource) Cities.getInstance().getDatabase().getSource();
-        source.getCityDAO().remove(this);
     }
 
     public void broadcast(String message, boolean format) {

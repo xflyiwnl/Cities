@@ -1,13 +1,14 @@
 package me.xflyiwnl.cities.gui.rank;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.*;
+import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.Government;
+import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.ask.Ask;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
-import me.xflyiwnl.colorfulgui.object.GuiItem;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;

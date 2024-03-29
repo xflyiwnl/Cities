@@ -1,10 +1,6 @@
 package me.xflyiwnl.cities.timer;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.buffer.CitiesBuffer;
-import me.xflyiwnl.cities.object.Citizen;
-import org.bukkit.Bukkit;
-import org.bukkit.entity.Player;
 import org.bukkit.scheduler.BukkitRunnable;
 
 public class PacketTimer extends BukkitRunnable {
