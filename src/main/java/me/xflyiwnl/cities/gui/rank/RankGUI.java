@@ -3,9 +3,13 @@ package me.xflyiwnl.cities.gui.rank;
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.ask.Ask;
+import me.xflyiwnl.cities.object.city.City;
+import me.xflyiwnl.cities.object.country.Country;
+import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
 import me.xflyiwnl.colorfulgui.object.GuiItem;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
+import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -57,8 +61,8 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            GuiItem guiItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+                    .staticItem()
                     .material(material)
                     .name(name)
                     .lore(lore)
@@ -77,33 +81,27 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
                                             citizen,
                                             Translator.of("ask.ask-messages.rank-create"),
                                             ask -> {
-                                                String title = ask.getMessage().getValue();
+                                                String title = ask.getMessage();
 
-                                                String[] split = ask.getMessage().getValue().split(" ");
+                                                String[] split = ask.getMessage().split(" ");
                                                 if (split.length > 1) {
-                                                    Translator.send(citizen)
-                                                            .path("rank.title-format")
-                                                            .run();
+                                                    citizen.sendMessage(Translator.of("rank.title-format"));
                                                     return;
                                                 }
 
                                                 if (Cities.getInstance().getRank(government, title) != null) {
-                                                    Translator.send(citizen)
-                                                            .path("rank.rank-exists")
-                                                            .run();
+                                                    citizen.sendMessage(Translator.of("rank.rank-exists"));
                                                     return;
                                                 }
 
                                                 Rank rank = new Rank(
                                                         government, title
                                                 );
-                                                rank.create(true);
+                                                rank.create();
+                                                rank.save();
 
-                                                Translator.send(citizen)
-                                                        .path("rank.create-rank")
-                                                        .replace("rank", rank.getTitle())
-                                                        .run();
-
+                                                citizen.sendMessage(Translator.of("rank.create-rank")
+                                                        .replace("%rank%", rank.getTitle()));
                                             },
                                             () -> {}
                                     );
@@ -138,8 +136,8 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
             List<String> lore = yaml.getStringList(path + "lore");
             lore.replaceAll(word -> word.replace("%name%", rank.getTitle()));
 
-            GuiItem rankItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+            StaticItem rankItem = Cities.getInstance().getColorfulGUI()
+                    .staticItem()
                     .material(Material.RED_BANNER)
                     .name(name)
                     .lore(lore)
@@ -147,13 +145,11 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
 
                         if (event.getClick().isRightClick()) {
 
-                            Translator.send(citizen)
-                                        .path("rank.rank-remove")
-                                        .replace("rank", rank.getTitle())
-                                        .run();
+                            citizen.sendMessage(Translator.of("rank.rank-remove")
+                                    .replace("%rank%", rank.getTitle()));
 
                             if (government instanceof City) {
-                                for (Citizen cit : ((City) government).getCitizens()) {
+                                for (Citizen cit : ((City) government).getCitizens().values()) {
                                     if (cit.getRank() != null && cit.getRank().equals(rank)) {
                                         cit.setRank(null);
                                     }
@@ -161,8 +157,8 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
                             }
 
                             if (government instanceof Country) {
-                                for (City city : ((Country) government).getCities()) {
-                                    for (Citizen cit : city.getCitizens()) {
+                                for (City city : ((Country) government).getCities().values()) {
+                                    for (Citizen cit : city.getCitizens().values()) {
                                         if (cit.getRank() != null && cit.getRank().equals(rank)) {
                                             cit.setRank(null);
                                         }

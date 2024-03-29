@@ -2,7 +2,7 @@ package me.xflyiwnl.cities.object.confirmation;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
-import me.xflyiwnl.cities.object.timer.ConfirmationTimer;
+import me.xflyiwnl.cities.timer.ConfirmationTimer;
 import me.xflyiwnl.cities.util.TextUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -22,6 +22,7 @@ public class Confirmation {
         this.message = message;
         this.accept = accept;
         this.decline = decline;
+
         citizen.setConfirmation(this);
         this.timer = new ConfirmationTimer(this, 15);
 
@@ -30,10 +31,9 @@ public class Confirmation {
 
     public void sendMessages() {
 
-        Translator.send(citizen)
-                .path("confirmation.message")
-                .replace("message", message)
-                .run();
+
+        citizen.sendMessage(Translator.of("confirmation.message")
+                .replace("%message%", message));
 
         TextComponent accept = new TextComponent();
         accept.setText(TextUtil.colorize(Translator.of("confirmation.accept")));
@@ -48,25 +48,19 @@ public class Confirmation {
     }
 
     public void onAccept() {
-        Translator.send(citizen)
-                .path("confirmation.on-accept")
-                .run();
+        citizen.sendMessage(Translator.of("confirmation.on-accept"));
         accept.run();
         remove();
     }
 
     public void onDecline() {
-        Translator.send(citizen)
-                .path("confirmation.on-decline")
-                .run();
+        citizen.sendMessage(Translator.of("confirmation.on-decline/"));
         decline.run();
         remove();
     }
 
     public void timeOut() {
-        Translator.send(citizen)
-                .path("confirmation.time-out")
-                .run();
+        citizen.sendMessage(Translator.of("confirmation.time-out"));
         remove();
     }
 

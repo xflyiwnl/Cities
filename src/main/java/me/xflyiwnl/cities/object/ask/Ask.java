@@ -2,7 +2,7 @@ package me.xflyiwnl.cities.object.ask;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
-import me.xflyiwnl.cities.object.timer.AskTimer;
+import me.xflyiwnl.cities.timer.AskTimer;
 
 public class Ask {
 
@@ -20,9 +20,7 @@ public class Ask {
         this.onCancel = onCancel;
 
         if (citizen.hasAsk()) {
-            Translator.send(citizen)
-                    .path("ask.has-ask")
-                    .run();
+            citizen.sendMessage(Translator.of("ask.has-ask"));
             return;
         }
 
@@ -33,7 +31,7 @@ public class Ask {
     }
 
     public void onChat(AskMessage ask) {
-        if (ask.getMessage().getValue().equalsIgnoreCase("отмена")) {
+        if (ask.getMessage().equalsIgnoreCase("отмена")) {
             cancel();
             return;
         }
@@ -43,24 +41,19 @@ public class Ask {
     }
 
     public void send() {
-        Translator.send(citizen)
-                .path("ask.message")
-                .replace("message", message)
-                .run();
+        citizen.sendMessage(Translator.of("ask.message")
+                .replace("%message%", message));
     }
 
     public void cancel() {
-        Translator.send(citizen)
-                .path("ask.on-cancel")
-                .run();
+        citizen.sendMessage(Translator.of("ask.on-cancel"));
+
         onCancel.run();
         remove();
     }
 
     public void timeOut() {
-        Translator.send(citizen)
-                .path("ask.time-out")
-                .run();
+        citizen.sendMessage(Translator.of("ask.time-out"));
         remove();
     }
 

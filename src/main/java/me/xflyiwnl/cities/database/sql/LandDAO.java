@@ -4,9 +4,10 @@ import com.wiring.api.WiringAPI;
 import com.wiring.api.entity.Column;
 import com.wiring.api.entity.ColumnType;
 import com.wiring.api.entity.WiringResult;
-import com.zaxxer.hikari.HikariDataSource;
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.*;
+import me.xflyiwnl.cities.object.land.Land;
+import me.xflyiwnl.cities.object.land.LandType;
 import org.bukkit.Bukkit;
 
 import java.util.ArrayList;

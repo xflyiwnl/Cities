@@ -1,20 +1,18 @@
 package me.xflyiwnl.cities.object.ask;
 
-import me.xflyiwnl.cities.chat.Message;
-
 public class AskMessage {
 
-    private Message message;
+    private String message;
 
-    public AskMessage(Message message) {
+    public AskMessage(String message) {
         this.message = message;
     }
 
-    public Message getMessage() {
+    public String getMessage() {
         return message;
     }
 
-    public void setMessage(Message message) {
+    public void setMessage(String message) {
         this.message = message;
     }
 

@@ -2,12 +2,18 @@ package me.xflyiwnl.cities.object;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.ask.Ask;
-import me.xflyiwnl.cities.object.bank.CitizenBank;
+import me.xflyiwnl.cities.object.bank.Bank;
+import me.xflyiwnl.cities.object.bank.BankHandler;
+import me.xflyiwnl.cities.object.bank.types.CitizenBank;
+import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.confirmation.Confirmation;
 import me.xflyiwnl.cities.database.SQLDataSource;
+import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
+import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.util.TextUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
@@ -54,83 +60,45 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
     }
 
     public boolean isOnline() {
-        if (getPlayer() == null) {
-            return false;
-        }
-        if (!getPlayer().isOnline()) {
-            return false;
-        }
-        return true;
+        return getPlayer() != null && getPlayer().isOnline();
     }
 
     public boolean hasCity() {
-        if (city == null) {
-            return false;
-        }
-        return true;
+        return city == null;
     }
 
     public boolean isMayor() {
-        if (city == null) {
-            return false;
-        }
-        if (!city.getMayor().equals(this)) {
-            return false;
-        }
-        return true;
+        return city != null && city.getMayor().equals(this);
     }
 
     public boolean isKing() {
-        if (city == null) {
-            return false;
-        }
-        if (!city.hasCountry()) {
-            return false;
-        }
-        if (!city.getCountry().getMayor().equals(this)) {
-            return false;
-        }
-        return true;
+        return city != null && city.hasCountry() && city.getCountry().getMayor().equals(this);
     }
 
     public boolean hasCountry() {
-        if (city == null) {
-            return false;
-        }
-        if (!city.hasCountry()) {
-            return false;
-        }
-        return true;
+        return city != null && city.hasCountry();
     }
 
     public Country getCountry() {
-        if (city == null) {
-            return null;
-        }
-        if (!city.hasCountry()) {
-            return null;
-        }
-        return city.getCountry();
+        return city == null ? null : city.getCountry();
     }
 
     public boolean hasAsk() {
-        return ask == null ? false : true;
+        return ask != null;
     }
 
     public boolean hasConfirmation() {
-        return confirmation == null ? false : true;
+        return confirmation != null;
     }
 
     @Override
     public boolean hasInvite() {
-        return invite == null ? false : true;
+        return invite != null;
     }
 
-    public void create(boolean save) {
+    @Override
+    public void create() {
         Cities.getInstance().getCitizens().add(this);
-        if (save) {
-            save();
-        }
     }
 
     @Override
@@ -147,11 +115,7 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
 
     @Override
     public String getName() {
-        if (getPlayer() == null) {
-            return Bukkit.getOfflinePlayer(getUniqueId()).getName();
-        } else {
-            return getPlayer().getName();
-        }
+        return Bukkit.getOfflinePlayer(getUniqueId()).getName();
     }
 
     @Override
@@ -161,6 +125,10 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
 
     public Player getPlayer() {
         return Bukkit.getPlayer(getUniqueId());
+    }
+
+    public OfflinePlayer getOfflinePlayer() {
+        return Bukkit.getOfflinePlayer(getUniqueId());
     }
 
     public void setBank(Bank bank) {

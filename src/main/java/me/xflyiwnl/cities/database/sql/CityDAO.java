@@ -4,15 +4,13 @@ import com.wiring.api.WiringAPI;
 import com.wiring.api.entity.Column;
 import com.wiring.api.entity.ColumnType;
 import com.wiring.api.entity.WiringResult;
-import com.zaxxer.hikari.HikariDataSource;
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.*;
+import me.xflyiwnl.cities.object.city.City;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class CityDAO implements CitiesDAO<City> {
 
@@ -59,19 +57,12 @@ public class CityDAO implements CitiesDAO<City> {
                 result.get("board").toString()
         );
 
-        List<Citizen> citizens = new ArrayList<Citizen>();
-        List<UUID> uuids = new ArrayList<UUID>();
+        Map<UUID, Citizen> citizens = new HashMap<>();
         for (String formatted : result.get("citizens").toString().split(",")) {
             UUID uuid = UUID.fromString(formatted);
-            if (uuid != null) {
-                uuids.add(uuid);
-            }
-        }
-        for (UUID uid : uuids) {
-            Citizen citizen = Cities.getInstance().getCitizen(uid);
-            if (citizen != null) {
-                citizens.add(citizen);
-            }
+            Citizen citizen = Cities.getInstance().getCitizen(uuid);
+            if (citizen == null) continue;
+            citizens.put(citizen.getUniqueId(), citizen);
         }
 
         city.setCitizens(citizens);
@@ -91,7 +82,7 @@ public class CityDAO implements CitiesDAO<City> {
     @Override
     public void save(City object) {
         StringBuilder fc = new StringBuilder();
-        object.getCitizens().forEach(citizen -> {
+        object.getCitizens().values().forEach(citizen -> {
             fc.append(citizen.getUniqueId().toString()).append(",");
         });
 

@@ -1,7 +1,6 @@
 package me.xflyiwnl.cities.listener;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.chat.Message;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.ask.AskMessage;
 import org.bukkit.entity.Player;
@@ -21,7 +20,8 @@ public class PlayerListener implements Listener {
 
         if (citizen == null) {
             citizen = new Citizen(player.getUniqueId());
-            citizen.create(true);
+            citizen.create();
+            citizen.save();
         }
 
     }
@@ -55,7 +55,7 @@ public class PlayerListener implements Listener {
         if (citizen == null) return;
         if (!citizen.hasAsk()) return;
 
-        citizen.getAsk().onChat(new AskMessage(new Message(event.getMessage())));
+        citizen.getAsk().onChat(new AskMessage(event.getMessage()));
         event.setCancelled(true);
 
     }

@@ -1,7 +1,5 @@
 package me.xflyiwnl.cities.database;
 
-import com.wiring.api.WiringAPI;
-
 public class CitiesDatabase {
 
     private DatabaseType type;
@@ -17,7 +15,7 @@ public class CitiesDatabase {
         if (type == DatabaseType.SQL) {
             source = new SQLDataSource();
         } else if (type == DatabaseType.YML) {
-            source = new YMLDataSource();
+            source = new FlatDataSource();
         }
 
         source.start();

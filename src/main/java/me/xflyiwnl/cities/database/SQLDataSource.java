@@ -1,19 +1,9 @@
 package me.xflyiwnl.cities.database;
 
 import com.wiring.api.WiringAPI;
-import com.wiring.api.entity.Column;
-import com.wiring.api.entity.ColumnType;
-import com.zaxxer.hikari.HikariConfig;
-import com.zaxxer.hikari.HikariDataSource;
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.CitiesSettings;
 import me.xflyiwnl.cities.database.sql.*;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.City;
-import me.xflyiwnl.cities.object.Land;
-import me.xflyiwnl.cities.object.Rank;
-
-import java.util.List;
 
 
 public class SQLDataSource implements CitiesDataSource {
@@ -69,7 +59,7 @@ public class SQLDataSource implements CitiesDataSource {
 
         Cities.getInstance().getCities().addAll(cityDAO.all());
         Cities.getInstance().getCities().forEach(city -> {
-            for (Citizen citizen : city.getCitizens()) {
+            for (Citizen citizen : city.getCitizens().values()) {
                 citizen.setCity(city);
             }
         });

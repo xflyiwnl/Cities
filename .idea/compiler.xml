@@ -10,7 +10,6 @@
       </profile>
     </annotationProcessing>
     <bytecodeTargetLevel>
-      <module name="Cities" target="16" />
       <module name="Cities (1)" target="1.5" />
     </bytecodeTargetLevel>
   </component>

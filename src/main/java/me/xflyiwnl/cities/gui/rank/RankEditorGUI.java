@@ -2,9 +2,15 @@ package me.xflyiwnl.cities.gui.rank;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.*;
+import me.xflyiwnl.cities.object.city.City;
+import me.xflyiwnl.cities.object.country.Country;
+import me.xflyiwnl.cities.object.rank.PermissionNode;
+import me.xflyiwnl.cities.object.rank.PermissionType;
+import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
 import me.xflyiwnl.colorfulgui.object.GuiItem;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
+import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,8 +65,8 @@ public class RankEditorGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            GuiItem guiItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+                    .staticItem()
                     .material(material)
                     .name(name)
                     .lore(lore)
@@ -119,7 +125,7 @@ public class RankEditorGUI extends ColorfulProvider<PaginatedGui> {
             Material material = rank.hasPermission(node) ? Material.LIME_WOOL : Material.RED_WOOL;
 
             GuiItem nodeItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+                    .staticItem()
                     .material(material)
                     .name(name)
                     .lore(lore)

@@ -124,7 +124,7 @@
         <dependency>
             <groupId>com.github.xflyiwnl</groupId>
             <artifactId>ColorfulGUI</artifactId>
-            <version>v1.1</version>
+            <version>3.0-fixed</version>
         </dependency>
 
     </dependencies>

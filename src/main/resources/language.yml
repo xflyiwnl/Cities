@@ -1,50 +1,50 @@
 language:
 
-#   "#46CAB1&lCities &7› &f"
+#   "#46CAB1&lCities &7› {default}"
 
   other:
-    broadcast-format: "{main}[%city%] &f%message%"
+    broadcast-format: "{main}[%city%] {default}%message%"
 
   command:
-    not-enough-args: "{main}&lCities &7› &fНедостаточно аргументов для полноценной команды"
-    unknown-arg: "{main}&lCities &7› &fНеизвестный аргумент команды"
+    not-enough-args: "{main}&lCities &7› {default}Недостаточно аргументов для полноценной команды"
+    unknown-arg: "{main}&lCities &7› {default}Неизвестный аргумент команды"
 
   economy:
     not-enough-money:
-      citizen: "{main}&lCities &7› &fУ вас нет столько монет"
-      country: "{main}&lCities &7› &fВ городе нет столько монет"
-      city: "{main}&lCities &7› &fВ городе нет столько монет"
-    amount-error: "{main}&lCities &7› &fМожно пополнять от {main}1 &fдо {main}1 000 000 &fмонет"
-    deposit-format: "{main}[%name%] %player% &fпополнил банк на {main}%amount% монет"
-    withdraw-format: "{main}[%name%] %player% &fснял с банка {main}%amount% монет"
+      citizen: "{main}&lCities &7› {default}У вас нет столько монет"
+      country: "{main}&lCities &7› {default}В городе нет столько монет"
+      city: "{main}&lCities &7› {default}В городе нет столько монет"
+    amount-error: "{main}&lCities &7› {default}Можно пополнять от {main}1 {default}до {main}1 000 000 {default}монет"
+    deposit-format: "{main}[%name%] %player% {default}пополнил банк на {second}%amount% монет"
+    withdraw-format: "{main}[%name%] %player% {default}снял с банка {second}%amount% монет"
 
   rank:
-    create-rank: "{main}&lCities &7› &fВы успешно создали ранг: {main}%rank%"
-    title-format: "{main}&lCities &7› &fВ названии ранга не должно быть пробелов и прочих символов"
-    rank-exists: "{main}&lCities &7› &fТакой ранг уже существует"
-    rank-remove: "{main}&lCities &7› &fВы успешно удалили ранг: {main}%rank%"
+    create-rank: "{main}&lCities &7› {default}Вы успешно создали ранг: {second}%rank%"
+    title-format: "{main}&lCities &7› {default}В названии ранга не должно быть пробелов и прочих символов"
+    rank-exists: "{main}&lCities &7› {default}Такой ранг уже существует"
+    rank-remove: "{main}&lCities &7› {default}Вы успешно удалили ранг: {second}%rank%"
 
   ask:
-    has-ask: "{main}&lCities &7› &fУ вас уже есть вопрос, ответьте на него"
+    has-ask: "{main}&lCities &7› {default}У вас уже есть вопрос, ответьте на него"
 
-    on-cancel: "{main}&lCities &7› &fВы отклонили вопрос"
-    time-out: "{main}&lCities &7› &fВремя на вопрос вышло"
+    on-cancel: "{main}&lCities &7› {default}Вы отклонили вопрос"
+    time-out: "{main}&lCities &7› {default}Время на вопрос вышло"
 
-    message: "&f%message%\n&fИли напишите в чат &cотмена&f, если хотите отказаться от вопроса"
+    message: "{default}%message%\n{default}Или напишите в чат &cотмена{default}, если хотите отказаться от вопроса"
 
     ask-messages:
       rank-create: "Введите в чат название ранга"
       search-citizen: "Введите в чат никнейм игрока &7(xfl, xfly, xflyiwnl)"
 
   confirmation:
-    no-confirmations: "{main}&lCities &7› &fВам нечего подтверждать"
-    has-confirmation: "{main}&lCities &7› &fУ вас уже имеется подтверждение, ответьте на него и попробуйте опять"
+    no-confirmations: "{main}&lCities &7› {default}Вам нечего подтверждать"
+    has-confirmation: "{main}&lCities &7› {default}У вас уже имеется подтверждение, ответьте на него и попробуйте опять"
 
-    on-accept: "{main}&lCities &7› &fВы приняли предложение"
-    on-decline: "{main}&lCities &7› &fВы отклонили предложение"
-    time-out: "{main}&lCities &7› &fВремя на подтверждение вышло"
+    on-accept: "{main}&lCities &7› {default}Вы приняли предложение"
+    on-decline: "{main}&lCities &7› {default}Вы отклонили предложение"
+    time-out: "{main}&lCities &7› {default}Время на подтверждение вышло"
 
-    message: "&f%message%"
+    message: "{default}%message%"
     accept: "&r     &a[Принять]       &r"
     decline: "&c[Отклонить]"
 
@@ -53,85 +53,85 @@ language:
       city-create: "Вы уверены, что хотите основать свой город?"
 
   invite:
-    invite-self: "{main}&lCities &7› &fВы не сможете отправить приглашение самому себе"
-    receiver-has-invite: "{main}&lCities &7› &fИгрок уже приглашён куда-то, повторите попытку позже"
-    no-invite: "{main}&lCities &7› &fУ вас нет приглашений"
+    invite-self: "{main}&lCities &7› {default}Вы не сможете отправить приглашение самому себе"
+    receiver-has-invite: "{main}&lCities &7› {default}Игрок уже приглашён куда-то, повторите попытку позже"
+    no-invite: "{main}&lCities &7› {default}У вас нет приглашений"
 
     receiver-has:
-      city: "{main}&lCities &7› &fИгрок уже состоит в городе {main}%city%"
-      country: "{main}&lCities &7› &fГород уже состоит в стране {main}%country%"
+      city: "{main}&lCities &7› {default}Игрок уже состоит в городе {second}%city%"
+      country: "{main}&lCities &7› {default}Город уже состоит в стране {second}%country%"
 
-    has-invite: "{main}&lCities &7› &fПолучатель уже приглашён куда-то, повторите попытку чуть позже"
-    invite-send: "{main}&lCities &7› &fВаше приглашение было отправлено"
+    has-invite: "{main}&lCities &7› {default}Получатель уже приглашён куда-то, повторите попытку чуть позже"
+    invite-send: "{main}&lCities &7› {default}Ваше приглашение было отправлено"
 
-    on-accept-receiver: "{main}&lCities &7› &fВы приняли приглашение"
-    on-accept-sender: "{main}&lCities &7› &fВаше приглашение было принято"
+    on-accept-receiver: "{main}&lCities &7› {default}Вы приняли приглашение"
+    on-accept-sender: "{main}&lCities &7› {default}Ваше приглашение было принято"
 
-    on-decline-receiver: "{main}&lCities &7› &fВы отклонили приглашение"
-    on-decline-sender: "{main}&lCities &7› &fВаше приглашение было отклонено"
+    on-decline-receiver: "{main}&lCities &7› {default}Вы отклонили приглашение"
+    on-decline-sender: "{main}&lCities &7› {default}Ваше приглашение было отклонено"
 
-    time-out: "{main}&lCities &7› &fВремя на подтверждение приглашения вышло"
+    time-out: "{main}&lCities &7› {default}Время на подтверждение приглашения вышло"
 
-    message: "&f%message%"
+    message: "{default}%message%"
     accept: "&r     &a[Принять]       &r"
     decline: "&c[Отклонить]"
 
     invite-messages:
-      city: "Вы приглашены в город {main}%city% &fигроком {main}%sender%"
-      country: "{main}%sender% из страны {main}%country% &fприглашает ваш город вступить к ним"
+      city: "Вы приглашены в город {second}%city% {default}игроком {second}%sender%"
+      country: "{second}%sender% из страны {second}%country% {default}приглашает ваш город вступить к ним"
 
   city:
-    creation-name-error: "{main}&lCities &7› &fГород с таким именем уже существует"
+    creation-name-error: "{main}&lCities &7› {default}Город с таким именем уже существует"
 
-    unknown-city: "{main}&lCities &7› &fТакого города не существует"
-    already-has-city: "{main}&lCities &7› &fУ вас уже имеется город {main}%city%"
+    unknown-city: "{main}&lCities &7› {default}Такого города не существует"
+    already-has-city: "{main}&lCities &7› {default}У вас уже имеется город {second}%city%"
 
-    city-created: "{main}&lCities &7› &fГород {main}%city% &fбыл создан"
-    city-removed: "{main}&lCities &7› &fГород {main}%city% &fбыл удалён"
+    city-created: "{main}&lCities &7› {default}Город {second}%city% {default}был создан"
+    city-removed: "{main}&lCities &7› {default}Город {second}%city% {default}был удалён"
 
-    citizen-added: "{main}[%city%] %citizen% &fприсоединился к городу"
-    citizen-leaved: "{main}[%city%] %citizen% &fпокинул город"
-    citizen-kicked: "{main}[%city%] %citizen1% &fбыл кикнут {main}%citizen2%"
+    citizen-added: "{main}[%city%] %citizen% {default}присоединился к городу"
+    citizen-leaved: "{main}[%city%] %citizen% {default}покинул город"
+    citizen-kicked: "{main}[%city%] %citizen1% {default}был кикнут {second}%citizen2%"
 
-    mayor-leave-city: "{main}&lCities &7› &fВы не сможете выйти из города, когда вы мэр"
-    far-spawn: "{main}&lCities &7› &fСпавн можно ставить только на своих территориях"
+    mayor-leave-city: "{main}&lCities &7› {default}Вы не сможете выйти из города, когда вы мэр"
+    far-spawn: "{main}&lCities &7› {default}Спавн можно ставить только на своих территориях"
 
     set:
-      board: "{main}&lCities &7› &fДоска изменена нa: {main}%board%"
-      name: "{main}&lCities &7› &fНазвание города изменена нa: {main}%name%"
-      spawn: "{main}&lCities &7› &fСпавн города изменен"
+      board: "{main}&lCities &7› {default}Доска изменена нa: {second}%board%"
+      name: "{main}&lCities &7› {default}Название города изменена нa: {second}%name%"
+      spawn: "{main}&lCities &7› {default}Спавн города изменен"
 
   citizen:
-    no-city: "{main}&lCities &7› &fУ вас нет города"
-    no-country: "{main}&lCities &7› &fУ вас нет страны"
-    not-mayor: "{main}&lCities &7› &fВы не являетесь мэром"
-    not-king: "{main}&lCities &7› &fВы не правите страной"
-    unknown-citizen: "{main}&lCities &7› &fТакого игрока не существует"
-    other-city: "{main}&lCities &7› &fЭтот игрок из другого города"
+    no-city: "{main}&lCities &7› {default}У вас нет города"
+    no-country: "{main}&lCities &7› {default}У вас нет страны"
+    not-mayor: "{main}&lCities &7› {default}Вы не являетесь мэром"
+    not-king: "{main}&lCities &7› {default}Вы не правите страной"
+    unknown-citizen: "{main}&lCities &7› {default}Такого игрока не существует"
+    other-city: "{main}&lCities &7› {default}Этот игрок из другого города"
 
-    kick-error: "{main}&lCities &7› &fИгрок не в вашем городе"
-    kick-self: "{main}&lCities &7› &fВы не сможете кикнуть самого себя"
-    kick-mayor: "{main}&lCities &7› &fЭтот игрок является мэром вашего города"
+    kick-error: "{main}&lCities &7› {default}Игрок не в вашем городе"
+    kick-self: "{main}&lCities &7› {default}Вы не сможете кикнуть самого себя"
+    kick-mayor: "{main}&lCities &7› {default}Этот игрок является мэром вашего города"
 
-    broadcast-send: "{main}&lCities &7› &fВаше объявление было отправлено"
-    teleported-spawn: "{main}&lCities &7› &fВы телепортировались на спавн города"
+    broadcast-send: "{main}&lCities &7› {default}Ваше объявление было отправлено"
+    teleported-spawn: "{main}&lCities &7› {default}Вы телепортировались на спавн города"
 
   land:
-    already-claimed: "{main}&lCities &7› &fЭта территория принадлежит городу {main}%city%"
-    land-claim: "{main}&lCities &7› &fВы успешно колонизировали территорию {main}(%world%, %x%, %z%)"
-    free-land: "{main}&lCities &7› &fДанная территория никем не занята"
-    land-unclaim: "{main}&lCities &7› &fВы успешно де-колонизировали территорию {main}(%world%, %x%, %z%)"
-    not-connected: "{main}&lCities &7› &fНет ваших территории в соседних территориях (чанки)"
-    unclaim-spawnland: "{main}&lCities &7› &fВы не сможете расприватить территорию со спавном"
+    already-claimed: "{main}&lCities &7› {default}Эта территория принадлежит городу {second}%city%"
+    land-claim: "{main}&lCities &7› {default}Вы успешно колонизировали территорию {main}(%world%, %x%, %z%)"
+    free-land: "{main}&lCities &7› {default}Данная территория никем не занята"
+    land-unclaim: "{main}&lCities &7› {default}Вы успешно де-колонизировали территорию {main}(%world%, %x%, %z%)"
+    not-connected: "{main}&lCities &7› {default}Нет ваших территории в соседних территориях (чанки)"
+    unclaim-spawnland: "{main}&lCities &7› {default}Вы не сможете расприватить территорию со спавном"
 
   country:
-    creation-name-error: "{main}&lCities &7› &fСтрана с таким названием уже существует"
-    unknown-country: "{main}&lCities &7› &fНеизвестная страна"
+    creation-name-error: "{main}&lCities &7› {default}Страна с таким названием уже существует"
+    unknown-country: "{main}&lCities &7› {default}Неизвестная страна"
 
-    country-created: "{main}&lCities &7› &fВы создали страну {main}%country%"
-    country-removed: "{main}&lCities &7› &fВы удалили страну {main}%country%"
+    country-created: "{main}&lCities &7› {default}Вы создали страну {second}%country%"
+    country-removed: "{main}&lCities &7› {default}Вы удалили страну {second}%country%"
 
-    contains-city: "{main}&lCities &7› &fТакой город уже в составе вашей страны"
-    not-contains-city: "{main}&lCities &7› &fТакой город не состоит в вашей стране"
-    kick-capital: "{main}&lCities &7› &fВы не сможете кикнуть столицу из состава страны"
+    contains-city: "{main}&lCities &7› {default}Такой город уже в составе вашей страны"
+    not-contains-city: "{main}&lCities &7› {default}Такой город не состоит в вашей стране"
+    kick-capital: "{main}&lCities &7› {default}Вы не сможете кикнуть столицу из состава страны"
 

@@ -23,17 +23,14 @@ public class ConfirmationCommand implements CommandExecutor, TabCompleter {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
-
         if (args.length == 1) {
             return confirmationTabCompletes;
         }
-
         return null;
     }
 
     @Override
     public boolean onCommand(@NotNull CommandSender sender, @NotNull Command command, @NotNull String label, @NotNull String[] args) {
-
         if (!(sender instanceof Player)) {
             return true;
         }
@@ -46,15 +43,12 @@ public class ConfirmationCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            Translator.send(citizen)
-                    .path("command.not-enough-args")
-                    .run();            return true;
+            citizen.sendMessage(Translator.of("command.not-enough-args"));
+            return true;
         }
 
         if (!citizen.hasConfirmation()) {
-            Translator.send(citizen)
-                    .path("confirmation.no-confirmations")
-                    .run();
+            citizen.sendMessage(Translator.of("confirmation.no-confirmations"));
             return true;
         }
 
@@ -72,11 +66,8 @@ public class ConfirmationCommand implements CommandExecutor, TabCompleter {
                 citizen.getConfirmation().onDecline();
                 break;
             default:
-                Translator.send(citizen)
-                        .path("command.command.unknown-arg")
-                        .run();
+                citizen.sendMessage(Translator.of("command.unknown-arg"));
                 break;
         }
     }
-
 }

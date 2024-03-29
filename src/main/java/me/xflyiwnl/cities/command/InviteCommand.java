@@ -46,16 +46,12 @@ public class InviteCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 0) {
-            Translator.send(citizen)
-                    .path("command.not-enough-args")
-                    .run();
+            citizen.sendMessage(Translator.of("command.not-enough-args"));
             return true;
         }
 
         if (!citizen.hasInvite()) {
-            Translator.send(citizen)
-                    .path("invite.no-invite")
-                    .run();
+            citizen.sendMessage(Translator.of("invite.no-invite"));
             return true;
         }
 
@@ -73,9 +69,7 @@ public class InviteCommand implements CommandExecutor, TabCompleter {
                 citizen.getInvite().decline();
                 break;
             default:
-                Translator.send(citizen)
-                        .path("command.unknown-arg")
-                        .run();
+                citizen.sendMessage(Translator.of("command.unknown-arg"));
                 break;
         }
     }

@@ -2,10 +2,11 @@ package me.xflyiwnl.cities.gui.city;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.City;
+import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
 import me.xflyiwnl.colorfulgui.object.GuiItem;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
+import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -59,8 +60,8 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            GuiItem guiItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+                    .staticItem()
                     .material(material)
                     .name(name)
                     .lore(lore)
@@ -92,7 +93,7 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
 
     public void online() {
 
-        for (Citizen citizen : city.getCitizens()) {
+        for (Citizen citizen : city.getCitizens().values()) {
 
             if (!citizen.isOnline()) {
                 continue;
@@ -112,8 +113,8 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
                     .replace("%rank%", "Президент")
                     .replace("%joined%", citizen.getJoinedCity()));
 
-            GuiItem onlineItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+            StaticItem onlineItem = Cities.getInstance().getColorfulGUI()
+                    .staticItem()
                     .material(Material.PLAYER_HEAD)
                     .name(name)
                     .lore(lore)

@@ -6,8 +6,8 @@ import com.wiring.api.entity.ColumnType;
 import com.wiring.api.entity.WiringResult;
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.PermissionNode;
-import me.xflyiwnl.cities.object.Rank;
+import me.xflyiwnl.cities.object.rank.PermissionNode;
+import me.xflyiwnl.cities.object.rank.Rank;
 
 import java.util.ArrayList;
 import java.util.List;

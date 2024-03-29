@@ -1,10 +1,12 @@
 package me.xflyiwnl.cities.object;
 
-import me.xflyiwnl.cities.object.bank.GovernmentBank;
+import me.xflyiwnl.cities.object.bank.Bank;
+import me.xflyiwnl.cities.object.bank.BankHandler;
+import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
 
 import java.util.UUID;
 
-public abstract class Government extends CitiesObject implements BankHandler, Saveable {
+public abstract class Government extends CitiesObject implements BankHandler {
 
     private Bank bank = new GovernmentBank(this);
 
@@ -25,16 +27,6 @@ public abstract class Government extends CitiesObject implements BankHandler, Sa
     }
 
     @Override
-    public void save() {
-
-    }
-
-    @Override
-    public void remove() {
-
-    }
-
-    @Override
     public Bank getBank() {
         return bank;
     }
@@ -42,7 +34,5 @@ public abstract class Government extends CitiesObject implements BankHandler, Sa
     public void setBank(Bank bank) {
         this.bank = bank;
     }
-
-
 
 }

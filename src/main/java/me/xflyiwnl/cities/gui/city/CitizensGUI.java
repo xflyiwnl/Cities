@@ -2,12 +2,13 @@ package me.xflyiwnl.cities.gui.city;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.City;
+import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.ask.Ask;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
 import me.xflyiwnl.colorfulgui.object.GuiItem;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
+import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
@@ -66,8 +67,8 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            GuiItem guiItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+                    .staticItem()
                     .material(material)
                     .name(name)
                     .lore(lore)
@@ -86,7 +87,7 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
                                             citizen,
                                             Translator.of("ask.ask-messages.search-citizen"),
                                             ask -> {
-                                                CitizensGUI.showGUI(getPlayer(), city, ask.getMessage().getValue());
+                                                CitizensGUI.showGUI(getPlayer(), city, ask.getMessage());
                                             },
                                             () -> {
                                                 CitizensGUI.showGUI(getPlayer(), city, search);
@@ -113,7 +114,7 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
 
     public void online() {
 
-        for (Citizen citizen : city.getCitizens()) {
+        for (Citizen citizen : city.getCitizens().values()) {
 
             if (search != null) {
                 if (!citizen.getName().startsWith(search)) {
@@ -135,8 +136,8 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
                     .replace("%rank%", "Президент")
                     .replace("%joined%", citizen.getJoinedCity()));
 
-            GuiItem citizenItem = Cities.getInstance().getColorfulGUI()
-                    .item()
+            StaticItem citizenItem = Cities.getInstance().getColorfulGUI()
+                    .staticItem()
                     .material(Material.PLAYER_HEAD)
                     .name(name)
                     .lore(lore)

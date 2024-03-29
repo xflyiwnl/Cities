@@ -2,6 +2,8 @@ package me.xflyiwnl.cities.object;
 
 import org.bukkit.World;
 
+import java.util.Objects;
+
 public class WorldCord2 {
 
     private World world;
@@ -14,13 +16,25 @@ public class WorldCord2 {
     }
 
     @Override
+    public boolean equals(Object o) {
+        if (this == o) return true;
+        if (o == null || getClass() != o.getClass()) return false;
+        WorldCord2 that = (WorldCord2) o;
+        return Double.compare(x, that.x) == 0 && Double.compare(z, that.z) == 0 && Objects.equals(world, that.world);
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(world, x, z);
+    }
+
+    @Override
     public String toString() {
         return world.getName() + "," + x + "," + z;
     }
 
     public WorldCord2 clone() {
-        WorldCord2 cloned = new WorldCord2(world, x, z);
-        return cloned;
+        return new WorldCord2(world, x, z);
     }
 
     public World getWorld() {

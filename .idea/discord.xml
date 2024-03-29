@@ -3,5 +3,10 @@
   <component name="DiscordProjectSettings">
     <option name="show" value="PROJECT_FILES" />
     <option name="description" value="Плагин на города и страны" />
+    <option name="theme" value="material" />
+    <option name="button1Title" value="Вконтакте" />
+    <option name="button1Url" value="https://vk.com/iridiumnetwork" />
+    <option name="button2Title" value="Дискорд" />
+    <option name="button2Url" value="https://discord.gg/8E8TMtexZY" />
   </component>
 </project>

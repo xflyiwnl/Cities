@@ -9,8 +9,9 @@ public class TextUtil {
 
     public static String colorize(String msg) {
         return ChatColor.translateAlternateColorCodes('&', msg
-                .replace("{main}", "#46CAB1")
-                .replace("{second}", "#46CAB1")
+                .replace("{main}", "#FCD05C")
+                .replace("{second}", "#F1B823")
+                .replace("{default}", "#FFF4D6")
                 .replaceAll("#([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])([a-fA-F0-9])", "&x&$1&$2&$3&$4&$5&$6"));
     }
 

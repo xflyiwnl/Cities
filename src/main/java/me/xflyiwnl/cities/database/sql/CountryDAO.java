@@ -4,10 +4,7 @@ import com.wiring.api.WiringAPI;
 import com.wiring.api.entity.Column;
 import com.wiring.api.entity.ColumnType;
 import com.wiring.api.entity.WiringResult;
-import com.zaxxer.hikari.HikariDataSource;
-import me.xflyiwnl.cities.object.CitiesObject;
-import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.Country;
+import me.xflyiwnl.cities.object.country.Country;
 
 import java.util.List;
 

@@ -9,9 +9,12 @@ import me.xflyiwnl.cities.database.DatabaseType;
 import me.xflyiwnl.cities.dynmap.DynmapDrawer;
 import me.xflyiwnl.cities.listener.PlayerListener;
 import me.xflyiwnl.cities.object.*;
-import me.xflyiwnl.cities.object.timer.ActionTimer;
-import me.xflyiwnl.cities.object.timer.DynmapTimer;
-import me.xflyiwnl.cities.object.timer.PacketTimer;
+import me.xflyiwnl.cities.object.city.City;
+import me.xflyiwnl.cities.object.country.Country;
+import me.xflyiwnl.cities.object.land.Land;
+import me.xflyiwnl.cities.object.rank.Rank;
+import me.xflyiwnl.cities.timer.DynmapTimer;
+import me.xflyiwnl.cities.timer.PacketTimer;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -19,7 +22,6 @@ import org.bukkit.Chunk;
 import org.bukkit.entity.Player;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
-import org.bukkit.plugin.messaging.PluginMessageListener;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -65,12 +67,12 @@ public final class Cities extends JavaPlugin {
 
             if (citizen == null) {
                 citizen = new Citizen(player.getUniqueId());
-                citizen.create(true);
-                System.out.println("create");
+                citizen.create();
+                citizen.save();
             }
         }
 
-        new ActionTimer( 20);
+//        new ActionTimer( 20);
 
         registerCommands();
         registerListeners();

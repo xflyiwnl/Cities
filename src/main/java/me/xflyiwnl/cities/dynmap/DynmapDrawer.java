@@ -1,8 +1,8 @@
 package me.xflyiwnl.cities.dynmap;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.City;
-import me.xflyiwnl.cities.object.Land;
+import me.xflyiwnl.cities.object.city.City;
+import me.xflyiwnl.cities.object.land.Land;
 import org.bukkit.plugin.Plugin;
 import org.bukkit.plugin.PluginManager;
 import org.dynmap.DynmapAPI;
