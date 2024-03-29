@@ -1,13 +1,10 @@
-package me.xflyiwnl.cities.timer;
+package me.xflyiwnl.cities.timer.timers;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.timer.CitiesTimer;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public class DynmapTimer extends BukkitRunnable {
-
-    public DynmapTimer(long time) {
-        this.runTaskTimer(Cities.getInstance(), 0, time);
-    }
+public class DynmapTimer extends CitiesTimer {
 
     @Override
     public void run() {

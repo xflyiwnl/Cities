@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.object.land;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.CitiesObject;
 import me.xflyiwnl.cities.object.Saveable;
 import me.xflyiwnl.cities.object.WorldCord2;
@@ -45,25 +46,25 @@ public class Land extends CitiesObject implements Saveable {
         Land land = null;
 
         cord = cord2.clone();
-        land = Cities.getInstance().getLand(cord.setZ(cord.getZ() + 1));
+        land = CitiesAPI.getInstance().getLandByCord(cord.setZ(cord.getZ() + 1));
         if (land != null && land.getCity().equals(city)) {
             return true;
         }
 
         cord = cord2.clone();
-        land = Cities.getInstance().getLand(cord.setZ(cord.getZ() - 1));
+        land = CitiesAPI.getInstance().getLandByCord(cord.setZ(cord.getZ() - 1));
         if (land != null && land.getCity().equals(city)) {
             return true;
         }
 
         cord = cord2.clone();
-        land = Cities.getInstance().getLand(cord.setX(cord.getX() + 1));
+        land = CitiesAPI.getInstance().getLandByCord(cord.setX(cord.getX() + 1));
         if (land != null && land.getCity().equals(city)) {
             return true;
         }
 
         cord = cord2.clone();
-        land = Cities.getInstance().getLand(cord.setX(cord.getX() - 1));
+        land = CitiesAPI.getInstance().getLandByCord(cord.setX(cord.getX() - 1));
         if (land != null && land.getCity().equals(city)) {
             return true;
         }
@@ -71,9 +72,13 @@ public class Land extends CitiesObject implements Saveable {
         return false;
     }
 
+    public boolean hasCity() {
+        return city != null;
+    }
+
     @Override
     public void create() {
-        Cities.getInstance().getLands().add(this);
+        Cities.getInstance().getLands().put(cord2, this);
     }
 
     @Override

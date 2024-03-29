@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.object.city;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
@@ -28,6 +29,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
     private String board;
 
     private Map<UUID, Citizen> citizens = new HashMap<>();
+    private Map<WorldCord2, Land> lands = new HashMap<>();
 
     public City() {
         super();
@@ -65,7 +67,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     @Override
     public void create() {
-        Cities.getInstance().getCities().add(this);
+        Cities.getInstance().getCities().put(getUniqueId(), this);
     }
 
     @Override
@@ -81,11 +83,11 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
             citizen.save();
         }
 
-        for (Land land : Cities.getInstance().getCityLands(this)) {
+        for (Land land : getLands().values()) {
             land.remove();
         }
 
-        Cities.getInstance().getCities().remove(this);
+        Cities.getInstance().getCities().remove(getUniqueId());
     }
 
     public void broadcast(String message, boolean format) {
@@ -101,14 +103,20 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         }
     }
 
+    public Map<WorldCord2, Land> getLands() {
+        return lands;
+    }
+
     @Override
     public void claimLand(Land land) {
+        lands.put(land.getCord2(), land);
         land.setCity(this);
         land.save();
     }
 
     @Override
     public void unclaimLand(Land land) {
+        lands.remove(land.getCord2());
         land.setCity(null);
         land.save();
     }
@@ -152,7 +160,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
         Chunk chunk = spawn.getChunk();
         WorldCord2 cord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());
-        spawnLand = Cities.getInstance().getLand(cord2);
+        spawnLand = CitiesAPI.getInstance().getLandByCord(cord2);
     }
 
     @Override
@@ -217,4 +225,5 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
     public void setBoard(String board) {
         this.board = board;
     }
+
 }

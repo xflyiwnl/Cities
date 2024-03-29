@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.dynmap;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.land.Land;
 import org.bukkit.plugin.Plugin;
@@ -9,6 +10,7 @@ import org.dynmap.DynmapAPI;
 import org.dynmap.markers.*;
 
 import java.util.*;
+import java.util.stream.Collectors;
 
 public class DynmapDrawer {
 
@@ -51,7 +53,7 @@ public class DynmapDrawer {
         Map<String,AreaMarker> newmap = new HashMap<>();
         Map<String,Marker> newmark = new HashMap<>();
 
-        List<City> cities = Cities.getInstance().getCities();
+        List<City> cities = CitiesAPI.getInstance().getCities().values().stream().toList();
         for(City city : cities) {
             isHomeSetted = false;
             handleTown(city, newmap, newmark, newline, null);
@@ -115,7 +117,7 @@ public class DynmapDrawer {
         double[] z;
         int poly_index = 0;
 
-        Collection<Land> lands = Cities.getInstance().getCityLands(city);
+        Collection<Land> lands = city.getLands().values();
         if(lands.isEmpty()) return;
 
         LinkedList<Land> nodevals = new LinkedList<>();
@@ -127,7 +129,7 @@ public class DynmapDrawer {
                 nodevals.addLast(land1);
             }
         } else {
-            Land reg = Cities.getInstance().getLand(land.getCord2());
+            Land reg = CitiesAPI.getInstance().getLandByCord(land.getCord2());
             curblks.setFlag((int) reg.getCord2().getX(), (int) reg.getCord2().getZ(), true);
             nodevals.addLast(reg);
         }

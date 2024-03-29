@@ -1,14 +1,13 @@
 package me.xflyiwnl.cities.object.rank;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Identifyable;
 import me.xflyiwnl.cities.object.Saveable;
 
-import java.util.ArrayList;
-import java.util.List;
-import java.util.UUID;
+import java.util.*;
 
 public class Rank implements Identifyable, Saveable {
 
@@ -37,7 +36,11 @@ public class Rank implements Identifyable, Saveable {
 
     @Override
     public void create() {
-        Cities.getInstance().getRanks().add(this);
+        Map<UUID, Rank> ranks = CitiesAPI.getInstance().getRanksByGovernment(government);
+        if (ranks == null)
+            ranks = new HashMap<>();
+        ranks.put(getUniqueId(), this);
+        Cities.getInstance().getRanks().put(government.getUniqueId(), ranks);
     }
 
     @Override
@@ -46,7 +49,11 @@ public class Rank implements Identifyable, Saveable {
 
     @Override
     public void remove() {
-        Cities.getInstance().getRanks().remove(this);
+        Map<UUID, Rank> ranks = CitiesAPI.getInstance().getRanksByGovernment(government);
+        if (ranks == null)
+            ranks = new HashMap<>();
+        ranks.remove(getUniqueId());
+        Cities.getInstance().getRanks().put(government.getUniqueId(), ranks);
     }
 
     public boolean hasPermission(PermissionNode node) {

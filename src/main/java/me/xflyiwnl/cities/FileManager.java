@@ -2,23 +2,32 @@ package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.config.YAML;
 
+import java.util.Arrays;
+import java.util.List;
+
 public class FileManager {
 
     private YAML language;
     private YAML settings;
 
-    public void create() {
+    public void generate() {
         language = new YAML("language.yml");
         settings = new YAML("settings.yml");
 
-        new YAML("gui/city/online-city.yml");
-
-        new YAML("gui/rank/rank.yml");
-        new YAML("gui/rank/rank-edit.yml");
+        createGuis();
     }
 
     public YAML get(String path) {
         return new YAML(path);
+    }
+
+    public void createGuis() {
+        List<String> guis = Arrays.asList(
+                "city/online-city.yml",
+                "rank/rank.yml",
+                "rank/rank-edit.yml"
+        );
+        guis.forEach(gui -> get("gui/" + gui));
     }
 
     public YAML getLanguage() {

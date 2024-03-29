@@ -59,7 +59,7 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+            StaticItem guiItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(material)
                     .name(name)
@@ -112,7 +112,7 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
                     .replace("%rank%", "Президент")
                     .replace("%joined%", citizen.getJoinedCity()));
 
-            StaticItem onlineItem = Cities.getInstance().getColorfulGUI()
+            StaticItem onlineItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(Material.PLAYER_HEAD)
                     .name(name)
@@ -127,7 +127,7 @@ public class CityOnlineGUI extends ColorfulProvider<PaginatedGui> {
 
     public static void showGUI(Player player, City city) {
         FileConfiguration yaml = Cities.getInstance().getFileManager().get("gui/city/online-city.yml").yaml();
-        DynamicGuiBuilder builder = Cities.getInstance().getColorfulGUI()
+        DynamicGuiBuilder builder = Cities.getInstance().getGuiApi()
                 .paginated()
                 .holder(new CityOnlineGUI(player, city))
                 .title(

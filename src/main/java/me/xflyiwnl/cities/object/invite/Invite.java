@@ -10,5 +10,7 @@ public interface Invite {
     void remove();
 
     InviteType type();
+    int getSeconds();
+    void setSeconds(int seconds);
 
 }

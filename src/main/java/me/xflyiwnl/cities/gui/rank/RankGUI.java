@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.gui.rank;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Translator;
@@ -30,7 +31,7 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
         super(player);
         this.government = government;
 
-        citizen = Cities.getInstance().getCitizen(player);
+        citizen = CitiesAPI.getInstance().getCitizen(player);
         yaml = Cities.getInstance().getFileManager().get("gui/rank/rank.yml").yaml();
     }
 
@@ -62,7 +63,7 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+            StaticItem guiItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(material)
                     .name(name)
@@ -90,7 +91,7 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
                                                     return;
                                                 }
 
-                                                if (Cities.getInstance().getRank(government, title) != null) {
+                                                if (CitiesAPI.getInstance().getRank(government, title) != null) {
                                                     citizen.sendMessage(Translator.of("rank.rank-exists"));
                                                     return;
                                                 }
@@ -127,7 +128,7 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
 
     public void ranks() {
 
-        for (Rank rank : Cities.getInstance().getRanks(government)) {
+        for (Rank rank : CitiesAPI.getInstance().getRanksByGovernment(government).values()) {
 
             String path = "rank-item.";
 
@@ -137,7 +138,7 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
             List<String> lore = yaml.getStringList(path + "lore");
             lore.replaceAll(word -> word.replace("%name%", rank.getTitle()));
 
-            StaticItem rankItem = Cities.getInstance().getColorfulGUI()
+            StaticItem rankItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(Material.RED_BANNER)
                     .name(name)
@@ -190,7 +191,7 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
 
     public static void showGUI(Player player, Government government) {
         FileConfiguration yaml = Cities.getInstance().getFileManager().get("gui/rank/rank.yml").yaml();
-        DynamicGuiBuilder builder = Cities.getInstance().getColorfulGUI()
+        DynamicGuiBuilder builder = Cities.getInstance().getGuiApi()
                 .paginated()
                 .holder(new RankGUI(player, government))
                 .title(

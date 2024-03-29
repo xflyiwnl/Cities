@@ -36,7 +36,7 @@ public class Country extends Government implements CitiesList, Saveable {
 
     @Override
     public void create() {
-        Cities.getInstance().getCountries().add(this);
+        Cities.getInstance().getCountries().put(getUniqueId(), this);
     }
 
     @Override

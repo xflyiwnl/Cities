@@ -5,12 +5,12 @@ import java.util.List;
 
 public class Translator {
 
-    public static String ofString(String path) {
+    public static String of(String path) {
         return TextUtil.colorize(Cities.getInstance().getFileManager().getLanguage().yaml()
                 .getString("language." + path));
     }
 
-    public static List<String> ofStringList(String path) {
+    public static List<String> ofList(String path) {
         return TextUtil.colorize(Cities.getInstance().getFileManager().getLanguage().yaml()
                 .getStringList("language." + path));
     }

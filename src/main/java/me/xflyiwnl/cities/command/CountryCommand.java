@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.city.City;
@@ -64,7 +65,7 @@ public class CountryCommand implements TabCompleter, CommandExecutor {
         }
 
         Player player = (Player) sender;
-        Citizen citizen = Cities.getInstance().getCitizen(player);
+        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (citizen == null) {
             return true;
@@ -163,7 +164,7 @@ public class CountryCommand implements TabCompleter, CommandExecutor {
             return;
         }
 
-        City receiver = Cities.getInstance().getCity(args[1]);
+        City receiver = CitiesAPI.getInstance().getCity(args[1]);
 
         if (receiver == null) {
             citizen.sendMessage(Translator.of("city.unknown-city"));
@@ -199,7 +200,7 @@ public class CountryCommand implements TabCompleter, CommandExecutor {
             return;
         }
 
-        City receiver = Cities.getInstance().getCity(args[1]);
+        City receiver = CitiesAPI.getInstance().getCity(args[1]);
 
         if (receiver == null) {
             citizen.sendMessage(Translator.of("city.unknown-city"));
@@ -362,7 +363,7 @@ public class CountryCommand implements TabCompleter, CommandExecutor {
             return;
         }
 
-        Country country = Cities.getInstance().getCountry(args[1]);
+        Country country = CitiesAPI.getInstance().getCountry(args[1]);
 
         if (country != null) {
             citizen.sendMessage(Translator.of("country.creation-name-error"));

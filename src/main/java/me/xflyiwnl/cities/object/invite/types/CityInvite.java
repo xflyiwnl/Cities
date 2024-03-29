@@ -5,7 +5,6 @@ import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.invite.InviteType;
-import me.xflyiwnl.cities.timer.InviteTimer;
 import me.xflyiwnl.cities.util.TextUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -16,7 +15,7 @@ public class CityInvite implements Invite {
     private Citizen sender;
     private Citizen receiver;
 
-    private InviteTimer timer;
+    private int seconds = 15;
 
     public CityInvite(City city, Citizen sender, Citizen receiver) {
         this.city = city;
@@ -24,7 +23,6 @@ public class CityInvite implements Invite {
         this.receiver = receiver;
 
         receiver.setInvite(this);
-        this.timer = new InviteTimer(this, 15);
 
         init();
     }
@@ -94,9 +92,6 @@ public class CityInvite implements Invite {
 
     @Override
     public void remove() {
-        if (!timer.isCancelled()) {
-            timer.cancel();
-        }
         receiver.setInvite(null);
     }
 
@@ -105,36 +100,14 @@ public class CityInvite implements Invite {
         return InviteType.CITY;
     }
 
-    public City getCity() {
-        return city;
+    @Override
+    public int getSeconds() {
+        return seconds;
     }
 
-    public void setCity(City city) {
-        this.city = city;
-    }
-
-    public Citizen getSender() {
-        return sender;
-    }
-
-    public void setSender(Citizen sender) {
-        this.sender = sender;
-    }
-
-    public Citizen getReceiver() {
-        return receiver;
-    }
-
-    public void setReceiver(Citizen receiver) {
-        this.receiver = receiver;
-    }
-
-    public InviteTimer getTimer() {
-        return timer;
-    }
-
-    public void setTimer(InviteTimer timer) {
-        this.timer = timer;
+    @Override
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 
 }

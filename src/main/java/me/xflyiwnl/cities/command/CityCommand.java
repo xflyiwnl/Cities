@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.city.CitizensGUI;
 import me.xflyiwnl.cities.gui.city.CityOnlineGUI;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
@@ -70,7 +71,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) sender;
-        Citizen citizen = Cities.getInstance().getCitizen(player);
+        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (args.length == 1) {
             return cityTabCompletes;
@@ -100,7 +101,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) sender;
-        Citizen citizen = Cities.getInstance().getCitizen(player);
+        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (citizen == null) {
             return true;
@@ -254,7 +255,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         Chunk chunk = spawn.getChunk();
         WorldCord2 cord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());
-        Land land = Cities.getInstance().getLand(cord2);
+        Land land = CitiesAPI.getInstance().getLandByCord(cord2);
 
         if (land == null || !land.getCity().equals(city)) {
             citizen.sendMessage(Translator.of("city.far-spawn"));
@@ -343,7 +344,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Citizen receiver = Cities.getInstance().getCitizen(args[1]);
+        Citizen receiver = CitiesAPI.getInstance().getCitizen(args[1]);
 
         if (receiver == null) {
             citizen.sendMessage(Translator.of("citizen.unknown-citizen"));
@@ -408,7 +409,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Citizen receiver = Cities.getInstance().getCitizen(args[1]);
+        Citizen receiver = CitiesAPI.getInstance().getCitizen(args[1]);
 
         if (receiver == null) {
             citizen.sendMessage(Translator.of("citizen.unknown-citizen"));
@@ -540,7 +541,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         Chunk chunk = citizen.getPlayer().getChunk();
         WorldCord2 worldCord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());
-        Land claimed = Cities.getInstance().getLand(worldCord2);
+        Land claimed = CitiesAPI.getInstance().getLandByCord(worldCord2);
 
         switch (args[1].toLowerCase()) {
             case "claim":
@@ -617,12 +618,12 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        if (Cities.getInstance().getCity(args[1]) != null) {
+        if (CitiesAPI.getInstance().getCity(args[1]) != null) {
             citizen.sendMessage(Translator.of("city.creation-name-error"));
             return;
         }
 
-        City landCity = Cities.getInstance().getCityByLand(citizen);
+        City landCity = CitiesAPI.getInstance().getCityByCitizen(citizen);
 
         if (landCity != null) {
             citizen.sendMessage(Translator.of("land.already-claimed")

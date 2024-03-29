@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.gui.rank;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.city.City;
@@ -34,7 +35,7 @@ public class RankEditorGUI extends ColorfulProvider<PaginatedGui> {
         this.rank = rank;
         this.government = government;
 
-        citizen = Cities.getInstance().getCitizen(player);
+        citizen = CitiesAPI.getInstance().getCitizen(player);
         yaml = Cities.getInstance().getFileManager().get("gui/rank/rank-edit.yml").yaml();
     }
 
@@ -66,7 +67,7 @@ public class RankEditorGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+            StaticItem guiItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(material)
                     .name(name)
@@ -125,7 +126,7 @@ public class RankEditorGUI extends ColorfulProvider<PaginatedGui> {
                     .replace("%status%", rank.hasPermission(node) ? "&aВключен" : "&cВыключен"));
             Material material = rank.hasPermission(node) ? Material.LIME_WOOL : Material.RED_WOOL;
 
-            GuiItem nodeItem = Cities.getInstance().getColorfulGUI()
+            GuiItem nodeItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(material)
                     .name(name)
@@ -155,7 +156,7 @@ public class RankEditorGUI extends ColorfulProvider<PaginatedGui> {
 
     public static void showGUI(Player player, Rank rank, Government government) {
         FileConfiguration yaml = Cities.getInstance().getFileManager().get("gui/rank/rank-edit.yml").yaml();
-        DynamicGuiBuilder builder = Cities.getInstance().getColorfulGUI()
+        DynamicGuiBuilder builder = Cities.getInstance().getGuiApi()
                 .paginated()
                 .holder(new RankEditorGUI(player, rank, government))
                 .title(

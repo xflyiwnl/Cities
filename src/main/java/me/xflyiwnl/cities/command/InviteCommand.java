@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
 import org.bukkit.command.Command;
@@ -39,7 +40,7 @@ public class InviteCommand implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) sender;
-        Citizen citizen = Cities.getInstance().getCitizen(player);
+        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (citizen == null) {
             return true;

@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.gui.city;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.ask.Ask;
@@ -30,7 +31,7 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
         this.city = city;
         this.search = search;
 
-        citizen = Cities.getInstance().getCitizen(player);
+        citizen = CitiesAPI.getInstance().getCitizen(player);
         yaml = Cities.getInstance().getFileManager().get("gui/city/citizens.yml").yaml();
     }
 
@@ -66,7 +67,7 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
             List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
             List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
 
-            StaticItem guiItem = Cities.getInstance().getColorfulGUI()
+            StaticItem guiItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(material)
                     .name(name)
@@ -135,7 +136,7 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
                     .replace("%rank%", "Президент")
                     .replace("%joined%", citizen.getJoinedCity()));
 
-            StaticItem citizenItem = Cities.getInstance().getColorfulGUI()
+            StaticItem citizenItem = Cities.getInstance().getGuiApi()
                     .staticItem()
                     .material(Material.PLAYER_HEAD)
                     .name(name)
@@ -150,7 +151,7 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
 
     public static void showGUI(Player player, City city, String searchOrNull) {
         FileConfiguration yaml = Cities.getInstance().getFileManager().get("gui/city/citizens.yml").yaml();
-        DynamicGuiBuilder builder = Cities.getInstance().getColorfulGUI()
+        DynamicGuiBuilder builder = Cities.getInstance().getGuiApi()
                 .paginated()
                 .holder(new CitizensGUI(player, city, searchOrNull))
                 .title(

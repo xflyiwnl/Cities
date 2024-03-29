@@ -7,7 +7,6 @@ import me.xflyiwnl.cities.command.InviteCommand;
 import me.xflyiwnl.cities.dynmap.DynmapDrawer;
 import me.xflyiwnl.cities.listener.PlayerListener;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
@@ -15,15 +14,15 @@ import me.xflyiwnl.cities.object.land.Land;
 import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.object.tool.ToolBar;
 import me.xflyiwnl.cities.object.tool.ToolBoard;
-import me.xflyiwnl.cities.timer.DynmapTimer;
-import me.xflyiwnl.cities.timer.PacketTimer;
+import me.xflyiwnl.cities.timer.timers.ActionTimer;
+import me.xflyiwnl.cities.timer.timers.CityTimer;
+import me.xflyiwnl.cities.timer.timers.DynmapTimer;
+import me.xflyiwnl.cities.timer.timers.PacketTimer;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
-import org.bukkit.Chunk;
-import org.bukkit.boss.BarColor;
-import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
+import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
@@ -33,61 +32,41 @@ public final class Cities extends JavaPlugin {
 
     private static Cities instance;
 
-    private FileManager fileManager;
+    private FileManager fileManager = new FileManager();
     private Economy economy;
     private DynmapDrawer dynmapDrawer;
-    private ColorfulGUI colorfulGUI;
+    private final ColorfulGUI guiApi = new ColorfulGUI(this);
+    private final CitiesAPI api = new CitiesAPI(this);
+    private final String channelName = "cities:city";
 
-    private List<Country> countries = new ArrayList<Country>();
-    private List<City> cities = new ArrayList<City>();
-    private List<Citizen> citizens = new ArrayList<Citizen>();
-    private List<Land> lands = new ArrayList<Land>();
-    private List<Rank> ranks = new ArrayList<Rank>();
+    private final Map<UUID, Country> countries = new HashMap<>();
+    private final Map<UUID, City> cities = new HashMap<>();
+    private final Map<UUID, Citizen> citizens = new HashMap<>();
+    private final Map<WorldCord2, Land> lands = new HashMap<>();
+    private final Map<UUID, Map<UUID, Rank>> ranks = new HashMap<>();
 
-    private List<ToolBoard> boards = new ArrayList<>();
-    private List<ToolBar> bars = new ArrayList<>();
+    private final List<ToolBoard> boards = new ArrayList<>();
+    private final List<ToolBar> bars = new ArrayList<>();
 
     @Override
     public void onEnable() {
 
         instance = this;
+        fileManager.generate();
 
         if (!setupEconomy() ) {
             Bukkit.getPluginManager().disablePlugin(Cities.getInstance());
             return;
         }
 
-        colorfulGUI = new ColorfulGUI(this);
-
-        fileManager = new FileManager();
-        fileManager.create();
-
-        for (Player player : Bukkit.getOnlinePlayers()) {
-            Citizen citizen = Cities.getInstance().getCitizen(player);
-
-            if (citizen == null) {
-                citizen = new Citizen(player.getUniqueId());
-                citizen.create();
-                citizen.save();
-            }
-        }
-
-//        new ActionTimer( 20);
+        checkOnlinePlayers();
 
         registerCommands();
         registerListeners();
+        registerDynmap();
+        registerChannels();
 
-        dynmapDrawer = new DynmapDrawer();
-        try {
-            dynmapDrawer.enable();
-        } catch (Exception e) {
-            throw new RuntimeException(e);
-        }
-
-        new DynmapTimer(100);
-
-        Bukkit.getMessenger().registerOutgoingPluginChannel(this, "cities:city");
-        new PacketTimer(1);
+        startTimers();
 
     }
 
@@ -96,179 +75,71 @@ public final class Cities extends JavaPlugin {
         dynmapDrawer.disable();
     }
 
+    public void checkOnlinePlayers() {
+        for (Player player : Bukkit.getOnlinePlayers()) {
+            Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
+
+            if (citizen == null) {
+                citizen = new Citizen(player.getUniqueId());
+                citizen.create();
+                citizen.save();
+            }
+        }
+    }
+
+    public void startTimers() {
+        ActionTimer actionTimer = new ActionTimer();
+        actionTimer.startTimer(1);
+
+        CityTimer cityTimer = new CityTimer();
+        cityTimer.startTimer(1);
+
+        PacketTimer packetTimer = new PacketTimer();
+        packetTimer.startTimer(1);
+
+        if (dynmapDrawer != null) {
+            DynmapTimer dynmapTimer = new DynmapTimer();
+            dynmapTimer.startTimer(1);
+        }
+    }
+
+    public void registerChannels() {
+        Bukkit.getMessenger().registerOutgoingPluginChannel(this, channelName);
+    }
+
+    public void registerDynmap() {
+        if (Bukkit.getPluginManager().getPlugin("dynmap") != null) {
+            dynmapDrawer = new DynmapDrawer();
+            try {
+                dynmapDrawer.enable();
+            } catch (Exception e) {
+                throw new RuntimeException(e);
+            }
+        }
+    }
+
     public void registerListeners() {
-        Bukkit.getPluginManager().registerEvents(new PlayerListener(), this);
+        PluginManager pm = Bukkit.getPluginManager();
+
+        pm.registerEvents(new PlayerListener(), this);
     }
 
     public void registerCommands() {
-        getCommand("city").setExecutor(new CityCommand());
-        getCommand("city").setTabCompleter(new CityCommand());
+        CityCommand cityCommand = new CityCommand();
+        getCommand("city").setExecutor(cityCommand);
+        getCommand("city").setTabCompleter(cityCommand);
 
-        getCommand("country").setExecutor(new CountryCommand());
-        getCommand("country").setTabCompleter(new CountryCommand());
+        CountryCommand countryCommand = new CountryCommand();
+        getCommand("country").setExecutor(countryCommand);
+        getCommand("country").setTabCompleter(countryCommand);
 
-        getCommand("confirmation").setExecutor(new ConfirmationCommand());
-        getCommand("confirmation").setTabCompleter(new ConfirmationCommand());
+        ConfirmationCommand confirmationCommand = new ConfirmationCommand();
+        getCommand("confirmation").setExecutor(confirmationCommand);
+        getCommand("confirmation").setTabCompleter(confirmationCommand);
 
-        getCommand("invite").setExecutor(new InviteCommand());
-        getCommand("invite").setTabCompleter(new InviteCommand());
-    }
-
-    public City getCityByLand(Citizen citizen) {
-        return getCityByLand(citizen.getPlayer());
-    }
-
-    public City getCityByLand(Player player) {
-        Chunk chunk = player.getChunk();
-        Land land = getLand(new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ()));
-        if (land != null) {
-            return land.getCity();
-        }
-        return null;
-    }
-
-    public List<Land> getCityLands(City city) {
-        List<Land> lands = new ArrayList<>();
-        for (Land land : this.lands) {
-            if (land.getCity() != null && land.getCity().equals(city)) {
-                lands.add(land);
-            }
-        }
-        return lands;
-    }
-
-    public Land getLand(WorldCord2 cord2) {
-        for (Land land : lands) {
-            if (land.getCord2().getWorld().getName().equals(cord2.getWorld().getName()) && land.getCord2().getX() == cord2.getX() &&
-                    land.getCord2().getZ() == cord2.getZ()) {
-                return land;
-            }
-        }
-        return null;
-    }
-
-    public Citizen getCitizen(Player player) {
-        return getCitizen(player.getUniqueId());
-    }
-
-    public Citizen getCitizen(UUID uuid) {
-        for (Citizen citizen : citizens) {
-            if (citizen.getUniqueId().equals(uuid)) {
-                return citizen;
-            }
-        }
-        return null;
-    }
-
-    public Citizen getCitizen(String name) {
-        for (Citizen citizen : citizens) {
-            if (citizen.getName().equals(name)) {
-                return citizen;
-            }
-        }
-        return null;
-    }
-
-    public City getCity(UUID uuid) {
-        for (City city : cities) {
-            if (city.getUniqueId().equals(uuid)) {
-                return city;
-            }
-        }
-        return null;
-    }
-
-    public City getCity(String name) {
-        for (City city : cities) {
-            if (city.getName().equals(name)) {
-                return city;
-            }
-        }
-        return null;
-    }
-
-    public Country getCountry(UUID uuid) {
-        for (Country country : countries) {
-            if (country.getUniqueId().equals(uuid)) {
-                return country;
-            }
-        }
-        return null;
-    }
-
-    public Country getCountry(String name) {
-        for (Country country : countries) {
-            if (country.getName().equals(name)) {
-                return country;
-            }
-        }
-        return null;
-    }
-
-    public Rank getRank(Government government, String title) {
-        for (Rank rank : ranks) {
-            if (rank.getGovernment().equals(government) && rank.getTitle().equalsIgnoreCase(title)) {
-                return rank;
-            }
-        }
-        return null;
-    }
-
-    public Rank getRank(UUID uuid) {
-        for (Rank rank : ranks) {
-            if (rank.getUniqueId().equals(uuid)) {
-                return rank;
-            }
-        }
-        return null;
-    }
-
-    public List<Rank> getRanks(Government government) {
-        List<Rank> ranks = new ArrayList<Rank>();
-        for (Rank rank : this.ranks) {
-            if (rank.getGovernment().equals(government)) {
-                ranks.add(rank);
-            }
-        }
-        return ranks;
-    }
-
-    public Government getGovernment(UUID uuid) {
-        for (Government government : cities) {
-            if (government.getUniqueId().equals(uuid)) {
-                return government;
-            }
-        }
-        for (Government government : countries) {
-            if (government.getUniqueId().equals(uuid)) {
-                return government;
-            }
-        }
-        return null;
-    }
-
-    public ToolBar createBar(String text, float progress, BarColor color, BarStyle style) {
-        ToolBar bar = new ToolBar(text, progress, color, style);
-        bars.add(bar);
-        return bar;
-    }
-
-    public ToolBar createBar() {
-        ToolBar bar = new ToolBar();
-        bars.add(bar);
-        return bar;
-    }
-
-    public ToolBoard createBoard(String title) {
-        ToolBoard board = new ToolBoard(title);
-        boards.add(board);
-        return board;
-    }
-
-    public ToolBoard createBoard() {
-        ToolBoard board = new ToolBoard();
-        boards.add(board);
-        return board;
+        InviteCommand inviteCommand = new InviteCommand();
+        getCommand("invite").setExecutor(inviteCommand);
+        getCommand("invite").setTabCompleter(inviteCommand);
     }
 
     private boolean setupEconomy() {
@@ -283,47 +154,23 @@ public final class Cities extends JavaPlugin {
         return economy != null;
     }
 
-    public FileManager getFileManager() {
-        return fileManager;
-    }
-
-    public List<Country> getCountries() {
+    public Map<UUID, Country> getCountries() {
         return countries;
     }
 
-    public List<City> getCities() {
+    public Map<UUID, City> getCities() {
         return cities;
     }
 
-    public List<Citizen> getCitizens() {
+    public Map<UUID, Citizen> getCitizens() {
         return citizens;
     }
 
-    public List<Land> getLands() {
+    public Map<WorldCord2, Land> getLands() {
         return lands;
     }
 
-    public static Cities getInstance() {
-        return instance;
-    }
-
-    public static void setInstance(Cities instance) {
-        Cities.instance = instance;
-    }
-
-    public Economy getEconomy() {
-        return economy;
-    }
-
-    public DynmapDrawer getDynmapDrawer() {
-        return dynmapDrawer;
-    }
-
-    public ColorfulGUI getColorfulGUI() {
-        return colorfulGUI;
-    }
-
-    public List<Rank> getRanks() {
+    public Map<UUID, Map<UUID, Rank>> getRanks() {
         return ranks;
     }
 
@@ -334,4 +181,33 @@ public final class Cities extends JavaPlugin {
     public List<ToolBar> getBars() {
         return bars;
     }
+
+    public FileManager getFileManager() {
+        return fileManager;
+    }
+
+    public static Cities getInstance() {
+        return instance;
+    }
+
+    public Economy getEconomy() {
+        return economy;
+    }
+
+    public DynmapDrawer getDynmapDrawer() {
+        return dynmapDrawer;
+    }
+
+    public ColorfulGUI getGuiApi() {
+        return guiApi;
+    }
+
+    public CitiesAPI getApi() {
+        return api;
+    }
+
+    public String getChannelName() {
+        return channelName;
+    }
+
 }

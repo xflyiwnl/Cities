@@ -2,7 +2,6 @@ package me.xflyiwnl.cities.object.ask;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
-import me.xflyiwnl.cities.timer.AskTimer;
 
 public class Ask {
 
@@ -11,7 +10,7 @@ public class Ask {
     private AskAction<AskMessage> onChat;
     private Runnable onCancel;
 
-    private AskTimer timer;
+    private int seconds = 15;
 
     public Ask(Citizen citizen, String message, AskAction<AskMessage> onChat, Runnable onCancel) {
         this.citizen = citizen;
@@ -23,8 +22,6 @@ public class Ask {
             citizen.sendMessage(Translator.of("ask.has-ask"));
             return;
         }
-
-        timer = new AskTimer(this, 15);
 
         citizen.setAsk(this);
         send();
@@ -59,7 +56,14 @@ public class Ask {
 
     public void remove() {
         citizen.setAsk(null);
-        if (!timer.isCancelled()) timer.cancel();
+    }
+
+    public int getSeconds() {
+        return seconds;
+    }
+
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 
 }

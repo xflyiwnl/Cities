@@ -1,5 +1,7 @@
 package me.xflyiwnl.cities.object;
 
+import org.bukkit.Chunk;
+import org.bukkit.Location;
 import org.bukkit.World;
 
 import java.util.Objects;
@@ -9,10 +11,26 @@ public class WorldCord2 {
     private World world;
     private double x, z;
 
+    public WorldCord2(Location location) {
+        this.world = location.getWorld();
+        this.x = location.getX();
+        this.z = location.getZ();
+    }
+
+    public WorldCord2(Chunk chunk) {
+        this.world = chunk.getWorld();
+        this.x = chunk.getX();
+        this.z = chunk.getZ();
+    }
+
     public WorldCord2(World world, double x, double z) {
         this.world = world;
         this.x = x;
         this.z = z;
+    }
+
+    public Chunk getChunk() {
+        return world.getChunkAt((int) x, (int) z);
     }
 
     @Override

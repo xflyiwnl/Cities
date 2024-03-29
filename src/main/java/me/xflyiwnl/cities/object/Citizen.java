@@ -12,6 +12,7 @@ import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.util.TextUtil;
 import org.bukkit.Bukkit;
+import org.bukkit.Location;
 import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
@@ -58,12 +59,24 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
         }
     }
 
+    public WorldCord2 getChunkCord() {
+        return new WorldCord2(getPlayer().getChunk());
+    }
+
+    public WorldCord2 getLocationCord() {
+        return new WorldCord2(getLocation());
+    }
+
+    public Location getLocation() {
+        return getPlayer().getLocation();
+    }
+
     public boolean isOnline() {
         return getPlayer() != null && getPlayer().isOnline();
     }
 
     public boolean hasCity() {
-        return city == null;
+        return city != null;
     }
 
     public boolean isMayor() {
@@ -97,7 +110,7 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
 
     @Override
     public void create() {
-        Cities.getInstance().getCitizens().add(this);
+        Cities.getInstance().getCitizens().put(getUniqueId(), this);
     }
 
     @Override

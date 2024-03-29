@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.listener;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.ask.AskMessage;
 import org.bukkit.entity.Player;
@@ -16,7 +17,7 @@ public class PlayerListener implements Listener {
     public void onJoin(PlayerJoinEvent event) {
 
         Player player = event.getPlayer();
-        Citizen citizen = Cities.getInstance().getCitizen(player);
+        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (citizen == null) {
             citizen = new Citizen(player.getUniqueId());
@@ -30,7 +31,7 @@ public class PlayerListener implements Listener {
     public void onLeft(PlayerQuitEvent event) {
 
         Player player = event.getPlayer();
-        Citizen citizen = Cities.getInstance().getCitizen(player);
+        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (citizen == null) {
             return;
@@ -50,7 +51,7 @@ public class PlayerListener implements Listener {
     public void onChat(PlayerChatEvent event) {
 
         Player player = event.getPlayer();
-        Citizen citizen = Cities.getInstance().getCitizen(player);
+        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (citizen == null) return;
         if (!citizen.hasAsk()) return;

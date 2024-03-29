@@ -70,6 +70,10 @@
             <id>MikeRepo</id>
             <url>https://repo.mikeprimm.com/</url>
         </repository>
+        <repository>
+            <id>krypton</id>
+            <url>https://repo.kryptonmc.org/releases</url>
+        </repository>
     </repositories>
 
     <dependencies>
@@ -133,5 +137,6 @@
             <version>4.0.2</version>
             <scope>provided</scope>
         </dependency>
+        
     </dependencies>
 </project>

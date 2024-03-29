@@ -2,7 +2,6 @@ package me.xflyiwnl.cities.object.confirmation;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
-import me.xflyiwnl.cities.timer.ConfirmationTimer;
 import me.xflyiwnl.cities.util.TextUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
@@ -15,7 +14,7 @@ public class Confirmation {
     private Runnable accept;
     private Runnable decline;
 
-    public ConfirmationTimer timer;
+    public int seconds = 15;
 
     public Confirmation(Citizen citizen, String message, Runnable accept, Runnable decline) {
         this.citizen = citizen;
@@ -24,13 +23,10 @@ public class Confirmation {
         this.decline = decline;
 
         citizen.setConfirmation(this);
-        this.timer = new ConfirmationTimer(this, 15);
-
         sendMessages();
     }
 
     public void sendMessages() {
-
 
         citizen.sendMessage(Translator.of("confirmation.message")
                 .replace("%message%", message));
@@ -65,50 +61,15 @@ public class Confirmation {
     }
 
     public void remove() {
-        if (!timer.isCancelled()) {
-            timer.cancel();
-        }
         citizen.setConfirmation(null);
     }
 
-    public Citizen getCitizen() {
-        return citizen;
+    public int getSeconds() {
+        return seconds;
     }
 
-    public void setCitizen(Citizen citizen) {
-        this.citizen = citizen;
-    }
-
-    public String getMessage() {
-        return message;
-    }
-
-    public void setMessage(String message) {
-        this.message = message;
-    }
-
-    public Runnable getAccept() {
-        return accept;
-    }
-
-    public void setAccept(Runnable accept) {
-        this.accept = accept;
-    }
-
-    public Runnable getDecline() {
-        return decline;
-    }
-
-    public void setDecline(Runnable decline) {
-        this.decline = decline;
-    }
-
-    public ConfirmationTimer getTimer() {
-        return timer;
-    }
-
-    public void setTimer(ConfirmationTimer timer) {
-        this.timer = timer;
+    public void setSeconds(int seconds) {
+        this.seconds = seconds;
     }
 
 }
