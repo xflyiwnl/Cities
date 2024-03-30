@@ -32,11 +32,11 @@ public final class Cities extends JavaPlugin {
 
     private static Cities instance;
 
-    private FileManager fileManager = new FileManager();
     private Economy economy;
     private DynmapDrawer dynmapDrawer;
-    private final ColorfulGUI guiApi = new ColorfulGUI(this);
+    private ColorfulGUI guiApi;
     private final CitiesAPI api = new CitiesAPI(this);
+    private final FileManager fileManager = new FileManager();
     private final String channelName = "cities:city";
 
     private final Map<UUID, Country> countries = new HashMap<>();
@@ -52,6 +52,8 @@ public final class Cities extends JavaPlugin {
     public void onEnable() {
 
         instance = this;
+        guiApi = new ColorfulGUI(this);
+
         fileManager.generate();
 
         if (!setupEconomy() ) {
@@ -72,7 +74,9 @@ public final class Cities extends JavaPlugin {
 
     @Override
     public void onDisable() {
-        dynmapDrawer.disable();
+        if (dynmapDrawer != null) {
+            dynmapDrawer.disable();
+        }
     }
 
     public void checkOnlinePlayers() {

@@ -10,6 +10,6 @@ public interface CitizenList {
     Map<UUID, Citizen> getCitizens();
 
     void addCitizen(Citizen citizen);
-    void leaveCitizen(Citizen citizen);
+    void removeCitizen(Citizen citizen);
 
 }

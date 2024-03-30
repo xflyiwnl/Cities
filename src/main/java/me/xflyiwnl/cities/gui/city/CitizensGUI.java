@@ -4,7 +4,6 @@ import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
-import me.xflyiwnl.cities.object.ask.Ask;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
@@ -83,7 +82,7 @@ public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
                                 } else if (action.equalsIgnoreCase("[search]")) {
                                     getPlayer().closeInventory();
 
-                                    new Ask(
+                                    CitiesAPI.getInstance().createAsk(
                                             citizen,
                                             Translator.of("ask.ask-messages.search-citizen"),
                                             ask -> {

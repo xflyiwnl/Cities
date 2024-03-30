@@ -1,6 +1,5 @@
 package me.xflyiwnl.cities.command;
 
-import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
@@ -61,10 +60,10 @@ public class ConfirmationCommand implements CommandExecutor, TabCompleter {
     public void parseConfirmationCommand(Citizen citizen, String[] args) {
         switch (args[0].toLowerCase()) {
             case "accept":
-                citizen.getConfirmation().onAccept();
+                citizen.getConfirmation().accept();
                 break;
             case "decline":
-                citizen.getConfirmation().onDecline();
+                citizen.getConfirmation().decline();
                 break;
             default:
                 citizen.sendMessage(Translator.of("command.unknown-arg"));

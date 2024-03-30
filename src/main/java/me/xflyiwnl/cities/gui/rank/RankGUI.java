@@ -5,7 +5,6 @@ import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Translator;
-import me.xflyiwnl.cities.object.ask.Ask;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.rank.Rank;
@@ -79,7 +78,7 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
                                 } else if (action.equalsIgnoreCase("[create]")) {
                                     getPlayer().closeInventory();
 
-                                    new Ask(
+                                    CitiesAPI.getInstance().createAsk(
                                             citizen,
                                             Translator.of("ask.ask-messages.rank-create"),
                                             ask -> {

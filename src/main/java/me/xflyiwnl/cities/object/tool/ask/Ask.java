@@ -1,14 +1,18 @@
-package me.xflyiwnl.cities.object.ask;
+package me.xflyiwnl.cities.object.tool.ask;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.object.tool.Suggestable;
+import me.xflyiwnl.cities.object.tool.Timeable;
+import me.xflyiwnl.cities.object.tool.Tool;
 
-public class Ask {
+public class Ask implements Tool, Timeable, Suggestable {
 
     private Citizen citizen;
     private String message;
     private AskAction<AskMessage> onChat;
     private Runnable onCancel;
+    private AskMessage result;
 
     private int seconds = 15;
 
@@ -17,51 +21,55 @@ public class Ask {
         this.message = message;
         this.onChat = onChat;
         this.onCancel = onCancel;
-
-        if (citizen.hasAsk()) {
-            citizen.sendMessage(Translator.of("ask.has-ask"));
-            return;
-        }
-
-        citizen.setAsk(this);
-        send();
     }
 
     public void onChat(AskMessage ask) {
         if (ask.getMessage().equalsIgnoreCase("отмена")) {
-            cancel();
+            decline();
             return;
         }
 
-        onChat.execute(ask);
-        remove();
+        result = ask;
+        accept();
     }
 
-    public void send() {
+    @Override
+    public void init() {
         citizen.sendMessage(Translator.of("ask.message")
                 .replace("%message%", message));
     }
 
-    public void cancel() {
+    @Override
+    public void remove() {
+        citizen.setAsk(null);
+    }
+
+    @Override
+    public void accept() {
+        onChat.execute(result);
+        remove();
+    }
+
+    @Override
+    public void decline() {
         citizen.sendMessage(Translator.of("ask.on-cancel"));
 
         onCancel.run();
         remove();
     }
 
+    @Override
     public void timeOut() {
         citizen.sendMessage(Translator.of("ask.time-out"));
         remove();
     }
 
-    public void remove() {
-        citizen.setAsk(null);
-    }
-
+    @Override
     public int getSeconds() {
         return seconds;
     }
 
+    @Override
     public void setSeconds(int seconds) {
         this.seconds = seconds;
     }

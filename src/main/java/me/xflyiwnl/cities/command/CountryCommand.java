@@ -1,6 +1,5 @@
 package me.xflyiwnl.cities.command;
 
-import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
@@ -79,7 +78,6 @@ public class CountryCommand implements TabCompleter, CommandExecutor {
     public void parseCountryCommand(Citizen citizen, String[] args) {
 
         if (args.length == 0) {
-            citizen.sendMessage(Translator.of("command.not-enough-args"));
             citizen.sendMessage(Translator.of("command.not-enough-args"));
             return;
         }

@@ -10,7 +10,6 @@ import org.dynmap.DynmapAPI;
 import org.dynmap.markers.*;
 
 import java.util.*;
-import java.util.stream.Collectors;
 
 public class DynmapDrawer {
 

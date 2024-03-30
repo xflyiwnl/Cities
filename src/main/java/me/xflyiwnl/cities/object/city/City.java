@@ -96,7 +96,8 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
             if (format) {
                 citizen.sendMessage(Translator.of("other.broadcast-format")
-                        .replace("%city%", getName()));
+                        .replace("%city%", getName())
+                        .replace("%message%", message));
             } else {
                 citizen.sendMessage(message);
             }
@@ -192,7 +193,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
     }
 
     @Override
-    public void leaveCitizen(Citizen citizen) {
+    public void removeCitizen(Citizen citizen) {
 
         getCitizens().remove(citizen.getUniqueId());
         citizen.setCity(null);

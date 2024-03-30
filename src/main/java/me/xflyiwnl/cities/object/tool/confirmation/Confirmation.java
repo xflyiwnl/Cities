@@ -1,12 +1,15 @@
-package me.xflyiwnl.cities.object.confirmation;
+package me.xflyiwnl.cities.object.tool.confirmation;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.object.tool.Suggestable;
+import me.xflyiwnl.cities.object.tool.Timeable;
+import me.xflyiwnl.cities.object.tool.Tool;
 import me.xflyiwnl.cities.util.TextUtil;
 import net.md_5.bungee.api.chat.ClickEvent;
 import net.md_5.bungee.api.chat.TextComponent;
 
-public class Confirmation {
+public class Confirmation implements Tool, Timeable, Suggestable {
 
     private Citizen citizen;
     private String message;
@@ -21,12 +24,10 @@ public class Confirmation {
         this.message = message;
         this.accept = accept;
         this.decline = decline;
-
-        citizen.setConfirmation(this);
-        sendMessages();
     }
 
-    public void sendMessages() {
+    @Override
+    public void init() {
 
         citizen.sendMessage(Translator.of("confirmation.message")
                 .replace("%message%", message));
@@ -43,31 +44,37 @@ public class Confirmation {
 
     }
 
-    public void onAccept() {
+    @Override
+    public void remove() {
+        citizen.setConfirmation(null);
+    }
+
+    @Override
+    public void accept() {
         citizen.sendMessage(Translator.of("confirmation.on-accept"));
         accept.run();
         remove();
     }
 
-    public void onDecline() {
+    @Override
+    public void decline() {
         citizen.sendMessage(Translator.of("confirmation.on-decline/"));
         decline.run();
         remove();
     }
 
+    @Override
     public void timeOut() {
         citizen.sendMessage(Translator.of("confirmation.time-out"));
         remove();
     }
 
-    public void remove() {
-        citizen.setConfirmation(null);
-    }
-
+    @Override
     public int getSeconds() {
         return seconds;
     }
 
+    @Override
     public void setSeconds(int seconds) {
         this.seconds = seconds;
     }

@@ -1,6 +1,5 @@
 package me.xflyiwnl.cities.command;
 
-import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.city.CitizensGUI;
 import me.xflyiwnl.cities.gui.city.CityOnlineGUI;
@@ -9,7 +8,6 @@ import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
-import me.xflyiwnl.cities.object.confirmation.Confirmation;
 import me.xflyiwnl.cities.object.invite.types.CityInvite;
 import me.xflyiwnl.cities.object.land.Land;
 import me.xflyiwnl.cities.object.land.LandType;
@@ -373,7 +371,8 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         City city = citizen.getCity();
 
-//        city.kickCitizen(citizen, receiver);
+        city.removeCitizen(receiver);
+
         city.save();
 
     }
@@ -392,7 +391,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         City city = citizen.getCity();
 
-        city.leaveCitizen(citizen);
+        city.removeCitizen(citizen);
         city.save();
 
     }
@@ -643,10 +642,10 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         city.setSpawnLand(land);
         land.setSpawnLand(true);
 
-        Confirmation confirmation = new Confirmation(
-                citizen,
-                Translator.of("confirmation.confirmation-messages.city-create"),
-                () -> {
+        CitiesAPI.getInstance().createConfirmation(
+                citizen, // игрок
+                Translator.of("confirmation.confirmation-messages.city-create"), // сообщение
+                () -> { // если игрок принял
                     land.create();
                     land.save();
 
@@ -661,7 +660,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                     citizen.sendMessage(Translator.of("city.city-created")
                             .replace("%city%", citizen.getCity().getName()));
                 },
-                () -> {}
+                () -> {} // если игрок отменил
         );
 
     }
@@ -685,7 +684,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        Confirmation confirmation = new Confirmation(
+        CitiesAPI.getInstance().createConfirmation(
                 citizen,
                 Translator.of("confirmation.confirmation-messages.city-remove"),
                 () -> {

@@ -1,15 +1,15 @@
 package me.xflyiwnl.cities.object;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.ask.Ask;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankHandler;
 import me.xflyiwnl.cities.object.bank.types.CitizenBank;
 import me.xflyiwnl.cities.object.city.City;
-import me.xflyiwnl.cities.object.confirmation.Confirmation;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.rank.Rank;
+import me.xflyiwnl.cities.object.tool.ask.Ask;
+import me.xflyiwnl.cities.object.tool.confirmation.Confirmation;
 import me.xflyiwnl.cities.util.TextUtil;
 import org.bukkit.Bukkit;
 import org.bukkit.Location;

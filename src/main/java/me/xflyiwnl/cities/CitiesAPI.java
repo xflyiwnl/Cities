@@ -2,6 +2,7 @@ package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
+import me.xflyiwnl.cities.object.Translator;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
@@ -11,6 +12,10 @@ import me.xflyiwnl.cities.object.tool.ToolAction;
 import me.xflyiwnl.cities.object.tool.ToolBar;
 import me.xflyiwnl.cities.object.tool.ToolBoard;
 import me.xflyiwnl.cities.object.tool.ToolRunnable;
+import me.xflyiwnl.cities.object.tool.ask.Ask;
+import me.xflyiwnl.cities.object.tool.ask.AskAction;
+import me.xflyiwnl.cities.object.tool.ask.AskMessage;
+import me.xflyiwnl.cities.object.tool.confirmation.Confirmation;
 import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -18,11 +23,9 @@ import org.bukkit.boss.BarColor;
 import org.bukkit.boss.BarStyle;
 import org.bukkit.entity.Player;
 
-import java.util.ArrayList;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class CitiesAPI {
 
@@ -231,6 +234,26 @@ public class CitiesAPI {
     public ToolRunnable createRunnable(ToolAction action, int time) {
         ToolRunnable runnable = new ToolRunnable(action, time);
         return runnable;
+    }
+
+    public Confirmation createConfirmation(Citizen citizen, String message, Runnable accept, Runnable decline) {
+        Confirmation confirmation = new Confirmation(citizen, message, accept, decline);
+        citizen.setConfirmation(confirmation);
+        confirmation.init();
+        return confirmation;
+    }
+
+    public Ask createAsk(Citizen citizen, String message, AskAction<AskMessage> onChat, Runnable onCancel) {
+        Ask ask = new Ask(citizen, message, onChat, onCancel);
+
+        if (citizen.hasAsk()) {
+            citizen.sendMessage(Translator.of("ask.has-ask"));
+            return null;
+        }
+
+        citizen.setAsk(ask);
+        ask.init();
+        return ask;
     }
 
     public static CitiesAPI getInstance() {

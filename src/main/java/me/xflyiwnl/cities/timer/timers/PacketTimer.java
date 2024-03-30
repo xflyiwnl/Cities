@@ -7,7 +7,6 @@ import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.timer.CitiesTimer;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
-import org.bukkit.scheduler.BukkitRunnable;
 
 public class PacketTimer extends CitiesTimer {
 

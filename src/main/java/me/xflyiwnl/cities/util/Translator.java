@@ -1,6 +1,7 @@
 package me.xflyiwnl.cities.util;
 
 import me.xflyiwnl.cities.Cities;
+
 import java.util.List;
 
 public class Translator {

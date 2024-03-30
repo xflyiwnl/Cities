@@ -2,18 +2,11 @@ package me.xflyiwnl.cities.timer.timers;
 
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.ask.Ask;
 import me.xflyiwnl.cities.object.city.City;
-import me.xflyiwnl.cities.object.confirmation.Confirmation;
 import me.xflyiwnl.cities.object.invite.Invite;
+import me.xflyiwnl.cities.object.tool.ask.Ask;
+import me.xflyiwnl.cities.object.tool.confirmation.Confirmation;
 import me.xflyiwnl.cities.timer.CitiesTimer;
-import org.bukkit.scheduler.BukkitRunnable;
-
-import java.lang.reflect.Array;
-import java.util.ArrayList;
-import java.util.Arrays;
-import java.util.List;
-import java.util.stream.Collectors;
 
 public class ActionTimer extends CitiesTimer {
 
