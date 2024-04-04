@@ -1,10 +1,12 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.CitiesAPI;
+import me.xflyiwnl.cities.gui.city.BankHistoryGUI;
 import me.xflyiwnl.cities.gui.city.CitizensGUI;
-import me.xflyiwnl.cities.gui.city.CityOnlineGUI;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
 import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.bank.Transaction;
+import me.xflyiwnl.cities.object.bank.TransactionType;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
@@ -285,7 +287,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         City city = citizen.getCity();
 
-        CitizensGUI.showGUI(citizen.getPlayer(), city, null);
+        CitizensGUI.openGUI(citizen.getPlayer(), citizen, city, null, false);
 
     }
 
@@ -311,7 +313,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         City city = citizen.getCity();
 
-        CityOnlineGUI.showGUI(citizen.getPlayer(), city);
+        CitizensGUI.openGUI(citizen.getPlayer(), citizen, city, null, true);
 
     }
 
@@ -469,7 +471,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            // todo open lands menu
+            BankHistoryGUI.openGUI(citizen.getPlayer(), citizen, citizen.getCity());
             return;
         }
 
@@ -488,7 +490,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         switch (args[1].toLowerCase()) {
-            case "deposit":
+            case "deposit" -> {
 
                 if (citizen.getBank().current() < amount) {
                     citizen.sendMessage(Translator.of("economy.not-enough-money.citizen"));
@@ -497,13 +499,18 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
                 citizen.getBank().pay(city.getBank(), amount);
 
+                Transaction transaction = new Transaction(
+                        citizen.getName(), amount, "Пополнил баланс", TransactionType.DEPOSIT
+                );
+                city.getBank().transactions().add(transaction);
+
                 city.broadcast(Translator.of("economy.deposit-format")
                         .replace("%name%", city.getName())
                         .replace("%player%", citizen.getName())
                         .replace("%amount%", String.valueOf(amount)), false);
 
-                break;
-            case "withdraw":
+            }
+            case "withdraw" -> {
 
                 if (city.getBank().current() < amount) {
                     citizen.sendMessage(Translator.of("economy.not-enough-money.city"));
@@ -512,15 +519,19 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
                 city.getBank().pay(citizen.getBank(), amount);
 
+                Transaction transaction = new Transaction(
+                        citizen.getName(), amount, "Снял баланс", TransactionType.WITHDRAW
+                );
+                city.getBank().transactions().add(transaction);
+
                 city.broadcast(Translator.of("economy.withdraw-format")
                         .replace("%name%", city.getName())
                         .replace("%player%", citizen.getName())
                         .replace("%amount%", String.valueOf(amount)), false);
-
-                break;
-            default:
+            }
+            default -> {
                 citizen.sendMessage(Translator.of("command.unknown-arg"));
-                break;
+            }
         }
 
         city.save();

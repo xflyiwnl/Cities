@@ -2,7 +2,11 @@ package me.xflyiwnl.cities.object.bank;
 
 import me.xflyiwnl.cities.object.Citizen;
 
+import java.util.List;
+
 public interface Bank {
+
+    List<Transaction> transactions();
     
     double current();
     void deposit(double amount);

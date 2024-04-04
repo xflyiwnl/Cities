@@ -10,7 +10,7 @@ import java.io.IOException;
 public class YAML {
 
     private File file;
-    private FileConfiguration yaml;
+    private YamlConfiguration yaml;
 
     public YAML(String name) {
         init(name);
@@ -38,7 +38,7 @@ public class YAML {
         return file;
     }
 
-    public FileConfiguration yaml() {
+    public YamlConfiguration yaml() {
         return yaml;
     }
 

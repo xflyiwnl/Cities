@@ -2,166 +2,130 @@ package me.xflyiwnl.cities.gui.city;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
+import me.xflyiwnl.cities.gui.BaseGUI;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.city.City;
-import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
-import me.xflyiwnl.colorfulgui.object.PaginatedGui;
+import me.xflyiwnl.cities.util.Translator;
+import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
-import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;
+import me.xflyiwnl.colorfulgui.object.event.click.ClickStaticItemEvent;
 import org.bukkit.Material;
-import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
-import org.bukkit.event.Event;
-import org.bukkit.event.inventory.InventoryClickEvent;
+import org.bukkit.inventory.ItemFlag;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class CitizensGUI extends ColorfulProvider<PaginatedGui> {
+public class CitizensGUI extends BaseGUI {
+
+    public static String path = "gui/city/citizens.yml";
 
     private Citizen citizen;
     private City city;
+
     private String search;
+    private boolean online = false;
 
-    private FileConfiguration yaml;
-
-    public CitizensGUI(Player player, City city, String search) {
-        super(player);
+    public CitizensGUI(Player player, Citizen citizen, City city, String search, boolean online) {
+        super(player, path);
+        this.citizen = citizen;
         this.city = city;
         this.search = search;
-
-        citizen = CitiesAPI.getInstance().getCitizen(player);
-        yaml = Cities.getInstance().getFileManager().get("gui/city/citizens.yml").yaml();
+        this.online = online;
     }
 
     @Override
     public void init() {
+        super.init();
 
-        items();
-        online();
-
-        show();
+        citizens();
     }
 
-    @Override
-    public void onClick(InventoryClickEvent event) {
-        event.setResult(Event.Result.DENY);
-    }
+    public void citizens() {
+        List<Citizen> citizens = city.getCitizens().values()
+                .stream().toList();
+        
+        if (citizens.isEmpty()) return;
 
-    public void items() {
+        int sum = 0;
+        for (Citizen guiCitizen : citizens) {
 
-        if (!yaml.isConfigurationSection("items")) {
-            return;
-        }
+            if (online && !guiCitizen.isOnline())
+                continue;
 
-        for (String section : yaml.getConfigurationSection("items").getKeys(false)) {
+            if (search != null && !guiCitizen.getName().startsWith(search))
+                continue;
 
-            String path = "items." + section + ".";
-
-            String name = yaml.getString(path + "display-name");
-            List<String> lore = yaml.getStringList(path + "lore");
-            int amount = yaml.getInt(path + "amount");
-            Material material = Material.valueOf(yaml.getString(path + "material").toUpperCase());
-            String mask = yaml.get(path + "mask") == null ? null : yaml.getString(path + "mask");
-            List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
-            List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
-
-            StaticItem guiItem = Cities.getInstance().getGuiApi()
-                    .staticItem()
-                    .material(material)
-                    .name(name)
-                    .lore(lore)
-                    .amount(amount)
-                    .action(event -> {
-                        if (actions != null) {
-                            for (String action : actions) {
-                                if (action.equalsIgnoreCase("[next]")) {
-                                    getGui().next();
-                                } else if (action.equalsIgnoreCase("[previous]")) {
-                                    getGui().previous();
-                                } else if (action.equalsIgnoreCase("[search]")) {
-                                    getPlayer().closeInventory();
-
-                                    CitiesAPI.getInstance().createAsk(
-                                            citizen,
-                                            Translator.of("ask.ask-messages.search-citizen"),
-                                            ask -> {
-                                                CitizensGUI.showGUI(getPlayer(), city, ask.getMessage());
-                                            },
-                                            () -> {
-                                                CitizensGUI.showGUI(getPlayer(), city, search);
-                                            }
-                                    );
-
-                                }
-                            }
-                        }
-                    })
-                    .build();
-            if (mask != null) {
-                getGui().getMask().addItem(mask, guiItem);
-            }
-            if (slots != null) {
-                slots.forEach(slot -> {
-                    getGui().setItem(slot, guiItem);
-                });
-            }
-
-        }
-
-    }
-
-    public void online() {
-
-        for (Citizen citizen : city.getCitizens().values()) {
-
-            if (search != null) {
-                if (!citizen.getName().startsWith(search)) {
-                    continue;
-                }
-            }
-
+            sum++;
             String path = "citizen-item.";
 
-            String name = yaml.getString(path + "display-name")
-                    .replace("%city%", city.getName())
-                    .replace("%name%", citizen.getName())
-                    .replace("%rank%", "Президент")
-                    .replace("%joined%", citizen.getJoinedCity());
+            String name = getYaml().getString(path + "name");
+            List<String> lore = getYaml().getStringList(path + "lore");
 
-            List<String> lore = yaml.getStringList(path + "lore");
-            lore.replaceAll(word -> word.replace("%city%", city.getName())
-                    .replace("%name%", citizen.getName())
-                    .replace("%rank%", "Президент")
-                    .replace("%joined%", citizen.getJoinedCity()));
-
-            StaticItem citizenItem = Cities.getInstance().getGuiApi()
-                    .staticItem()
+            StaticItem citizenItem = getApi().staticItem()
+                    .amount(sum)
                     .material(Material.PLAYER_HEAD)
-                    .name(name)
-                    .lore(lore)
-                    .skull(citizen.getPlayer())
+                    .skull(guiCitizen.getPlayer())
+                    .flags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS)
+                    .name(applyPlaceholders(name, guiCitizen))
+                    .lore(lore.stream().map(s -> applyPlaceholders(s, guiCitizen))
+                            .collect(Collectors.toList()))
                     .build();
+
             getGui().addItem(citizenItem);
 
         }
 
     }
 
-    public static void showGUI(Player player, City city, String searchOrNull) {
-        FileConfiguration yaml = Cities.getInstance().getFileManager().get("gui/city/citizens.yml").yaml();
-        DynamicGuiBuilder builder = Cities.getInstance().getGuiApi()
-                .paginated()
-                .holder(new CitizensGUI(player, city, searchOrNull))
-                .title(
-                        yaml.getString("gui.title")
-                                .replace("%city%", city.getName())
-                )
-                .rows(5);
-        if (yaml.get("gui.mask") != null) {
-            builder.mask(yaml.getStringList("gui.mask"));
-        }
-        builder.build();
+    public String applyPlaceholders(String text, Citizen guiCitizen) {
+        return text
+                .replace("%city%", city.getName())
+                .replace("%name%", guiCitizen.getName())
+                .replace("%rank%", "Делаем")
+                .replace("%joined%", guiCitizen.getJoinedCity());
+    }
+
+    @Override
+    public void handleAction(ClickStaticItemEvent event, List<String> actions) {
+        super.handleAction(event, actions);
+
+        actions.forEach(s -> {
+            if (s.equalsIgnoreCase("[search]")) {
+                handleSearch();
+            }
+        });
+
+    }
+
+    public void handleSearch() {
+
+        getPlayer().closeInventory();
+
+        CitiesAPI.getInstance().createAsk(
+                citizen,
+                Translator.of("ask.ask-messages.search-citizen"),
+                ask -> {
+                    CitizensGUI.openGUI(getPlayer(), citizen, city, ask.getMessage(), online);
+                },
+                () -> {
+                    CitizensGUI.openGUI(getPlayer(), citizen, city, null, online);
+                });
+
+    }
+
+    public static void openGUI(Player player, Citizen citizen, City city, String search, boolean online) {
+        YamlConfiguration yaml = Cities.getInstance().getFileManager().get(path).yaml();
+        ColorfulGUI api = Cities.getInstance().getGuiApi();
+
+        api.paginated()
+                .mask(yaml.getStringList("gui.mask"))
+                .title(yaml.getString("gui.title")
+                        .replace("%city%", city.getName()))
+                .rows(yaml.getInt("gui.rows"))
+                .holder(new CitizensGUI(player, citizen, city, search, online))
+                .build();
     }
 
 }

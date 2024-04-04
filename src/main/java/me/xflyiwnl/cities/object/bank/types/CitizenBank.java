@@ -4,16 +4,27 @@ import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankType;
+import me.xflyiwnl.cities.object.bank.Transaction;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.OfflinePlayer;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class CitizenBank implements Bank {
 
     private final Citizen citizen;
+    private final List<Transaction> transactions = new ArrayList<>();
+
     private Economy economy = Cities.getInstance().getEconomy();
 
     public CitizenBank(Citizen citizen) {
         this.citizen = citizen;
+    }
+
+    @Override
+    public List<Transaction> transactions() {
+        return transactions;
     }
 
     @Override

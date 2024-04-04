@@ -4,11 +4,16 @@ import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankType;
+import me.xflyiwnl.cities.object.bank.Transaction;
+
+import java.util.ArrayList;
+import java.util.List;
 
 public class GovernmentBank implements Bank {
 
     private final Government government;
     private double balance = 0;
+    private List<Transaction> transactions = new ArrayList<>();
 
     public GovernmentBank(Government government) {
         this.government = government;
@@ -17,6 +22,11 @@ public class GovernmentBank implements Bank {
     public GovernmentBank(Government government, double balance) {
         this.government = government;
         this.balance = balance;
+    }
+
+    @Override
+    public List<Transaction> transactions() {
+        return transactions;
     }
 
     @Override

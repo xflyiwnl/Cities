@@ -23,7 +23,8 @@ public class FileManager {
 
     public void createGuis() {
         List<String> guis = Arrays.asList(
-                "city/online-city.yml",
+                "city/citizens.yml",
+                "city/bank-history.yml",
                 "rank/rank.yml",
                 "rank/rank-edit.yml"
         );

@@ -1,0 +1,75 @@
+gui:
+  title: "История транзакций: %city%"
+  rows: 5
+  mask:
+    - "BBBBBBBBB"
+    - "BOOOOOOOB"
+    - "BOOOOOOOB"
+    - "BOOOOOOOB"
+    - "BBRPRNRBB"
+
+transaction-item:
+  deposit:
+    material: lime_dye
+    name: "&a%date%"
+    lore:
+      - " "
+      - " &fОт кого: &a%from%"
+      - " &fСумма: &a+%amount%"
+      - " "
+      - " &fПричина: &a%reason%"
+      - " "
+  withdraw:
+    material: red_dye
+    name: "&c%date%"
+    lore:
+      - " "
+      - " &fОт кого: &c%from%"
+      - " &fСумма: &c-%amount%"
+      - " "
+      - " &fПричина: &c%reason%"
+      - " "
+  set:
+    material: yellow_dye
+    name: "&e%date%"
+    lore:
+      - " "
+      - " &fОт кого: &e%from%"
+      - " &fСумма: &e%amount%"
+      - " "
+      - " &fПричина: &e%reason%"
+      - " "
+
+items:
+
+  border-item:
+    material: "black_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "B"
+
+  second-border-item:
+    material: "light_gray_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "R"
+
+  next-item:
+    material: arrow
+    amount: 1
+    name: "#46CAB1Следующая страница"
+    lore:
+      - " "
+    mask: "N"
+    action:
+      - "[next]"
+
+  prev-item:
+    material: arrow
+    amount: 1
+    name: "#46CAB1Предыдущая страница"
+    lore:
+      - " "
+    mask: "P"
+    action:
+      - "[previous]"
