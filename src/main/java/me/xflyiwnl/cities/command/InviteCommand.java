@@ -2,7 +2,7 @@ package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.util.Translator;
 import org.bukkit.command.Command;
 import org.bukkit.command.CommandExecutor;
 import org.bukkit.command.CommandSender;

@@ -5,7 +5,7 @@ import me.xflyiwnl.cities.gui.city.CitizensGUI;
 import me.xflyiwnl.cities.gui.city.CityOnlineGUI;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.invite.types.CityInvite;
@@ -541,6 +541,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         Chunk chunk = citizen.getPlayer().getChunk();
         WorldCord2 worldCord2 = new WorldCord2(chunk.getWorld(), chunk.getX(), chunk.getZ());
         Land claimed = CitiesAPI.getInstance().getLandByCord(worldCord2);
+        City city = citizen.getCity();
 
         switch (args[1].toLowerCase()) {
             case "claim":
@@ -552,7 +553,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 }
 
                 Land land = new Land(
-                        worldCord2, LandType.DEFAULT, citizen.getCity()
+                        worldCord2, LandType.DEFAULT, city
                 );
 
                 if (!land.connected()) {
@@ -562,6 +563,9 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
                 land.create();
                 land.save();
+
+                city.claimLand(land);
+                city.save();
 
                 citizen.sendMessage(Translator.of("land.land-claim")
                         .replace("%world%", land.getCord2().getWorld().getName())
@@ -578,7 +582,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
                 if (!claimed.getCity().equals(citizen.getCity())) {
                     citizen.sendMessage(Translator.of("land.already-claimed")
-                            .replace("city", claimed.getCity().getName()));
+                            .replace("%city%", claimed.getCity().getName()));
                     return;
                 }
 
@@ -588,9 +592,12 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 }
 
                 citizen.sendMessage(Translator.of("land.land-unclaim")
-                        .replace("world", claimed.getCord2().getWorld().getName())
-                        .replace("x", String.valueOf(claimed.getCord2().getX()))
-                        .replace("z", String.valueOf(claimed.getCord2().getZ())));
+                        .replace("%world%", claimed.getCord2().getWorld().getName())
+                        .replace("%x%", String.valueOf(claimed.getCord2().getX()))
+                        .replace("%z%", String.valueOf(claimed.getCord2().getZ())));
+
+                city.unclaimLand(claimed);
+                city.save();
 
                 claimed.remove();
 
@@ -653,6 +660,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                     citizen.save();
 
                     city.addCitizen(citizen);
+                    city.claimLand(land);
 
                     city.create();
                     city.save();

@@ -15,7 +15,7 @@ public class ActionTimer extends CitiesTimer {
         citizens();
     }
 
-    private CitiesAPI api = CitiesAPI.getInstance();
+    private final CitiesAPI api = CitiesAPI.getInstance();
 
     public void citizens() {
         for (Citizen citizen : api.getCitizens().values()) {

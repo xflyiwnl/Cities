@@ -2,7 +2,7 @@ package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
-import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
@@ -98,7 +98,7 @@ public class CitiesAPI {
     }
 
     public City getCityByLocation(Location location) {
-        return getCityByCord(new WorldCord2(location));
+        return getCityByChunk(location.getChunk());
     }
 
     /**

@@ -133,7 +133,6 @@ public class DynmapDrawer {
             nodevals.addLast(reg);
         }
 
-
         while(nodevals != null) {
             LinkedList<Land> ournodes = null;
             LinkedList<Land> newlist = null;

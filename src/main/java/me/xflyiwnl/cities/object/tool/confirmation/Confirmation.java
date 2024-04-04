@@ -1,7 +1,7 @@
 package me.xflyiwnl.cities.object.tool.confirmation;
 
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.tool.Suggestable;
 import me.xflyiwnl.cities.object.tool.Timeable;
 import me.xflyiwnl.cities.object.tool.Tool;

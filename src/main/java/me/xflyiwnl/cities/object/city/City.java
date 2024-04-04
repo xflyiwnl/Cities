@@ -8,6 +8,7 @@ import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.land.Land;
+import me.xflyiwnl.cities.util.Translator;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 

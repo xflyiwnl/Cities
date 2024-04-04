@@ -1,7 +1,7 @@
 package me.xflyiwnl.cities.object.invite.types;
 
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.object.Translator;
+import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.invite.InviteType;

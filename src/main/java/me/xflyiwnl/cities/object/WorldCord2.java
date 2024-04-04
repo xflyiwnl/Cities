@@ -30,7 +30,16 @@ public class WorldCord2 {
     }
 
     public Chunk getChunk() {
-        return world.getChunkAt((int) x, (int) z);
+        return new Location(world, x, 0, z).getChunk();
+    }
+
+    @Override
+    public String toString() {
+        return "WorldCord2{" +
+                "world=" + world +
+                ", x=" + x +
+                ", z=" + z +
+                '}';
     }
 
     @Override
@@ -44,11 +53,6 @@ public class WorldCord2 {
     @Override
     public int hashCode() {
         return Objects.hash(world, x, z);
-    }
-
-    @Override
-    public String toString() {
-        return world.getName() + "," + x + "," + z;
     }
 
     public WorldCord2 clone() {
