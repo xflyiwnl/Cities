@@ -35,11 +35,7 @@ public class WorldCord2 {
 
     @Override
     public String toString() {
-        return "WorldCord2{" +
-                "world=" + world +
-                ", x=" + x +
-                ", z=" + z +
-                '}';
+        return String.format("WorldCord2{world=%s, x=%s, z=%s}", world, x, z);
     }
 
     @Override
