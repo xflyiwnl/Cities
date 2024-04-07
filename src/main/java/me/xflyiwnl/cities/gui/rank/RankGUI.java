@@ -2,179 +2,72 @@ package me.xflyiwnl.cities.gui.rank;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
+import me.xflyiwnl.cities.gui.BaseGUI;
+import me.xflyiwnl.cities.gui.city.CitizensGUI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.rank.Rank;
+import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import me.xflyiwnl.colorfulgui.builder.inventory.DynamicGuiBuilder;
 import me.xflyiwnl.colorfulgui.object.PaginatedGui;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
+import me.xflyiwnl.colorfulgui.object.action.click.ClickStaticAction;
+import me.xflyiwnl.colorfulgui.object.event.click.ClickStaticItemEvent;
 import me.xflyiwnl.colorfulgui.provider.ColorfulProvider;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.FileConfiguration;
+import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.event.Event;
 import org.bukkit.event.inventory.InventoryClickEvent;
 
 import java.util.List;
+import java.util.stream.Collectors;
 
-public class RankGUI extends ColorfulProvider<PaginatedGui> {
+public class RankGUI extends BaseGUI {
 
-    private FileConfiguration yaml;
-    private Government government;
-    private Citizen citizen;
+    public static String path = "gui/rank/rank.yml";
+
+    private final Government government;
+    private final Citizen citizen;
 
     public RankGUI(Player player, Government government) {
-        super(player);
+        super(player, path);
         this.government = government;
 
         citizen = CitiesAPI.getInstance().getCitizen(player);
-        yaml = Cities.getInstance().getFileManager().get("gui/rank/rank.yml").yaml();
     }
 
     @Override
     public void init() {
+        super.init();
 
-        items();
         ranks();
-
-        show();
-
-    }
-
-    public void items() {
-
-        if (!yaml.isConfigurationSection("items")) {
-            return;
-        }
-
-        for (String section : yaml.getConfigurationSection("items").getKeys(false)) {
-
-            String path = "items." + section + ".";
-
-            String name = yaml.getString(path + "display-name");
-            List<String> lore = yaml.getStringList(path + "lore");
-            int amount = yaml.getInt(path + "amount");
-            Material material = Material.valueOf(yaml.getString(path + "material").toUpperCase());
-            String mask = yaml.get(path + "mask") == null ? null : yaml.getString(path + "mask");
-            List<Integer> slots = yaml.get(path + "slots") == null ? null : yaml.getIntegerList(path + "slots");
-            List<String> actions = yaml.get(path + "action") == null ? null : yaml.getStringList(path + "action");
-
-            StaticItem guiItem = Cities.getInstance().getGuiApi()
-                    .staticItem()
-                    .material(material)
-                    .name(name)
-                    .lore(lore)
-                    .amount(amount)
-                    .action(event -> {
-                        if (actions != null) {
-                            for (String action : actions) {
-                                if (action.equalsIgnoreCase("[next]")) {
-                                    getGui().next();
-                                } else if (action.equalsIgnoreCase("[previous]")) {
-                                    getGui().previous();
-                                } else if (action.equalsIgnoreCase("[create]")) {
-                                    getPlayer().closeInventory();
-
-                                    CitiesAPI.getInstance().createAsk(
-                                            citizen,
-                                            Translator.of("ask.ask-messages.rank-create"),
-                                            ask -> {
-                                                String title = ask.getMessage();
-
-                                                String[] split = ask.getMessage().split(" ");
-                                                if (split.length > 1) {
-                                                    citizen.sendMessage(Translator.of("rank.title-format"));
-                                                    return;
-                                                }
-
-                                                if (CitiesAPI.getInstance().getRank(government, title) != null) {
-                                                    citizen.sendMessage(Translator.of("rank.rank-exists"));
-                                                    return;
-                                                }
-
-                                                Rank rank = new Rank(
-                                                        government, title
-                                                );
-                                                rank.create();
-                                                rank.save();
-
-                                                citizen.sendMessage(Translator.of("rank.create-rank")
-                                                        .replace("%rank%", rank.getTitle()));
-                                            },
-                                            () -> {}
-                                    );
-
-                                }
-                            }
-                        }
-                    })
-                    .build();
-            if (mask != null) {
-                getGui().getMask().addItem(mask, guiItem);
-            }
-            if (slots != null) {
-                slots.forEach(slot -> {
-                    getGui().setItem(slot, guiItem);
-                });
-            }
-
-        }
-
     }
 
     public void ranks() {
 
-        for (Rank rank : CitiesAPI.getInstance().getRanksByGovernment(government).values()) {
-
+        int sum = 0;
+        for (Rank rank : government.getRanks().values()) {
             String path = "rank-item.";
+            sum++;
 
-            String name = yaml.getString(path + "display-name")
-                    .replace("%name%", rank.getTitle());
+            String name = getYaml().getString(path + "name");
 
-            List<String> lore = yaml.getStringList(path + "lore");
-            lore.replaceAll(word -> word.replace("%name%", rank.getTitle()));
+            List<String> lore = getYaml().getStringList(path + "lore");
 
-            StaticItem rankItem = Cities.getInstance().getGuiApi()
-                    .staticItem()
+            StaticItem rankItem = getApi().staticItem()
                     .material(Material.RED_BANNER)
-                    .name(name)
-                    .lore(lore)
+                    .amount(sum)
+                    .name(applyPlaceholders(name, rank))
+                    .lore(lore.stream()
+                            .map(s -> applyPlaceholders(s, rank))
+                            .collect(Collectors.toList()))
                     .action(event -> {
-
-                        if (event.getClick().isRightClick()) {
-
-                            citizen.sendMessage(Translator.of("rank.rank-remove")
-                                    .replace("%rank%", rank.getTitle()));
-
-                            if (government instanceof City) {
-                                for (Citizen cit : ((City) government).getCitizens().values()) {
-                                    if (cit.getRank() != null && cit.getRank().equals(rank)) {
-                                        cit.setRank(null);
-                                    }
-                                }
-                            }
-
-                            if (government instanceof Country) {
-                                for (City city : ((Country) government).getCities().values()) {
-                                    for (Citizen cit : city.getCitizens().values()) {
-                                        if (cit.getRank() != null && cit.getRank().equals(rank)) {
-                                            cit.setRank(null);
-                                        }
-                                    }
-                                }
-                            }
-
-                            rank.remove();
-
-                            RankGUI.showGUI(getPlayer(), government);
-
-                        } else if (event.getClick().isLeftClick()) {
-                            RankEditorGUI.showGUI(getPlayer(), rank, government);
-                        }
-
+                        handleClick(event, rank);
                     })
                     .build();
             getGui().addItem(rankItem);
@@ -183,25 +76,106 @@ public class RankGUI extends ColorfulProvider<PaginatedGui> {
 
     }
 
-    @Override
-    public void onClick(InventoryClickEvent event) {
-        event.setResult(Event.Result.DENY);
+    public void handleClick(ClickStaticItemEvent event, Rank rank) {
+        if (event.getClick().isRightClick()) {
+
+            citizen.sendMessage(Translator.of("rank.rank-remove")
+                    .replace("%rank%", rank.getTitle()));
+
+            if (government instanceof City city) {
+                for (Citizen cit : city.getCitizens().values()) {
+                    if (cit.getRank() != null && cit.getRank().equals(rank)) {
+                        cit.setRank(null);
+                    }
+                }
+            }
+
+            if (government instanceof Country country) {
+                for (City city : country.getCities().values()) {
+                    for (Citizen cit : city.getCitizens().values()) {
+                        if (cit.getRank() != null && cit.getRank().equals(rank)) {
+                            cit.setRank(null);
+                        }
+                    }
+                }
+            }
+
+            rank.remove();
+
+            RankGUI.openGUI(getPlayer(), government);
+        } else if (event.getClick().isLeftClick()) {
+            RankEditorGUI.openGUI(getPlayer(), rank, government);
+        }
     }
 
-    public static void showGUI(Player player, Government government) {
-        FileConfiguration yaml = Cities.getInstance().getFileManager().get("gui/rank/rank.yml").yaml();
-        DynamicGuiBuilder builder = Cities.getInstance().getGuiApi()
-                .paginated()
-                .holder(new RankGUI(player, government))
+    public String applyPlaceholders(String text, Rank rank) {
+        return text.replace("%name%", rank.getTitle());
+    }
+
+    @Override
+    public void handleAction(ClickStaticItemEvent event, List<String> actions) {
+        super.handleAction(event, actions);
+
+        for (String action : actions) {
+            if (action.equalsIgnoreCase("[next]")) {
+                getGui().next();
+            } else if (action.equalsIgnoreCase("[previous]")) {
+                getGui().previous();
+            } else if (action.equalsIgnoreCase("[create]")) {
+                handleCreate();
+            }
+        }
+
+    }
+
+    public void handleCreate() {
+        getPlayer().closeInventory();
+
+        CitiesAPI.getInstance().createAsk(
+                citizen,
+                Translator.of("ask.ask-messages.rank-create"),
+                ask -> {
+                    String title = ask.getMessage();
+
+                    String[] split = ask.getMessage().split(" ");
+                    if (split.length > 1) {
+                        citizen.sendMessage(Translator.of("rank.title-format"));
+                        return;
+                    }
+
+                    if (government.getRankByName(title) != null) {
+                        citizen.sendMessage(Translator.of("rank.rank-exists"));
+                        return;
+                    }
+
+                    Rank rank = new Rank(
+                            government, title
+                    );
+                    rank.create();
+                    rank.save();
+
+                    citizen.sendMessage(Translator.of("rank.create-rank")
+                            .replace("%rank%", rank.getTitle()));
+
+                    RankGUI.openGUI(getPlayer(), government);
+                },
+                () -> {}
+        );
+    }
+
+    public static void openGUI(Player player, Government government) {
+        YamlConfiguration yaml = Cities.getInstance().getFileManager().get(path).yaml();
+        ColorfulGUI api = Cities.getInstance().getGuiApi();
+
+        api.paginated()
+                .mask(yaml.getStringList("gui.mask"))
                 .title(
                         yaml.getString("gui.title")
                                 .replace("%government%", government.getName())
                 )
-                .rows(5);
-        if (yaml.get("gui.mask") != null) {
-            builder.mask(yaml.getStringList("gui.mask"));
-        }
-        builder.build();
+                .rows(yaml.getInt("gui.rows"))
+                .holder(new RankGUI(player, government))
+                .build();
     }
 
 }

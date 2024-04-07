@@ -300,7 +300,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         City city = citizen.getCity();
 
-        RankGUI.showGUI(citizen.getPlayer(), city);
+        RankGUI.openGUI(citizen.getPlayer(), city);
 
     }
 
@@ -375,6 +375,10 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         city.removeCitizen(receiver);
 
+        city.broadcast(Translator.of("city.citizen-kicked")
+                .replace("%citizen%", receiver.getName())
+                .replace("%sender%", citizen.getName()), true);
+
         city.save();
 
     }
@@ -393,8 +397,12 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         City city = citizen.getCity();
 
+        city.broadcast(Translator.of("city.citizen-leaved")
+                .replace("%citizen%", citizen.getName()), true);
+
         city.removeCitizen(citizen);
         city.save();
+
 
     }
 
@@ -433,8 +441,10 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             return;
         }
 
-        CityInvite invite = new CityInvite(
-                citizen.getCity(),
+        City city = citizen.getCity();
+
+        CitiesAPI.getInstance().createCityInvite(
+                city,
                 citizen, receiver
         );
 

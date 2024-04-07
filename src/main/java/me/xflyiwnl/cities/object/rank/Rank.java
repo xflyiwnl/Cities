@@ -36,11 +36,8 @@ public class Rank implements Identifyable, Saveable {
 
     @Override
     public void create() {
-        Map<UUID, Rank> ranks = CitiesAPI.getInstance().getRanksByGovernment(government);
-        if (ranks == null)
-            ranks = new HashMap<>();
-        ranks.put(getUniqueId(), this);
-        Cities.getInstance().getRanks().put(government.getUniqueId(), ranks);
+        Cities.getInstance().getRanks().put(getUniqueId(), this);
+        government.getRanks().put(getUniqueId(), this);
     }
 
     @Override
@@ -49,11 +46,8 @@ public class Rank implements Identifyable, Saveable {
 
     @Override
     public void remove() {
-        Map<UUID, Rank> ranks = CitiesAPI.getInstance().getRanksByGovernment(government);
-        if (ranks == null)
-            ranks = new HashMap<>();
-        ranks.remove(getUniqueId());
-        Cities.getInstance().getRanks().put(government.getUniqueId(), ranks);
+        Cities.getInstance().getRanks().remove(getUniqueId());
+        government.getRanks().remove(getUniqueId());
     }
 
     public boolean hasPermission(PermissionNode node) {

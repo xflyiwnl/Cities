@@ -6,10 +6,10 @@ gui:
     - "BOOOOOOOB"
     - "BOOOOOOOB"
     - "BOOOOOOOB"
-    - "LBBPBNBBB"
+    - "BBRPLNRBB"
 
 node-item:
-  display-name: "#46CAB1%name%"
+  name: "#46CAB1%name%"
   lore:
     - " &7%lore%"
     - " "
@@ -22,32 +22,41 @@ items:
   border-item:
     material: black_stained_glass_pane
     amount: 1
-    display-name: " "
+    name: " "
     lore:
       - " "
     mask: "B"
-  leave-item:
-    material: arrow
+
+  second-border-item:
+    material: "light_gray_stained_glass_pane"
     amount: 1
-    display-name: "#46CAB1Список рангов"
+    name: " "
+    mask: "R"
+
+  leave-item:
+    material: barrier
+    amount: 1
+    name: "#46CAB1Список рангов"
     lore:
       - " "
     mask: "L"
     action:
       - "[leave]"
+
   next-item:
-    material: lime_stained_glass_pane
+    material: arrow
     amount: 1
-    display-name: "#46CAB1Следующая страница"
+    name: "#46CAB1Следующая страница"
     lore:
       - " "
     mask: "N"
     action:
       - "[next]"
+
   prev-item:
-    material: red_stained_glass_pane
+    material: arrow
     amount: 1
-    display-name: "#46CAB1Предыдущая страница"
+    name: "#46CAB1Предыдущая страница"
     lore:
       - " "
     mask: "P"

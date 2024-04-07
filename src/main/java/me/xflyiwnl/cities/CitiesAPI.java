@@ -2,6 +2,8 @@ package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
+import me.xflyiwnl.cities.object.invite.Invite;
+import me.xflyiwnl.cities.object.invite.types.CityInvite;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
@@ -145,50 +147,12 @@ public class CitiesAPI {
      *      Rank methods
      **/
 
-    public Map<UUID, Map<UUID, Rank>> getRanks() {
+    public Map<UUID, Rank> getRanks() {
         return cities.getRanks();
     }
 
-    public Map<UUID, Rank> getRanksById(UUID uniqueId) {
-        return getRanks().get(uniqueId);
-    }
-
-    public Map<UUID, Rank> getRanksByGovernment(Government government) {
-        return getRanksById(government.getUniqueId());
-    }
-
-    public Rank getRank(UUID governmentId, UUID rankId) {
-        Map<UUID, Rank> ranks = getRanksById(governmentId);
-        return ranks == null ? null : ranks.get(rankId);
-    }
-
-    @Deprecated
-    public Rank getRank(UUID governmentId, String title) {
-        Map<UUID, Rank> ranks = getRanksById(governmentId);
-        return ranks == null ? null : ranks.values().stream()
-                .filter(rank -> rank.getTitle().equalsIgnoreCase(title))
-                .findFirst().orElse(null);
-    }
-
-    public Rank getRank(Government government, UUID uniqueId) {
-        return getRank(government.getUniqueId(), uniqueId);
-    }
-
-
-    public Rank getRank(Government government, String title) {
-        return getRank(government.getUniqueId(), title);
-    }
-
-    @Deprecated
     public Rank getRank(UUID uniqueId) {
-        for (Map<UUID, Rank> ranks : getRanks().values()) {
-            for (Rank rank : ranks.values()) {
-                if (rank.getUniqueId().equals(uniqueId)){
-                    return rank;
-                }
-            }
-        }
-        return null;
+        return getRanks().get(uniqueId);
     }
 
     /**
@@ -254,6 +218,17 @@ public class CitiesAPI {
         citizen.setAsk(ask);
         ask.init();
         return ask;
+    }
+
+    /**
+     *      Invites
+     **/
+
+    public CityInvite createCityInvite(City city, Citizen sender, Citizen receiver) {
+        CityInvite invite = new CityInvite(city, sender, receiver);
+        receiver.setInvite(invite);
+        invite.init();
+        return invite;
     }
 
     public static CitiesAPI getInstance() {

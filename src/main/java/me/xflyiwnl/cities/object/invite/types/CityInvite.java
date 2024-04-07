@@ -11,9 +11,9 @@ import net.md_5.bungee.api.chat.TextComponent;
 
 public class CityInvite implements Invite {
 
-    private City city;
-    private Citizen sender;
-    private Citizen receiver;
+    private final City city;
+    private final Citizen sender;
+    private final Citizen receiver;
 
     private int seconds = 15;
 
@@ -21,14 +21,14 @@ public class CityInvite implements Invite {
         this.city = city;
         this.sender = sender;
         this.receiver = receiver;
-
-        receiver.setInvite(this);
-
-        init();
     }
 
     @Override
     public void init() {
+
+        city.broadcast(Translator.of("city.citizen-invited")
+                .replace("%citizen%", receiver.getName())
+                .replace("%sender%", sender.getName()), true);
 
         sender.sendMessage(Translator.of("invite.invite-send")
                 .replace("%city%", city.getName())
@@ -53,6 +53,9 @@ public class CityInvite implements Invite {
 
     @Override
     public void accept() {
+
+        city.broadcast(Translator.of("city.citizen-added")
+                .replace("%citizen%", receiver.getName()), true);
 
         receiver.sendMessage(Translator.of("invite.on-accept-receiver"));
 

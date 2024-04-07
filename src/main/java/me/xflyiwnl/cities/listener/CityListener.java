@@ -1,4 +1,8 @@
 package me.xflyiwnl.cities.listener;
 
-public class CityListener {
+import org.bukkit.event.EventHandler;
+import org.bukkit.event.Listener;
+
+public class CityListener implements Listener {
+
 }

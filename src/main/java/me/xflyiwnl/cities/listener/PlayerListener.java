@@ -2,6 +2,7 @@ package me.xflyiwnl.cities.listener;
 
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.tool.ask.AskMessage;
 import org.bukkit.entity.Player;
 import org.bukkit.event.EventHandler;
@@ -22,6 +23,12 @@ public class PlayerListener implements Listener {
             citizen = new Citizen(player.getUniqueId());
             citizen.create();
             citizen.save();
+        }
+
+        if (citizen.hasCity()) {
+            City city = citizen.getCity();
+
+            city.sendMessage(city.getBoard(), citizen);
         }
 
     }

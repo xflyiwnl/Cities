@@ -43,7 +43,7 @@ public final class Cities extends JavaPlugin {
     private final Map<UUID, City> cities = new HashMap<>();
     private final Map<UUID, Citizen> citizens = new HashMap<>();
     private final Map<WorldCord2, Land> lands = new HashMap<>();
-    private final Map<UUID, Map<UUID, Rank>> ranks = new HashMap<>();
+    private final Map<UUID, Rank> ranks = new HashMap<>();
 
     private final List<ToolBoard> boards = new ArrayList<>();
     private final List<ToolBar> bars = new ArrayList<>();
@@ -174,7 +174,7 @@ public final class Cities extends JavaPlugin {
         return lands;
     }
 
-    public Map<UUID, Map<UUID, Rank>> getRanks() {
+    public Map<UUID, Rank> getRanks() {
         return ranks;
     }
 

@@ -96,13 +96,21 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
             if (!citizen.isOnline()) continue;
 
             if (format) {
-                citizen.sendMessage(Translator.of("other.broadcast-format")
+                citizen.sendMessage(Translator.of("city.broadcast-format")
                         .replace("%city%", getName())
                         .replace("%message%", message));
             } else {
                 citizen.sendMessage(message);
             }
         }
+    }
+
+    public void sendMessage(String message, Citizen citizen) {
+        if (!citizen.isOnline()) return;
+
+        citizen.sendMessage(Translator.of("city.board-format")
+                .replace("%city%", getName())
+                .replace("%message%", message));
     }
 
     public Map<WorldCord2, Land> getLands() {

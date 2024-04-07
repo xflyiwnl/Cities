@@ -2,9 +2,6 @@ language:
 
 #   "#46CAB1&lCities &7⇒ #FFF4D6"
 
-  other:
-    broadcast-format: "#FCD05C[%city%] #FFF4D6%message%"
-
   command:
     not-enough-args: "#FCD05C&lCities &7⇒ #FFF4D6Недостаточно аргументов для полноценной команды"
     unknown-arg: "#FCD05C&lCities &7⇒ #FFF4D6Неизвестный аргумент команды"
@@ -89,12 +86,15 @@ language:
     city-created: "#FCD05C&lCities &7⇒ #FFF4D6Город #F1B823%city% #FFF4D6был создан"
     city-removed: "#FCD05C&lCities &7⇒ #FFF4D6Город #F1B823%city% #FFF4D6был удалён"
 
-    citizen-added: "#FCD05C[%city%] %citizen% #FFF4D6присоединился к городу"
-    citizen-leaved: "#FCD05C[%city%] %citizen% #FFF4D6покинул город"
-    citizen-kicked: "#FCD05C[%city%] %citizen1% #FFF4D6был кикнут #F1B823%citizen2%"
+    citizen-invited: "#FCD05C%citizen% #FFF4D6был приглашён игроком #FCD05C%sender%"
+    citizen-added: "#FCD05C%citizen% #FFF4D6присоединился к городу"
+    citizen-leaved: "#FCD05C%citizen% #FFF4D6покинул город"
+    citizen-kicked: "#FCD05C%citizen% #FFF4D6был кикнут игроком #F1B823%sender%"
 
     mayor-leave-city: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете выйти из города, когда вы мэр"
     far-spawn: "#FCD05C&lCities &7⇒ #FFF4D6Спавн можно ставить только на своих территориях"
+    broadcast-format: "#FCD05C[%city%] #FFF4D6%message%"
+    board-format: "#FCD05C[%city%] #FFF4D6%message%"
 
     set:
       board: "#FCD05C&lCities &7⇒ #FFF4D6Доска изменена нa: #F1B823%board%"
