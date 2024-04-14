@@ -71,7 +71,6 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         Player player = (Player) sender;
-        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
         if (args.length == 1) {
             return cityTabCompletes;
@@ -674,6 +673,16 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 citizen, // игрок
                 Translator.of("confirmation.confirmation-messages.city-create"), // сообщение
                 () -> { // если игрок принял
+
+                    double price = Settinger.ofDouble("economy.city-price");
+
+                    if (citizen.getBank().current() < price) {
+                        citizen.sendMessage(Translator.of("economy.not-enough-money.citizen"));
+                        return;
+                    }
+
+                    citizen.getBank().withdraw(price);
+
                     land.create();
                     land.save();
 

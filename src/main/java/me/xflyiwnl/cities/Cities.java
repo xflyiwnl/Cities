@@ -1,9 +1,7 @@
 package me.xflyiwnl.cities;
 
-import me.xflyiwnl.cities.command.CityCommand;
-import me.xflyiwnl.cities.command.ConfirmationCommand;
-import me.xflyiwnl.cities.command.CountryCommand;
-import me.xflyiwnl.cities.command.InviteCommand;
+import me.xflyiwnl.cities.command.*;
+import me.xflyiwnl.cities.config.YAML;
 import me.xflyiwnl.cities.dynmap.DynmapDrawer;
 import me.xflyiwnl.cities.listener.PlayerListener;
 import me.xflyiwnl.cities.object.Citizen;
@@ -14,10 +12,9 @@ import me.xflyiwnl.cities.object.land.Land;
 import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.object.tool.ToolBar;
 import me.xflyiwnl.cities.object.tool.ToolBoard;
-import me.xflyiwnl.cities.timer.timers.ActionTimer;
-import me.xflyiwnl.cities.timer.timers.CityTimer;
-import me.xflyiwnl.cities.timer.timers.DynmapTimer;
-import me.xflyiwnl.cities.timer.timers.PacketTimer;
+import me.xflyiwnl.cities.task.timers.*;
+import me.xflyiwnl.cities.util.Settinger;
+import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import net.milkbowl.vault.economy.Economy;
 import org.bukkit.Bukkit;
@@ -26,6 +23,7 @@ import org.bukkit.plugin.PluginManager;
 import org.bukkit.plugin.RegisteredServiceProvider;
 import org.bukkit.plugin.java.JavaPlugin;
 
+import java.time.LocalDateTime;
 import java.util.*;
 
 public final class Cities extends JavaPlugin {
@@ -38,6 +36,8 @@ public final class Cities extends JavaPlugin {
     private final CitiesAPI api = new CitiesAPI(this);
     private final FileManager fileManager = new FileManager();
     private final String channelName = "cities:city";
+
+    private LocalDateTime lastDay = LocalDateTime.now();
 
     private final Map<UUID, Country> countries = new HashMap<>();
     private final Map<UUID, City> cities = new HashMap<>();
@@ -62,6 +62,7 @@ public final class Cities extends JavaPlugin {
         }
 
         checkOnlinePlayers();
+        loadStore();
 
         registerCommands();
         registerListeners();
@@ -77,6 +78,45 @@ public final class Cities extends JavaPlugin {
         if (dynmapDrawer != null) {
             dynmapDrawer.disable();
         }
+        saveStore();
+    }
+
+    public void loadStore() {
+        YAML store = fileManager.getStore();
+
+        String path = "lastDay";
+        if (store.yaml().contains(path))
+            lastDay = LocalDateTime.parse(store.yaml().getString(path));
+
+    }
+
+    public void saveStore() {
+        YAML store = fileManager.getStore();
+
+        store.yaml().set("lastDay", lastDay.toString());
+
+        store.save();
+    }
+
+    public void newDay() {
+        lastDay = LocalDateTime.now();
+
+        cities.values().forEach(city -> {
+
+        });
+
+        Bukkit.getOnlinePlayers().forEach(player -> {
+            player.sendMessage(Translator.of("time.new-day"));
+        });
+    }
+
+    public int[] dayTime() {
+        String[] formatted = Settinger.ofString("time.new-day").split(":");
+        int[] unformulated = new int[formatted.length];
+        for (int i = 0; i < formatted.length; i++) {
+            unformulated[i] = Integer.parseInt(formatted[i]);
+        }
+        return unformulated;
     }
 
     public void checkOnlinePlayers() {
@@ -92,19 +132,25 @@ public final class Cities extends JavaPlugin {
     }
 
     public void startTimers() {
-        ActionTimer actionTimer = new ActionTimer();
-        actionTimer.startTimer(1);
 
-        CityTimer cityTimer = new CityTimer();
-        cityTimer.startTimer(1);
+        TimeTask timeTask = new TimeTask();
+        timeTask.startTask(10);
 
-        PacketTimer packetTimer = new PacketTimer();
-        packetTimer.startTimer(1);
+        ActionTask actionTask = new ActionTask();
+        actionTask.startTask(1);
+
+        CityTask cityTimer = new CityTask();
+        cityTimer.startTask(1);
+
+        PacketTask packetTimer = new PacketTask();
+        packetTimer.startTask(1);
 
         if (dynmapDrawer != null) {
-            DynmapTimer dynmapTimer = new DynmapTimer();
-            dynmapTimer.startTimer(1);
+            DynmapTask dynmapTimer = new DynmapTask();
+            dynmapTimer.startTask(1);
         }
+
+
     }
 
     public void registerChannels() {
@@ -129,6 +175,11 @@ public final class Cities extends JavaPlugin {
     }
 
     public void registerCommands() {
+
+        CitiesCommand citiesCommand = new CitiesCommand();
+        getCommand("cities").setExecutor(citiesCommand);
+        getCommand("cities").setTabCompleter(citiesCommand);
+
         CityCommand cityCommand = new CityCommand();
         getCommand("city").setExecutor(cityCommand);
         getCommand("city").setTabCompleter(cityCommand);
@@ -214,4 +265,7 @@ public final class Cities extends JavaPlugin {
         return channelName;
     }
 
+    public LocalDateTime getLastDay() {
+        return lastDay;
+    }
 }

@@ -1,14 +1,14 @@
-package me.xflyiwnl.cities.timer.timers;
+package me.xflyiwnl.cities.task.timers;
 
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.buffer.CitiesBuffer;
 import me.xflyiwnl.cities.object.Citizen;
-import me.xflyiwnl.cities.timer.CitiesTimer;
+import me.xflyiwnl.cities.task.CitiesTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
-public class PacketTimer extends CitiesTimer {
+public class PacketTask extends CitiesTask {
 
     @Override
     public void run() {

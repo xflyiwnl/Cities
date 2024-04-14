@@ -1,9 +1,9 @@
-package me.xflyiwnl.cities.timer.timers;
+package me.xflyiwnl.cities.task.timers;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.timer.CitiesTimer;
+import me.xflyiwnl.cities.task.CitiesTask;
 
-public class DynmapTimer extends CitiesTimer {
+public class DynmapTask extends CitiesTask {
 
     @Override
     public void run() {

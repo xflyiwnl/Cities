@@ -58,7 +58,7 @@ public class Confirmation implements Tool, Timeable, Suggestable {
 
     @Override
     public void decline() {
-        citizen.sendMessage(Translator.of("confirmation.on-decline/"));
+        citizen.sendMessage(Translator.of("confirmation.on-decline"));
         decline.run();
         remove();
     }

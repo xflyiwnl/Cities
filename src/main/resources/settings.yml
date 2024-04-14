@@ -1,12 +1,24 @@
 settings:
 
-  mysql:
-    host: "localhost"
-    user: "root"
-    password: "1234"
-    port: 3306
-    database: "database"
-
   board:
     default: "Я люблю Cities"
+
+  time:
+    #       hour:minute
+    new-day: "24:00"
+
+  economy:
+    city-price: 50
+    country-price: 100
+
+  upkeep:
+
+    city:
+      base: 10
+      per-land: 1
+
+    country:
+      base: 25
+      per-city: 2
+
 

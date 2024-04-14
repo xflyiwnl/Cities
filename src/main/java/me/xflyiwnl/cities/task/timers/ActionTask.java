@@ -1,4 +1,4 @@
-package me.xflyiwnl.cities.timer.timers;
+package me.xflyiwnl.cities.task.timers;
 
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
@@ -6,9 +6,9 @@ import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.tool.ask.Ask;
 import me.xflyiwnl.cities.object.tool.confirmation.Confirmation;
-import me.xflyiwnl.cities.timer.CitiesTimer;
+import me.xflyiwnl.cities.task.CitiesTask;
 
-public class ActionTimer extends CitiesTimer {
+public class ActionTask extends CitiesTask {
 
     @Override
     public void run() {

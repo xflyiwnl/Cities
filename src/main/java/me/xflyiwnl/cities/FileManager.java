@@ -7,12 +7,12 @@ import java.util.List;
 
 public class FileManager {
 
-    private YAML language;
-    private YAML settings;
+    private YAML language, settings, store;
 
     public void generate() {
         language = new YAML("language.yml");
         settings = new YAML("settings.yml");
+        store = new YAML("store/store.yml");
 
         createGuis();
     }
@@ -39,4 +39,7 @@ public class FileManager {
         return settings;
     }
 
+    public YAML getStore() {
+        return store;
+    }
 }

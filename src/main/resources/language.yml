@@ -6,6 +6,10 @@ language:
     not-enough-args: "#FCD05C&lCities &7⇒ #FFF4D6Недостаточно аргументов для полноценной команды"
     unknown-arg: "#FCD05C&lCities &7⇒ #FFF4D6Неизвестный аргумент команды"
 
+  time:
+    new-day: "#FCD05C&lCities &7⇒ #FFF4D6Новый день! Налоги собраны."
+    command: "#FCD05C&lCities &7⇒ #FFF4D6До нового дня осталось #F1B823%hours% часов, %minutes% минут"
+
   economy:
     not-enough-money:
       citizen: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет столько монет"
@@ -47,7 +51,7 @@ language:
 
     confirmation-messages:
       city-remove: "Вы действительно хотите удалить свой город?"
-      city-create: "Вы уверены, что хотите основать свой город?"
+      city-create: "Вы уверены, что хотите основать свой город за 50 монет?"
 
   invite:
     invite-self: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете отправить приглашение самому себе"

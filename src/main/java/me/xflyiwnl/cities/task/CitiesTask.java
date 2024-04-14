@@ -1,11 +1,11 @@
-package me.xflyiwnl.cities.timer;
+package me.xflyiwnl.cities.task;
 
 import me.xflyiwnl.cities.Cities;
 import org.bukkit.scheduler.BukkitRunnable;
 
-public abstract class CitiesTimer extends BukkitRunnable {
+public abstract class CitiesTask extends BukkitRunnable {
 
-    public void startTimer(long seconds) {
+    public void startTask(long seconds) {
         this.runTaskTimer(Cities.getInstance(), 0, seconds * 20L);
     }
 
