@@ -1,0 +1,7 @@
+name: "Министр-Экономики"
+type: CITY
+
+nodes:
+  - CITY_BANK_WITHDRAW
+  - CITY_BROADCAST
+  - CITY_SET_BOARD

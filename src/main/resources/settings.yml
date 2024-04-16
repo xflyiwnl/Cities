@@ -6,6 +6,7 @@ settings:
   time:
     #       hour:minute
     new-day: "24:00"
+    format: "dd.MM.yyyy HH:mm"
 
   economy:
     city-price: 50

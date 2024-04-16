@@ -2,6 +2,7 @@ package me.xflyiwnl.cities;
 
 import me.xflyiwnl.cities.config.YAML;
 
+import java.io.File;
 import java.util.Arrays;
 import java.util.List;
 
@@ -15,6 +16,7 @@ public class FileManager {
         store = new YAML("store/store.yml");
 
         createGuis();
+        createRanks();
     }
 
     public YAML get(String path) {
@@ -29,6 +31,35 @@ public class FileManager {
                 "rank/rank-edit.yml"
         );
         guis.forEach(gui -> get("gui/" + gui));
+    }
+
+    public void createRanks() {
+        if (hasFolder("rank")) {
+            return;
+        }
+
+        createFolder("rank");
+
+        List<String> ranks = Arrays.asList(
+                "Министр-Экономики.yml"
+        );
+
+        ranks.forEach(s -> {
+            new YAML("rank/" + s);
+        });
+
+    }
+
+    public boolean hasFolder(String folder) {
+        File file = new File(Cities.getInstance().getDataFolder(), folder);
+        return file.exists();
+    }
+
+    public void createFolder(String folder) {
+        File file = new File(Cities.getInstance().getDataFolder(), folder);
+        if (file.exists())
+            return;
+        file.mkdir();
     }
 
     public YAML getLanguage() {

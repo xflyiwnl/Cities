@@ -21,6 +21,7 @@ public class TimeTask extends CitiesTask {
                 .plusMinutes(dayTime[1]);
 
         Duration between = Duration.between(LocalDateTime.now(), nextDay);
+        Cities.getInstance().calculateUpkeep();
 
         if (!between.isNegative()) {
             return;

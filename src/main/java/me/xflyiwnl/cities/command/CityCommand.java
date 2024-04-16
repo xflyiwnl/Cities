@@ -7,13 +7,14 @@ import me.xflyiwnl.cities.gui.rank.RankGUI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.bank.Transaction;
 import me.xflyiwnl.cities.object.bank.TransactionType;
+import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.city.City;
-import me.xflyiwnl.cities.object.invite.types.CityInvite;
 import me.xflyiwnl.cities.object.land.Land;
 import me.xflyiwnl.cities.object.land.LandType;
 import me.xflyiwnl.cities.util.Settinger;
+import org.bukkit.Bukkit;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
 import org.bukkit.command.Command;
@@ -26,10 +27,11 @@ import org.jetbrains.annotations.Nullable;
 
 import java.util.Arrays;
 import java.util.List;
+import java.util.stream.Collectors;
 
 public class CityCommand implements CommandExecutor, TabCompleter {
 
-    private List<String> cityTabCompletes = Arrays.asList(
+    private List<String> arguments = Arrays.asList(
             "bank",
             "land",
             "rank",
@@ -47,45 +49,81 @@ public class CityCommand implements CommandExecutor, TabCompleter {
             "citizens"
     );
 
-    private List<String> citySetTabCompletes = Arrays.asList(
+    private List<String> setArguments = Arrays.asList(
             "name",
             "board",
             "spawn"
     );
 
-    private List<String> cityBankTabCompletes = Arrays.asList(
+    private List<String> bankArguments = Arrays.asList(
             "deposit",
             "withdraw"
     );
 
-    private List<String> cityLandTabCompletes = Arrays.asList(
+    private List<String> landArguments = Arrays.asList(
             "claim",
             "unclaim"
+    );
+
+    private List<String> rankArguments = Arrays.asList(
+            "add",
+            "remove"
     );
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String alias, @NotNull String[] args) {
 
-        if (!(sender instanceof Player)) {
+        if (!(sender instanceof Player player)) {
             return null;
         }
 
-        Player player = (Player) sender;
+        switch (args.length) {
+            case 1 -> {
+                return arguments;
+            }
+            case 2 -> {
+                switch (args[0].toLowerCase()) {
+                    case "bank" -> {
+                        return bankArguments;
+                    }
+                    case "land" -> {
+                        return landArguments;
+                    }
+                    case "set" -> {
+                        return setArguments;
+                    }
+                    case "rank" -> {
+                        return rankArguments;
+                    }
+                    default -> {
+                        return null;
+                    }
+                }
+            }
+            case 3 -> {
+                switch (args[0].toLowerCase()) {
+                    case "rank" -> {
+                        return Bukkit.getOnlinePlayers().stream()
+                                .map(Player::getName)
+                                .collect(Collectors.toList());
+                    }
+                }
+            }
+            case 4 -> {
+                switch (args[0].toLowerCase()) {
+                    case "rank" -> {
+                        Citizen citizen = CitiesAPI.getInstance().getCitizen(player);
 
-        if (args.length == 1) {
-            return cityTabCompletes;
-        }
+                        if (!citizen.hasCity())
+                            return null;
 
-        if (args.length == 2) {
-            switch (args[0].toLowerCase()) {
-                case ("bank"):
-                    return cityBankTabCompletes;
-                case ("land"):
-                    return cityLandTabCompletes;
-                case ("set"):
-                    return citySetTabCompletes;
-                default:
-                    return null;
+                        City city = citizen.getCity();
+
+                        return city.getRanks().values().stream()
+                                .map(Rank::getTitle)
+                                .collect(Collectors.toList());
+                    }
+                }
             }
         }
 
@@ -299,7 +337,117 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
         City city = citizen.getCity();
 
-        RankGUI.openGUI(citizen.getPlayer(), city);
+        if (args.length == 1) {
+            RankGUI.openGUI(citizen.getPlayer(), city);
+            return;
+        }
+
+        if (args.length < 4) {
+            citizen.sendMessage(Translator.of("command.not-enough-args"));
+            return;
+        }
+
+        switch (args[1].toLowerCase()) {
+            case "remove" -> {
+                rankRemoveCommand(citizen, args);
+            }
+            case "add" -> {
+                rankAddCommand(citizen, args);
+            }
+            default -> {
+                RankGUI.openGUI(citizen.getPlayer(), city);
+            }
+        }
+
+    }
+
+    public void rankRemoveCommand(Citizen citizen, String[] args) {
+
+        City city = citizen.getCity();
+        Citizen request = CitiesAPI.getInstance().getCitizen(args[2]);
+
+        if (request == null) {
+            citizen.sendMessage(Translator.of("citizen.unknown-citizen"));
+            return;
+        }
+
+        if (!request.getCity().equals(city)) {
+            citizen.sendMessage(Translator.of("citizen.other-city"));
+            return;
+        }
+
+        Rank rank = city.getRankByName(args[3]);
+
+        if (rank == null) {
+            citizen.sendMessage(Translator.of("rank.unknown-rank"));
+            return;
+        }
+
+        if (!request.hasRank(rank)) {
+            citizen.sendMessage(Translator.of("rank.citizen-no-rank"));
+            return;
+        }
+
+        request.removeRank(rank);
+        request.save();
+
+        citizen.sendMessage(Translator.of("rank.taken-rank")
+                .replace("%rank%", rank.getTitle())
+                .replace("%player%", request.getName()));
+
+        if (request.isOnline())
+            citizen.sendMessage(Translator.of("rank.taken-rank-request")
+                    .replace("%rank%", rank.getTitle()));
+
+        city.broadcast(Translator.of("rank.taken-rank-broadcast")
+                .replace("%sender%", citizen.getName())
+                .replace("%rank%", rank.getTitle())
+                .replace("%player%", request.getName()), true);
+
+    }
+
+    public void rankAddCommand(Citizen citizen, String[] args) {
+
+        City city = citizen.getCity();
+        Citizen request = CitiesAPI.getInstance().getCitizen(args[2]);
+
+        if (request == null) {
+            citizen.sendMessage(Translator.of("citizen.unknown-citizen"));
+            return;
+        }
+
+        if (!request.getCity().equals(city)) {
+            citizen.sendMessage(Translator.of("citizen.other-city"));
+            return;
+        }
+
+        Rank rank = city.getRankByName(args[3]);
+
+        if (rank == null) {
+            citizen.sendMessage(Translator.of("rank.unknown-rank"));
+            return;
+        }
+
+        if (request.hasRank(rank)) {
+            citizen.sendMessage(Translator.of("rank.citizen-has-rank"));
+            return;
+        }
+
+        request.addRank(rank);
+        request.save();
+
+        citizen.sendMessage(Translator.of("rank.given-rank")
+                .replace("%rank%", rank.getTitle())
+                .replace("%player%", request.getName()));
+
+        if (request.isOnline())
+            citizen.sendMessage(Translator.of("rank.given-rank-request")
+                    .replace("%rank%", rank.getTitle()));
+
+        city.broadcast(Translator.of("rank.given-rank-broadcast")
+                .replace("%sender%", citizen.getName())
+                .replace("%rank%", rank.getTitle())
+                .replace("%player%", request.getName()), true);
 
     }
 

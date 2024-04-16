@@ -8,6 +8,8 @@ import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.land.Land;
+import me.xflyiwnl.cities.object.rank.PermissionType;
+import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.util.Translator;
 import org.bukkit.Chunk;
 import org.bukkit.Location;
@@ -15,8 +17,10 @@ import org.bukkit.Location;
 import java.time.LocalDateTime;
 import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.UUID;
+import java.util.stream.Collectors;
 
 public class City extends Government implements CitizenList, Spawnable, Claimable, Inviteable, Saveable {
 
@@ -28,6 +32,8 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     private Invite invite;
     private String board;
+
+    private double upkeep = 0;
 
     private Map<UUID, Citizen> citizens = new HashMap<>();
     private Map<WorldCord2, Land> lands = new HashMap<>();
@@ -68,6 +74,14 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     @Override
     public void create() {
+
+        Cities instance = Cities.getInstance();
+
+        List<Rank> defaultRanks = instance.getDefaultRanks().values().stream()
+                        .filter(rank -> rank.getType() == PermissionType.CITY)
+                        .toList();
+        defaultRanks.forEach(this::addRank);
+
         Cities.getInstance().getCities().put(getUniqueId(), this);
     }
 
@@ -197,7 +211,7 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         getCitizens().put(citizen.getUniqueId(), citizen);
         citizen.setCity(this);
 
-        citizen.setJoinedCity(LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm")));
+        citizen.setJoinedCity(LocalDateTime.now());
         citizen.save();
     }
 
@@ -236,4 +250,15 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         this.board = board;
     }
 
+    public void setLands(Map<WorldCord2, Land> lands) {
+        this.lands = lands;
+    }
+
+    public double getUpkeep() {
+        return upkeep;
+    }
+
+    public void setUpkeep(double upkeep) {
+        this.upkeep = upkeep;
+    }
 }

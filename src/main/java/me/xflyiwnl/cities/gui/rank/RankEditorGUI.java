@@ -55,9 +55,7 @@ public class RankEditorGUI extends BaseGUI {
 
         List<PermissionNode> nodes = new ArrayList<PermissionNode>();
 
-        PermissionType type = government instanceof City
-                ? PermissionType.CITY
-                : PermissionType.COUNTRY;
+        PermissionType type = rank.getType();
         for (PermissionNode node : PermissionNode.values()) {
             if (node.getType() == type) {
                 nodes.add(node);

@@ -87,7 +87,7 @@ public class Land extends CitiesObject implements Saveable {
 
     @Override
     public void remove() {
-        Cities.getInstance().getLands().remove(this);
+        Cities.getInstance().getLands().remove(cord2);
     }
 
     public WorldCord2 getCord2() {

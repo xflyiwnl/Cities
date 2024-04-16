@@ -6,6 +6,7 @@ import me.xflyiwnl.cities.gui.BaseGUI;
 import me.xflyiwnl.cities.gui.city.CitizensGUI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
+import me.xflyiwnl.cities.object.rank.PermissionType;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
@@ -84,8 +85,8 @@ public class RankGUI extends BaseGUI {
 
             if (government instanceof City city) {
                 for (Citizen cit : city.getCitizens().values()) {
-                    if (cit.getRank() != null && cit.getRank().equals(rank)) {
-                        cit.setRank(null);
+                    if (cit.hasRank(rank)) {
+                        cit.removeRank(rank);
                     }
                 }
             }
@@ -93,8 +94,8 @@ public class RankGUI extends BaseGUI {
             if (government instanceof Country country) {
                 for (City city : country.getCities().values()) {
                     for (Citizen cit : city.getCitizens().values()) {
-                        if (cit.getRank() != null && cit.getRank().equals(rank)) {
-                            cit.setRank(null);
+                        if (cit.hasRank(rank)) {
+                            cit.removeRank(rank);
                         }
                     }
                 }
@@ -149,7 +150,7 @@ public class RankGUI extends BaseGUI {
                     }
 
                     Rank rank = new Rank(
-                            government, title
+                            government, title, (government instanceof City) ? PermissionType.CITY : PermissionType.COUNTRY
                     );
                     rank.create();
                     rank.save();

@@ -1,37 +1,38 @@
 package me.xflyiwnl.cities.object.rank;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Identifyable;
 import me.xflyiwnl.cities.object.Saveable;
+import me.xflyiwnl.cities.object.city.CitizenList;
 
 import java.util.*;
 
-public class Rank implements Identifyable, Saveable {
+public class Rank implements Identifyable, Saveable, PermissionHandler, CitizenList {
 
-    private UUID uuid = UUID.randomUUID();
+    private UUID uniqueId = UUID.randomUUID();
     private Government government;
 
     private String title;
+    private PermissionType type;
+
     private List<PermissionNode> nodes = new ArrayList<PermissionNode>();
-    private List<Citizen> citizens = new ArrayList<Citizen>();
+    private final Map<UUID, Citizen> citizens = new HashMap<>();
 
     public Rank() {
     }
 
-    public Rank(Government government, String title) {
+    public Rank(Government government, String title, PermissionType type) {
         this.government = government;
         this.title = title;
+        this.type = type;
     }
 
-    public Rank(UUID uuid, Government government, String title, List<PermissionNode> nodes, List<Citizen> citizens) {
-        this.uuid = uuid;
-        this.government = government;
+    public Rank(String title, PermissionType type, List<PermissionNode> nodes) {
         this.title = title;
+        this.type = type;
         this.nodes = nodes;
-        this.citizens = citizens;
     }
 
     @Override
@@ -50,20 +51,35 @@ public class Rank implements Identifyable, Saveable {
         government.getRanks().remove(getUniqueId());
     }
 
-    public boolean hasPermission(PermissionNode node) {
-        return nodes.contains(node);
+    @Override
+    public UUID getUniqueId() {
+        return uniqueId;
     }
 
-    public void addPermission(PermissionNode node) {
-        nodes.add(node);
+    public void setUniqueId(UUID uniqueId) {
+        this.uniqueId = uniqueId;
     }
 
-    public void removePermission(PermissionNode node) {
-        nodes.remove(node);
+    @Override
+    public Map<UUID, Citizen> getCitizens() {
+        return citizens;
     }
 
-    public void setUniqueId(UUID uuid) {
-        this.uuid = uuid;
+    @Override
+    public List<PermissionNode> getNodes() {
+        return nodes;
+    }
+
+    public void setNodes(List<PermissionNode> nodes) {
+        this.nodes = nodes;
+    }
+
+    public PermissionType getType() {
+        return type;
+    }
+
+    public void setType(PermissionType type) {
+        this.type = type;
     }
 
     public String getTitle() {
@@ -74,14 +90,6 @@ public class Rank implements Identifyable, Saveable {
         this.title = title;
     }
 
-    public List<PermissionNode> getNodes() {
-        return nodes;
-    }
-
-    public void setNodes(List<PermissionNode> nodes) {
-        this.nodes = nodes;
-    }
-
     public Government getGovernment() {
         return government;
     }
@@ -90,16 +98,5 @@ public class Rank implements Identifyable, Saveable {
         this.government = government;
     }
 
-    @Override
-    public UUID getUniqueId() {
-        return uuid;
-    }
 
-    public List<Citizen> getCitizens() {
-        return citizens;
-    }
-
-    public void setCitizens(List<Citizen> citizens) {
-        this.citizens = citizens;
-    }
 }

@@ -5,8 +5,10 @@ import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankHandler;
 import me.xflyiwnl.cities.object.bank.types.CitizenBank;
 import me.xflyiwnl.cities.object.city.City;
+import me.xflyiwnl.cities.object.city.RankHandler;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
+import me.xflyiwnl.cities.object.rank.PermissionNode;
 import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.object.tool.ask.Ask;
 import me.xflyiwnl.cities.object.tool.confirmation.Confirmation;
@@ -17,22 +19,21 @@ import org.bukkit.OfflinePlayer;
 import org.bukkit.entity.Player;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
-import java.util.UUID;
+import java.util.*;
 
-public class Citizen extends CitiesObject implements BankHandler, Saveable, Inviteable {
+public class Citizen extends CitiesObject implements RankHandler, BankHandler, Saveable, Inviteable {
 
     private Bank bank = new CitizenBank(this);
     private City city;
-
-    private Rank rank;
 
     private Ask ask;
     private Confirmation confirmation;
     private Invite invite;
 
-    private String registered = LocalDateTime.now().format(DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm"));
-    private String joinedCity;
+    private LocalDateTime registered = LocalDateTime.now();
+    private LocalDateTime joinedCity;
+
+    private Map<UUID, Rank> ranks = new HashMap<>();
 
     public Citizen() {}
 
@@ -45,10 +46,10 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
         this.city = city;
     }
 
-    public Citizen(UUID uuid, City city, Rank rank, String registered, String joinedCity) {
+    public Citizen(UUID uuid, City city, Map<UUID, Rank> ranks, LocalDateTime registered, LocalDateTime joinedCity) {
         super(uuid);
         this.city = city;
-        this.rank = rank;
+        this.ranks = ranks;
         this.registered = registered;
         this.joinedCity = joinedCity;
     }
@@ -57,6 +58,15 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
         if (getPlayer() != null) {
             getPlayer().sendMessage(TextUtil.colorize(text));
         }
+    }
+
+    public boolean hasPermission(PermissionNode node) {
+        for (Rank rank : getRanks().values()) {
+            if (rank.hasPermission(node)) {
+                return true;
+            }
+        }
+        return false;
     }
 
     public WorldCord2 getChunkCord() {
@@ -119,6 +129,16 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
 
     @Override
     public void remove() {
+
+    }
+
+    @Override
+    public Map<UUID, Rank> getRanks() {
+        return ranks;
+    }
+
+    public void setRanks(Map<UUID, Rank> ranks) {
+        this.ranks = ranks;
     }
 
     @Override
@@ -168,19 +188,19 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
         this.invite = invite;
     }
 
-    public String getRegistered() {
+    public LocalDateTime getRegistered() {
         return registered;
     }
 
-    public void setRegistered(String registered) {
+    public void setRegistered(LocalDateTime registered) {
         this.registered = registered;
     }
 
-    public String getJoinedCity() {
+    public LocalDateTime getJoinedCity() {
         return joinedCity;
     }
 
-    public void setJoinedCity(String joinedCity) {
+    public void setJoinedCity(LocalDateTime joinedCity) {
         this.joinedCity = joinedCity;
     }
 
@@ -190,13 +210,5 @@ public class Citizen extends CitiesObject implements BankHandler, Saveable, Invi
 
     public void setAsk(Ask ask) {
         this.ask = ask;
-    }
-
-    public Rank getRank() {
-        return rank;
-    }
-
-    public void setRank(Rank rank) {
-        this.rank = rank;
     }
 }

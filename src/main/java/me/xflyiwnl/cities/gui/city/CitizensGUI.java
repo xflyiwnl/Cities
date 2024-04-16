@@ -5,6 +5,7 @@ import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.BaseGUI;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.city.City;
+import me.xflyiwnl.cities.util.Settinger;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
@@ -14,6 +15,7 @@ import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
+import java.time.format.DateTimeFormatter;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -79,12 +81,14 @@ public class CitizensGUI extends BaseGUI {
 
     }
 
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Settinger.ofString("time.format"));
+
     public String applyPlaceholders(String text, Citizen guiCitizen) {
         return text
                 .replace("%city%", city.getName())
                 .replace("%name%", guiCitizen.getName())
                 .replace("%rank%", "Делаем")
-                .replace("%joined%", guiCitizen.getJoinedCity());
+                .replace("%joined%", formatter.format(guiCitizen.getJoinedCity()));
     }
 
     @Override

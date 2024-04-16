@@ -3,13 +3,14 @@ package me.xflyiwnl.cities.object;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankHandler;
 import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
+import me.xflyiwnl.cities.object.city.RankHandler;
 import me.xflyiwnl.cities.object.rank.Rank;
 
 import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
-public abstract class Government extends CitiesObject implements BankHandler {
+public abstract class Government extends CitiesObject implements BankHandler, RankHandler {
 
     private Bank bank = new GovernmentBank(this);
     private Map<UUID, Rank> ranks = new HashMap<>();
@@ -44,6 +45,7 @@ public abstract class Government extends CitiesObject implements BankHandler {
         return null;
     }
 
+    @Override
     public Map<UUID, Rank> getRanks() {
         return ranks;
     }

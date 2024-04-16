@@ -6,6 +6,8 @@ import me.xflyiwnl.cities.dynmap.DynmapDrawer;
 import me.xflyiwnl.cities.listener.PlayerListener;
 import me.xflyiwnl.cities.object.Citizen;
 import me.xflyiwnl.cities.object.WorldCord2;
+import me.xflyiwnl.cities.object.bank.Transaction;
+import me.xflyiwnl.cities.object.bank.TransactionType;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.land.Land;
@@ -13,6 +15,7 @@ import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.cities.object.tool.ToolBar;
 import me.xflyiwnl.cities.object.tool.ToolBoard;
 import me.xflyiwnl.cities.task.timers.*;
+import me.xflyiwnl.cities.util.RankUtil;
 import me.xflyiwnl.cities.util.Settinger;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
@@ -48,6 +51,8 @@ public final class Cities extends JavaPlugin {
     private final List<ToolBoard> boards = new ArrayList<>();
     private final List<ToolBar> bars = new ArrayList<>();
 
+    private Map<UUID, Rank> defaultRanks = new HashMap<>();
+
     @Override
     public void onEnable() {
 
@@ -63,6 +68,7 @@ public final class Cities extends JavaPlugin {
 
         checkOnlinePlayers();
         loadStore();
+        RankUtil.loadDefaultRanks();
 
         registerCommands();
         registerListeners();
@@ -98,16 +104,45 @@ public final class Cities extends JavaPlugin {
         store.save();
     }
 
+    public void broadcast(String message) {
+        Bukkit.getOnlinePlayers().forEach(player -> player.sendMessage(message));
+    }
+
     public void newDay() {
         lastDay = LocalDateTime.now();
 
-        cities.values().forEach(city -> {
-
-        });
+        for (City city : cities.values()) {
+            if (city.getBank().current() < city.getUpkeep()) {
+                city.broadcast(Translator.of("time.collapsed.city"), false);
+                broadcast(Translator.of("time.collapsed.city-all")
+                        .replace("%city%", city.getName()));
+                city.remove();
+            } else {
+                city.getBank().withdraw(city.getUpkeep());
+                city.getBank().transactions()
+                                .add(new Transaction("Сервер", city.getUpkeep(), "Содержание города", TransactionType.WITHDRAW));
+                city.broadcast(Translator.of("time.upkeep.city")
+                        .replace("%money%", String.valueOf(city.getUpkeep())), false);
+            }
+        }
 
         Bukkit.getOnlinePlayers().forEach(player -> {
             player.sendMessage(Translator.of("time.new-day"));
         });
+    }
+
+    public void calculateUpkeep() {
+        calculateCitiesUpkeep();
+    }
+
+    public void calculateCitiesUpkeep() {
+        double base = Settinger.ofDouble("upkeep.city.base");
+        double perLand = Settinger.ofDouble("upkeep.city.per-land");
+
+        for (City city : getCities().values()) {
+            double upkeep = base + (city.getLands().size() * perLand);
+            city.setUpkeep(upkeep);
+        }
     }
 
     public int[] dayTime() {
@@ -134,7 +169,7 @@ public final class Cities extends JavaPlugin {
     public void startTimers() {
 
         TimeTask timeTask = new TimeTask();
-        timeTask.startTask(10);
+        timeTask.startTask(1);
 
         ActionTask actionTask = new ActionTask();
         actionTask.startTask(1);
@@ -142,8 +177,8 @@ public final class Cities extends JavaPlugin {
         CityTask cityTimer = new CityTask();
         cityTimer.startTask(1);
 
-        PacketTask packetTimer = new PacketTask();
-        packetTimer.startTask(1);
+//        PacketTask packetTimer = new PacketTask();
+//        packetTimer.startTask(1);
 
         if (dynmapDrawer != null) {
             DynmapTask dynmapTimer = new DynmapTask();
@@ -267,5 +302,13 @@ public final class Cities extends JavaPlugin {
 
     public LocalDateTime getLastDay() {
         return lastDay;
+    }
+
+    public Map<UUID, Rank> getDefaultRanks() {
+        return defaultRanks;
+    }
+
+    public void setDefaultRanks(Map<UUID, Rank> defaultRanks) {
+        this.defaultRanks = defaultRanks;
     }
 }

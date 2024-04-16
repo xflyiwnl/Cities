@@ -10,6 +10,13 @@ language:
     new-day: "#FCD05C&lCities &7⇒ #FFF4D6Новый день! Налоги собраны."
     command: "#FCD05C&lCities &7⇒ #FFF4D6До нового дня осталось #F1B823%hours% часов, %minutes% минут"
 
+    collapsed:
+      city: "#FCD05C&lCities &7⇒ #FFF4D6Ваш город не смог оплатить налоги и развалился."
+      city-all: "#FCD05C&lCities &7⇒ #FFF4D6Город #F1B823%city% #FFF4D6не смог оплатить налоги и развалился"
+
+    upkeep:
+      city: "#FCD05C&lCities &7⇒ #FFF4D6Ваш город заплатил налог в #FCD05C%money% монет"
+
   economy:
     not-enough-money:
       citizen: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет столько монет"
@@ -22,8 +29,21 @@ language:
   rank:
     create-rank: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно создали ранг: #F1B823%rank%"
     title-format: "#FCD05C&lCities &7⇒ #FFF4D6В названии ранга не должно быть пробелов и прочих символов"
-    rank-exists: "#FCD05C&lCities &7⇒ #FFF4D6Такой ранг уже существует"
     rank-remove: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно удалили ранг: #F1B823%rank%"
+
+    rank-exists: "#FCD05C&lCities &7⇒ #FFF4D6Такой ранг уже существует"
+    unknown-rank: "#FCD05C&lCities &7⇒ #FFF4D6Такого ранга не существует"
+
+    citizen-no-rank: "#FCD05C&lCities &7⇒ #FFF4D6У данного игрока нет такого ранга"
+    citizen-has-rank: "#FCD05C&lCities &7⇒ #FFF4D6У данного игрока уже имеется такой ранг"
+
+    given-rank: "#FCD05C&lCities &7⇒ #FFF4D6Вы выдали ранг #F1B823%rank% #FFF4D6игроку #F1B823%player%"
+    given-rank-request: "#FCD05C&lCities &7⇒ #FFF4D6Вам был выдан ранг #F1B823%rank%"
+    given-rank-broadcast: "#F1B823%sender% #FFF4D6выдал ранг #F1B823%rank% #FFF4D6игроку #F1B823%player%"
+
+    taken-rank: "#FCD05C&lCities &7⇒ #FFF4D6Вы забрали ранг #F1B823%rank% #FFF4D6у игрока #F1B823%player%"
+    taken-rank-request: "#FCD05C&lCities &7⇒ #FFF4D6У вас забрали ранг #F1B823%rank%"
+    taken-rank-broadcast: "#F1B823%sender% #FFF4D6забрал ранг #F1B823%rank% #FFF4D6у игрока #F1B823%player%"
 
   ask:
     has-ask: "#FCD05C&lCities &7⇒ #FFF4D6У вас уже есть вопрос, ответьте на него"
@@ -108,8 +128,10 @@ language:
   citizen:
     no-city: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет города"
     no-country: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет страны"
+
     not-mayor: "#FCD05C&lCities &7⇒ #FFF4D6Вы не являетесь мэром"
     not-king: "#FCD05C&lCities &7⇒ #FFF4D6Вы не правите страной"
+
     unknown-citizen: "#FCD05C&lCities &7⇒ #FFF4D6Такого игрока не существует"
     other-city: "#FCD05C&lCities &7⇒ #FFF4D6Этот игрок из другого города"
 

@@ -9,7 +9,11 @@ public interface CitizenList {
 
     Map<UUID, Citizen> getCitizens();
 
-    void addCitizen(Citizen citizen);
-    void removeCitizen(Citizen citizen);
+    default void addCitizen(Citizen citizen) {
+        getCitizens().put(citizen.getUniqueId(), citizen);
+    }
+    default void removeCitizen(Citizen citizen) {
+        getCitizens().remove(citizen.getUniqueId());
+    }
 
 }
