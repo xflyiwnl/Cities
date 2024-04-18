@@ -1,7 +1,7 @@
 package me.xflyiwnl.cities.listener;
 
 import me.xflyiwnl.cities.CitiesAPI;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.tool.ask.AskMessage;
 import org.bukkit.entity.Player;

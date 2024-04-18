@@ -1,23 +1,18 @@
 package me.xflyiwnl.cities.gui.city;
 
-import com.sun.java.accessibility.util.Translator;
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.BaseGUI;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.bank.Transaction;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
-import me.xflyiwnl.colorfulgui.object.event.click.ClickStaticItemEvent;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
 
 import java.time.format.DateTimeFormatter;
-import java.util.Collection;
-import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
 import java.util.stream.Collectors;

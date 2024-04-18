@@ -1,11 +1,11 @@
 package me.xflyiwnl.cities.object.rank;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Identifyable;
 import me.xflyiwnl.cities.object.Saveable;
-import me.xflyiwnl.cities.object.city.CitizenList;
+import me.xflyiwnl.cities.object.citizen.CitizenList;
 
 import java.util.*;
 
@@ -27,6 +27,13 @@ public class Rank implements Identifyable, Saveable, PermissionHandler, CitizenL
         this.government = government;
         this.title = title;
         this.type = type;
+    }
+
+    public Rank(Government government, String title, PermissionType type, List<PermissionNode> nodes) {
+        this.government = government;
+        this.title = title;
+        this.type = type;
+        this.nodes = nodes;
     }
 
     public Rank(String title, PermissionType type, List<PermissionNode> nodes) {

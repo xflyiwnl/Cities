@@ -1,11 +1,15 @@
-package me.xflyiwnl.cities.object;
+package me.xflyiwnl.cities.object.citizen;
 
 import me.xflyiwnl.cities.Cities;
+import me.xflyiwnl.cities.object.CitiesObject;
+import me.xflyiwnl.cities.object.Inviteable;
+import me.xflyiwnl.cities.object.Saveable;
+import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankHandler;
 import me.xflyiwnl.cities.object.bank.types.CitizenBank;
 import me.xflyiwnl.cities.object.city.City;
-import me.xflyiwnl.cities.object.city.RankHandler;
+import me.xflyiwnl.cities.object.rank.RankHandler;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.rank.PermissionNode;

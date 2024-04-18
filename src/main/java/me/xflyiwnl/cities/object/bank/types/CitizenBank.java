@@ -1,7 +1,7 @@
 package me.xflyiwnl.cities.object.bank.types;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankType;
 import me.xflyiwnl.cities.object.bank.Transaction;

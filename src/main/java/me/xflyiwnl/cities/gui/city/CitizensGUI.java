@@ -3,7 +3,7 @@ package me.xflyiwnl.cities.gui.city;
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.BaseGUI;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.util.Settinger;
 import me.xflyiwnl.cities.util.Translator;

@@ -4,7 +4,7 @@ import me.xflyiwnl.cities.command.*;
 import me.xflyiwnl.cities.config.YAML;
 import me.xflyiwnl.cities.dynmap.DynmapDrawer;
 import me.xflyiwnl.cities.listener.PlayerListener;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.WorldCord2;
 import me.xflyiwnl.cities.object.bank.Transaction;
 import me.xflyiwnl.cities.object.bank.TransactionType;
@@ -38,6 +38,7 @@ public final class Cities extends JavaPlugin {
     private ColorfulGUI guiApi;
     private final CitiesAPI api = new CitiesAPI(this);
     private final FileManager fileManager = new FileManager();
+
     private final String channelName = "cities:city";
 
     private LocalDateTime lastDay = LocalDateTime.now();
@@ -218,6 +219,10 @@ public final class Cities extends JavaPlugin {
         CityCommand cityCommand = new CityCommand();
         getCommand("city").setExecutor(cityCommand);
         getCommand("city").setTabCompleter(cityCommand);
+
+        LandCommand landCommand = new LandCommand();
+        getCommand("land").setExecutor(landCommand);
+        getCommand("land").setTabCompleter(landCommand);
 
         CountryCommand countryCommand = new CountryCommand();
         getCommand("country").setExecutor(countryCommand);

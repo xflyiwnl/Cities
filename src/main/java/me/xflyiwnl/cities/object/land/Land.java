@@ -5,6 +5,7 @@ import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.CitiesObject;
 import me.xflyiwnl.cities.object.Saveable;
 import me.xflyiwnl.cities.object.WorldCord2;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.city.City;
 
 import java.util.UUID;
@@ -15,6 +16,10 @@ public class Land extends CitiesObject implements Saveable {
 
     private LandType type;
     private City city;
+
+    private boolean selling = false;
+    private double price = 0.0;
+    private Citizen owner;
 
     private boolean isSpawnLand = false;
 
@@ -120,5 +125,29 @@ public class Land extends CitiesObject implements Saveable {
 
     public void setSpawnLand(boolean spawnLand) {
         isSpawnLand = spawnLand;
+    }
+
+    public boolean isSelling() {
+        return selling;
+    }
+
+    public void setSelling(boolean selling) {
+        this.selling = selling;
+    }
+
+    public double getPrice() {
+        return price;
+    }
+
+    public void setPrice(double price) {
+        this.price = price;
+    }
+
+    public Citizen getOwner() {
+        return owner;
+    }
+
+    public void setOwner(Citizen owner) {
+        this.owner = owner;
     }
 }

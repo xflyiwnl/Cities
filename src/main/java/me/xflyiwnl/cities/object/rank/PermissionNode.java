@@ -9,7 +9,9 @@ public enum PermissionNode {
     CITY_KICK(PermissionType.CITY, "Выгнать игрока"),
     CITY_INVITE(PermissionType.CITY, "Пригласить игрока"),
     CITY_SET_BOARD(PermissionType.CITY, "Установить табличку"),
-    CITY_SET_NAME(PermissionType.CITY, "Установить название города");
+    CITY_SET_NAME(PermissionType.CITY, "Установить название города"),
+
+    CITY_LAND_SELL(PermissionType.CITY, "Продать чанки");
 
     private PermissionType type;
     private String lore;

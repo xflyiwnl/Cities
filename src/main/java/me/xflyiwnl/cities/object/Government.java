@@ -3,7 +3,7 @@ package me.xflyiwnl.cities.object;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.BankHandler;
 import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
-import me.xflyiwnl.cities.object.city.RankHandler;
+import me.xflyiwnl.cities.object.rank.RankHandler;
 import me.xflyiwnl.cities.object.rank.Rank;
 
 import java.util.HashMap;

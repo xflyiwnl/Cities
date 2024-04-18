@@ -1,7 +1,7 @@
 package me.xflyiwnl.cities.object.country;
 
 import me.xflyiwnl.cities.Cities;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.Saveable;
 import me.xflyiwnl.cities.object.bank.Bank;

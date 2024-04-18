@@ -1,6 +1,6 @@
 package me.xflyiwnl.cities.object.tool.ask;
 
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.tool.Suggestable;
 import me.xflyiwnl.cities.object.tool.Timeable;

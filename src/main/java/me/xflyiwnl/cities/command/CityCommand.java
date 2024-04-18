@@ -4,7 +4,7 @@ import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.city.BankHistoryGUI;
 import me.xflyiwnl.cities.gui.city.CitizensGUI;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.bank.Transaction;
 import me.xflyiwnl.cities.object.bank.TransactionType;
 import me.xflyiwnl.cities.object.rank.Rank;
@@ -839,6 +839,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
 
                     city.addCitizen(citizen);
                     city.claimLand(land);
+                    city.addDefaultRanks();
 
                     city.create();
                     city.save();

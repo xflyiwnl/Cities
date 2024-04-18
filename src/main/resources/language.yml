@@ -5,6 +5,7 @@ language:
   command:
     not-enough-args: "#FCD05C&lCities &7⇒ #FFF4D6Недостаточно аргументов для полноценной команды"
     unknown-arg: "#FCD05C&lCities &7⇒ #FFF4D6Неизвестный аргумент команды"
+    no-permission: ""
 
   time:
     new-day: "#FCD05C&lCities &7⇒ #FFF4D6Новый день! Налоги собраны."

@@ -1,6 +1,6 @@
-package me.xflyiwnl.cities.object.city;
+package me.xflyiwnl.cities.object.citizen;
 
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 
 import java.util.Map;
 import java.util.UUID;

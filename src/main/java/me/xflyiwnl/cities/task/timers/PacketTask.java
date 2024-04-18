@@ -3,7 +3,7 @@ package me.xflyiwnl.cities.task.timers;
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.buffer.CitiesBuffer;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.task.CitiesTask;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;

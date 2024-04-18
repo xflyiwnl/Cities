@@ -1,7 +1,7 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.CitiesAPI;
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.util.Translator;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;

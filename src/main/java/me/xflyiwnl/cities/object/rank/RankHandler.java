@@ -1,4 +1,4 @@
-package me.xflyiwnl.cities.object.city;
+package me.xflyiwnl.cities.object.rank;
 
 import me.xflyiwnl.cities.object.rank.PermissionNode;
 import me.xflyiwnl.cities.object.rank.Rank;

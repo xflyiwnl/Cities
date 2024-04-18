@@ -5,6 +5,8 @@ import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.*;
 import me.xflyiwnl.cities.object.bank.Bank;
 import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
+import me.xflyiwnl.cities.object.citizen.Citizen;
+import me.xflyiwnl.cities.object.citizen.CitizenList;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.invite.Invite;
 import me.xflyiwnl.cities.object.land.Land;
@@ -15,12 +17,10 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 import java.time.LocalDateTime;
-import java.time.format.DateTimeFormatter;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.UUID;
-import java.util.stream.Collectors;
 
 public class City extends Government implements CitizenList, Spawnable, Claimable, Inviteable, Saveable {
 
@@ -74,14 +74,6 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
 
     @Override
     public void create() {
-
-        Cities instance = Cities.getInstance();
-
-        List<Rank> defaultRanks = instance.getDefaultRanks().values().stream()
-                        .filter(rank -> rank.getType() == PermissionType.CITY)
-                        .toList();
-        defaultRanks.forEach(this::addRank);
-
         Cities.getInstance().getCities().put(getUniqueId(), this);
     }
 
@@ -103,6 +95,15 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         }
 
         Cities.getInstance().getCities().remove(getUniqueId());
+    }
+
+    public void addDefaultRanks() {
+        List<Rank> defaultRanks = Cities.getInstance().getDefaultRanks().values().stream()
+                .filter(rank -> rank.getType() == PermissionType.CITY)
+                .toList();
+        defaultRanks.forEach(rank -> {
+            addRank(new Rank(this, rank.getTitle(), rank.getType(), rank.getNodes()));
+        });
     }
 
     public void broadcast(String message, boolean format) {

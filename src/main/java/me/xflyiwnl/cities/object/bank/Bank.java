@@ -1,6 +1,6 @@
 package me.xflyiwnl.cities.object.bank;
 
-import me.xflyiwnl.cities.object.Citizen;
+import me.xflyiwnl.cities.object.citizen.Citizen;
 
 import java.util.List;
 
