@@ -17,10 +17,7 @@ import org.bukkit.Chunk;
 import org.bukkit.Location;
 
 import java.time.LocalDateTime;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 public class City extends Government implements CitizenList, Spawnable, Claimable, Inviteable, Saveable {
 
@@ -70,6 +67,11 @@ public class City extends Government implements CitizenList, Spawnable, Claimabl
         this.country = country;
         this.spawn = spawn;
         this.board = board;
+    }
+
+    @Override
+    public int hashCode() {
+        return Objects.hash(mayor);
     }
 
     @Override

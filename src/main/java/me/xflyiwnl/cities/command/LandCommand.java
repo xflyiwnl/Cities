@@ -26,6 +26,13 @@ public class LandCommand implements TabCompleter, CommandExecutor {
 
     @Override
     public @Nullable List<String> onTabComplete(@NotNull CommandSender sender, @NotNull Command command, @NotNull String s, @NotNull String[] args) {
+
+        switch (args.length) {
+            case 1 -> {
+                return arguments;
+            }
+        }
+
         return null;
     }
 
@@ -54,6 +61,7 @@ public class LandCommand implements TabCompleter, CommandExecutor {
             case "buy" -> {
 
                 if (!citizen.hasCity()) {
+                    citizen.sendMessage("no city");
                     return;
                 }
 
@@ -61,50 +69,62 @@ public class LandCommand implements TabCompleter, CommandExecutor {
                 Land land = CitiesAPI.getInstance().getLandByLocation(citizen.getLocation());
 
                 if (land == null || !land.hasCity() || !land.isSelling()) {
+                    citizen.sendMessage("null land || no city || !is selling");
                     return;
                 }
 
                 if (land.getOwner() != null && land.getOwner().equals(citizen)) {
+                    citizen.sendMessage("owner");
                     return;
                 }
 
                 if (citizen.getBank().current() < land.getPrice()) {
+                    citizen.sendMessage("no money");
                     return;
                 }
 
                 land.setOwner(citizen);
+                land.setPrice(0);
+                land.setSelling(false);
+
                 citizen.getBank().pay(city.getBank(), land.getPrice());
 
                 land.save();
+                citizen.sendMessage("buy");
 
             }
             case "sell" -> {
 
-//                if (citizen.hasPermission(PermissionNode.CITY_LAND_SELL)) {
-//                    citizen.sendMessage(Translator.of("command.no-permission"));
-//                    return;
-//                }
-
                 if (!citizen.hasCity()) {
+                    citizen.sendMessage("no city");
                     return;
                 }
 
                 Land land = CitiesAPI.getInstance().getLandByLocation(citizen.getLocation());
 
                 if (land == null || !land.hasCity()) {
+                    citizen.sendMessage("null land or land has no city");
                     return;
                 }
 
-                if (citizen.getCity().equals(land.getCity())) {
+                if (!citizen.getCity().equals(land.getCity())) {
+                    citizen.sendMessage("city != citizen's city");
                     return;
                 }
+
+//                if (citizen.hasPermission(PermissionNode.CITY_LAND_SELL)) {
+//                    citizen.sendMessage(Translator.of("command.no-permission"));
+//                    return;
+//                }
 
                 if (land.isSelling()) {
                     land.setSelling(false);
                     land.save();
+                    citizen.sendMessage("canceled selling");
                 } else {
 
                     if (args.length < 2) {
+                        citizen.sendMessage("args error");
                         return;
                     }
 
@@ -113,6 +133,7 @@ public class LandCommand implements TabCompleter, CommandExecutor {
                     try {
                         price = Double.parseDouble(args[1]);
                     } catch (NumberFormatException e) {
+                        citizen.sendMessage("number exception");
                         return;
                     }
 
@@ -121,6 +142,7 @@ public class LandCommand implements TabCompleter, CommandExecutor {
 
                     land.save();
 
+                    citizen.sendMessage("sell");
                 }
 
 

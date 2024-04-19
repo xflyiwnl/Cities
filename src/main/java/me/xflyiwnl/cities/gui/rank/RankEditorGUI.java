@@ -92,6 +92,7 @@ public class RankEditorGUI extends BaseGUI {
     }
 
     public void handleClick(ClickStaticItemEvent event, PermissionNode node) {
+
         if (rank.getNodes().contains(node)) {
             rank.getNodes().remove(node);
         } else {

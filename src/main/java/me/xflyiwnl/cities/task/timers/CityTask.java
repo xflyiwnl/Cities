@@ -22,14 +22,21 @@ public class CityTask extends CitiesTask {
 
     public void sendAction(Player player) {
         Land land = CitiesAPI.getInstance().getLandByLocation(player.getLocation());
-        City city = land.getCity();
-        if (city == null) {
+
+        if (land == null)
             return;
-        }
+
+        City city = land.getCity();
+
+        if (city == null)
+            return;
 
         player.sendActionBar(city.getName() + " / " + (
                 land.isSelling()
                 ? "Продаётся * " + land.getPrice()
+                : "") + " / " +
+                (land.getOwner() != null
+                ? land.getOwner().getName()
                 : ""));
 
     }
