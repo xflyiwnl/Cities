@@ -13,6 +13,14 @@ settings:
     country-price: 100
     land-price: 5
 
+  action-bar:
+    default: "#FCD05C%city%"
+
+    placeholders:
+      spawn-land: " #F1B823(Дом)"
+      sell: " &7 / &fПродаётся * #6CE25F%price%$"
+      owner: " &7/ #F1B823%owner%"
+
   upkeep:
 
     city:

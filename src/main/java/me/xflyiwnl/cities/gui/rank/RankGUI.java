@@ -3,6 +3,7 @@ package me.xflyiwnl.cities.gui.rank;
 import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.BaseGUI;
+import me.xflyiwnl.cities.gui.city.ScreenGUI;
 import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.Government;
 import me.xflyiwnl.cities.object.rank.PermissionType;
@@ -116,6 +117,8 @@ public class RankGUI extends BaseGUI {
                 getGui().previous();
             } else if (action.equalsIgnoreCase("[create]")) {
                 handleCreate();
+            } else if (action.equalsIgnoreCase("[exit]")) {
+                ScreenGUI.openGUI(getPlayer(), citizen, citizen.getCity());
             }
         }
 

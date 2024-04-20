@@ -99,6 +99,8 @@ public class CitizensGUI extends BaseGUI {
         actions.forEach(s -> {
             if (s.equalsIgnoreCase("[search]")) {
                 handleSearch();
+            } else if (s.equalsIgnoreCase("[exit]")) {
+                ScreenGUI.openGUI(getPlayer(), citizen, citizen.getCity());
             }
         });
 

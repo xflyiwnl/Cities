@@ -4,6 +4,10 @@ import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.land.Land;
 import me.xflyiwnl.cities.task.CitiesTask;
+import me.xflyiwnl.cities.util.Settinger;
+import me.xflyiwnl.cities.util.TextUtil;
+import net.md_5.bungee.api.ChatMessageType;
+import net.md_5.bungee.api.chat.TextComponent;
 import org.bukkit.Bukkit;
 import org.bukkit.entity.Player;
 
@@ -31,13 +35,20 @@ public class CityTask extends CitiesTask {
         if (city == null)
             return;
 
-        player.sendActionBar(city.getName() +
+        if (land.isSpawnLand()) {
+
+        }
+
+        player.spigot().sendMessage(ChatMessageType.ACTION_BAR, TextComponent.fromLegacyText(TextUtil.colorize(Settinger.ofString("action-bar.default")
+                .replace("%city%", city.getName()) +
                 (land.isSelling()
-                ? " / Продаётся * " + land.getPrice() : "") +
+                        ? Settinger.ofString("action-bar.placeholders.sell")
+                        .replace("%price%", String.valueOf(land.getPrice())) : "") +
                 (land.getOwner() != null
-                ? " / " + land.getOwner().getName() : "") +
+                        ? Settinger.ofString("action-bar.placeholders.owner")
+                        .replace("%owner%", land.getOwner().getName()) : "") +
                 (land.isSpawnLand()
-                ? " / home" : ""));
+                        ? Settinger.ofString("action-bar.placeholders.spawn-land") : ""))));
 
     }
 

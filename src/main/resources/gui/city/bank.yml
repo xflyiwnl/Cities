@@ -6,7 +6,7 @@ gui:
     - "BOOOOOOOB"
     - "BOOIOHOOB"
     - "BOOOOOOOB"
-    - "BBBBBBBBB"
+    - "BBBRERBBB"
 
 items:
 
@@ -32,8 +32,24 @@ items:
     name: "#FCD05CИстория банка"
     mask: "H"
 
+  exit-item:
+    material: barrier
+    amount: 1
+    name: "&cВыйти"
+    lore:
+      - " "
+    mask: "E"
+    action:
+      - "[exit]"
+
   border-item:
     material: "black_stained_glass_pane"
     amount: 1
     name: " "
     mask: "B"
+
+  second-border-item:
+    material: "light_gray_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "R"

@@ -6,7 +6,7 @@ gui:
     - "BOOOOOOOB"
     - "BOOOOOOOB"
     - "BOOOOOOOB"
-    - "BBRPRNRBC"
+    - "BBRPENRBC"
 
 rank-item:
   name: "#46CAB1%name%"
@@ -29,6 +29,16 @@ items:
     amount: 1
     name: " "
     mask: "R"
+
+  exit-item:
+    material: barrier
+    amount: 1
+    name: "&cВыйти"
+    lore:
+      - " "
+    mask: "E"
+    action:
+      - "[exit]"
 
   info-item:
     material: lectern

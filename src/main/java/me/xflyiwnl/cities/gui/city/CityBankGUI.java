@@ -9,6 +9,7 @@ import me.xflyiwnl.cities.util.Settinger;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import me.xflyiwnl.colorfulgui.builder.item.StaticItemBuilder;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
+import me.xflyiwnl.colorfulgui.object.event.click.ClickStaticItemEvent;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -132,6 +133,18 @@ public class CityBankGUI extends BaseGUI {
                     });
             }
         }
+
+    }
+
+    @Override
+    public void handleAction(ClickStaticItemEvent event, List<String> actions) {
+        super.handleAction(event, actions);
+
+        actions.forEach(action -> {
+            if (action.equalsIgnoreCase("[exit]")) {
+                ScreenGUI.openGUI(getPlayer(), citizen, city);
+            }
+        });
 
     }
 

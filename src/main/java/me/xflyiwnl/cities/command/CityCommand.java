@@ -1,9 +1,7 @@
 package me.xflyiwnl.cities.command;
 
 import me.xflyiwnl.cities.CitiesAPI;
-import me.xflyiwnl.cities.gui.city.BankHistoryGUI;
-import me.xflyiwnl.cities.gui.city.CitizensGUI;
-import me.xflyiwnl.cities.gui.city.CityBankGUI;
+import me.xflyiwnl.cities.gui.city.*;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
 import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.bank.Transaction;
@@ -153,7 +151,11 @@ public class CityCommand implements CommandExecutor, TabCompleter {
     public void parseCityCommand(Citizen citizen, String[] args) {
 
         if (args.length == 0) {
-            citizen.sendMessage(Translator.of("command.not-enough-args"));
+            if (!citizen.hasCity()) {
+                citizen.sendMessage(Translator.of("command.not-enough-args"));
+            } else {
+                ScreenGUI.openGUI(citizen.getPlayer(), citizen, citizen.getCity());
+            }
             return;
         }
 
@@ -704,6 +706,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
+            LandGUI.openGUI(citizen.getPlayer(), citizen, citizen.getCity());
             return;
         }
 

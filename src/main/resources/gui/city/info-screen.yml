@@ -1,0 +1,102 @@
+gui:
+  title: "Информация о городе"
+  rows: 6
+  mask:
+    - "BBBRIRBBB"
+    - "BOOOOOOOB"
+    - "BOGOTOCOB"
+    - "BOOSOPOOB"
+    - "BOOOOOOOB"
+    - "BBBBBBBBB"
+
+items:
+
+  permission-item:
+    type: PERMISSION
+    material: barrier
+    amount: 1
+    name: "#FCD05CПрава"
+    lore:
+      - " "
+      - " #F1B823Нажмите, чтобы открыть"
+      - " "
+    mask: "P"
+
+  switch-item:
+    type: SWITCH
+    material: book
+    amount: 1
+    name: "#FCD05CПереключатели"
+    lore:
+      - " "
+      - " #F1B823Нажмите, чтобы открыть"
+      - " "
+    mask: "S"
+
+  citizens-item:
+    type: CITIZENS
+    material: armor_stand
+    amount: 1
+    name: "#FCD05CГраждане"
+    lore:
+      - " "
+      - " #FFF4D6Количество: #F1B823%citizens%"
+      - " "
+      - " #F1B823Нажмите, чтобы открыть"
+      - " "
+    mask: "C"
+
+  rank-item:
+    type: RANK
+    material: red_banner
+    amount: 1
+    name: "#FCD05CРанги"
+    lore:
+      - " "
+      - " #FFF4D6Количество: #F1B823%ranks%"
+      - " "
+      - " #F1B823Нажмите, чтобы открыть"
+      - " "
+    mask: "T"
+
+  bank-item:
+    type: BANK
+    material: gold_ingot
+    amount: 1
+    name: "#FCD05CБанк"
+    lore:
+      - " "
+      - " #FFF4D6Баланс: #F1B823%current%"
+      - " #FFF4D6Содержание: #F1B823%upkeep%"
+      - " "
+      - " #F1B823Нажмите, чтобы открыть"
+      - " "
+    mask: "G"
+
+  info-item:
+    type: CITY
+    material: lectern
+    amount: 1
+    name: "#FCD05CИнформация о городе"
+    lore:
+      - " "
+      - " #FFF4D6Название: #F1B823%name%"
+      - " #FFF4D6Доска: #F1B823%board%"
+      - " #FFF4D6Мэр: #F1B823%mayor%"
+      - " "
+      - " #FFF4D6Граждане: #F1B823%citizens%"
+      - " #FFF4D6Территория: #F1B823%lands%"
+      - " "
+    mask: "I"
+
+  border-item:
+    material: "black_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "B"
+
+  second-border-item:
+    material: "light_gray_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "R"

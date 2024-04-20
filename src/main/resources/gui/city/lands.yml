@@ -1,0 +1,43 @@
+gui:
+  title: "Территория"
+  rows: 5
+  mask:
+    - "BBBBBBBBB"
+    - "BOOOOOOOB"
+    - "BOOODOOOB"
+    - "BOOOOOOOB"
+    - "BBBRERBBB"
+
+items:
+
+  info-item:
+    material: lectern
+    amount: 1
+    name: "&cВ разработке!"
+    lore:
+      - " "
+      - " &7Я когда-нибудь стану функциональной GUI..."
+      - " "
+    mask: "D"
+
+  exit-item:
+    material: barrier
+    amount: 1
+    name: "&cВыйти"
+    lore:
+      - " "
+    mask: "E"
+    action:
+      - "[exit]"
+
+  border-item:
+    material: "black_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "B"
+
+  second-border-item:
+    material: "light_gray_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "R"
