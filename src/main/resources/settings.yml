@@ -11,6 +11,7 @@ settings:
   economy:
     city-price: 50
     country-price: 100
+    land-price: 5
 
   upkeep:
 

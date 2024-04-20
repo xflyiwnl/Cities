@@ -7,6 +7,7 @@ import me.xflyiwnl.cities.object.bank.Transaction;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
+import me.xflyiwnl.colorfulgui.object.event.click.ClickStaticItemEvent;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
@@ -82,6 +83,18 @@ public class BankHistoryGUI extends BaseGUI {
                 .replace("%reason%", transaction.getReason())
                 .replace("%amount%", String.valueOf(transaction.getAmount()))
                 .replace("%date%", formatter.format(transaction.getDate()));
+    }
+
+    @Override
+    public void handleAction(ClickStaticItemEvent event, List<String> actions) {
+        super.handleAction(event, actions);
+
+        actions.forEach(action -> {
+            if (action.equalsIgnoreCase("[exit]")) {
+                CityBankGUI.openGUI(getPlayer(), citizen, city);
+            }
+        });
+
     }
 
     public static void openGUI(Player player, Citizen citizen, City city) {

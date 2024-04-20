@@ -61,7 +61,7 @@ public class LandCommand implements TabCompleter, CommandExecutor {
             case "buy" -> {
 
                 if (!citizen.hasCity()) {
-                    citizen.sendMessage("no city");
+                    citizen.sendMessage(Translator.of("citizen.no-city"));
                     return;
                 }
 
@@ -69,62 +69,106 @@ public class LandCommand implements TabCompleter, CommandExecutor {
                 Land land = CitiesAPI.getInstance().getLandByLocation(citizen.getLocation());
 
                 if (land == null || !land.hasCity() || !land.isSelling()) {
-                    citizen.sendMessage("null land || no city || !is selling");
+                    citizen.sendMessage(Translator.of("land.not-selling"));
                     return;
                 }
 
                 if (land.getOwner() != null && land.getOwner().equals(citizen)) {
-                    citizen.sendMessage("owner");
+                    citizen.sendMessage(Translator.of("land.is-owner"));
                     return;
                 }
 
-                if (citizen.getBank().current() < land.getPrice()) {
-                    citizen.sendMessage("no money");
-                    return;
-                }
+                CitiesAPI.getInstance().createConfirmation(
+                        citizen,
+                        Translator.of("confirmation.confirmation-messages.buy-land")
+                                .replace("%money%", String.valueOf(land.getPrice())),
+                        () -> {
 
-                land.setOwner(citizen);
-                land.setPrice(0);
-                land.setSelling(false);
+                            if (!land.hasCity() || !land.isSelling()) {
+                                citizen.sendMessage(Translator.of("land.not-selling"));
+                                return;
+                            }
 
-                citizen.getBank().pay(city.getBank(), land.getPrice());
+                            if (citizen.getBank().current() < land.getPrice()) {
+                                citizen.sendMessage(Translator.of("economy.not-enough-money.citizen"));
+                                return;
+                            }
 
-                land.save();
-                citizen.sendMessage("buy");
+                            citizen.getBank().pay(city.getBank(), land.getPrice());
 
+                            land.setOwner(citizen);
+                            land.setPrice(0);
+                            land.setSelling(false);
+
+
+                            land.save();
+
+                            citizen.sendMessage(Translator.of("land.buy-land")
+                                    .replace("%world%", land.getCord2().getWorld().getName())
+                                    .replace("%x%", String.valueOf(land.getCord2().getX()))
+                                    .replace("%z%", String.valueOf(land.getCord2().getZ())));
+
+                            city.broadcast(Translator.of("land.buy-land-broadcast")
+                                            .replace("%player%", citizen.getName())
+                                            .replace("%world%", land.getCord2().getWorld().getName())
+                                            .replace("%x%", String.valueOf(land.getCord2().getX()))
+                                            .replace("%z%", String.valueOf(land.getCord2().getZ())),
+                                    true);
+                        },
+                        () -> {});
             }
             case "sell" -> {
 
                 if (!citizen.hasCity()) {
-                    citizen.sendMessage("no city");
+                    citizen.sendMessage(Translator.of("citizen.no-city"));
                     return;
                 }
 
+                City city = citizen.getCity();
                 Land land = CitiesAPI.getInstance().getLandByLocation(citizen.getLocation());
 
                 if (land == null || !land.hasCity()) {
-                    citizen.sendMessage("null land or land has no city");
+                    citizen.sendMessage(Translator.of("land.other-land"));
                     return;
                 }
 
-                if (!citizen.getCity().equals(land.getCity())) {
-                    citizen.sendMessage("city != citizen's city");
+                if (land.isSpawnLand()) {
+                    citizen.sendMessage(Translator.of("land.is-spawn-land"));
                     return;
                 }
 
-//                if (citizen.hasPermission(PermissionNode.CITY_LAND_SELL)) {
-//                    citizen.sendMessage(Translator.of("command.no-permission"));
-//                    return;
-//                }
+                if (!city.equals(land.getCity())) {
+                    citizen.sendMessage(Translator.of("land.other-land"));
+                    return;
+                }
+
+                if (land.getOwner() == null || !land.getOwner().equals(citizen)) {
+                    if (!citizen.isMayor() && !citizen.hasPermission(PermissionNode.CITY_LAND_SELL)) {
+                        citizen.sendMessage(Translator.of("command.no-permission"));
+                        return;
+                    }
+                }
 
                 if (land.isSelling()) {
                     land.setSelling(false);
                     land.save();
-                    citizen.sendMessage("canceled selling");
+
+                    citizen.sendMessage(Translator.of("land.sell-cancel")
+                            .replace("%world%", land.getCord2().getWorld().getName())
+                            .replace("%x%", String.valueOf(land.getCord2().getX()))
+                            .replace("%z%", String.valueOf(land.getCord2().getZ())));
+
+                    city.broadcast(Translator.of("land.sell-cancel-broadcast")
+                                    .replace("%player%", citizen.getName())
+                                    .replace("%world%", land.getCord2().getWorld().getName())
+                                    .replace("%x%", String.valueOf(land.getCord2().getX()))
+                                    .replace("%z%", String.valueOf(land.getCord2().getZ())),
+                            true);
+
                 } else {
 
                     if (args.length < 2) {
-                        citizen.sendMessage("args error");
+                        citizen.sendMessage(Translator.of("command.not-enough-args"));
                         return;
                     }
 
@@ -133,7 +177,7 @@ public class LandCommand implements TabCompleter, CommandExecutor {
                     try {
                         price = Double.parseDouble(args[1]);
                     } catch (NumberFormatException e) {
-                        citizen.sendMessage("number exception");
+                        citizen.sendMessage(Translator.of("other.number-exception"));
                         return;
                     }
 
@@ -142,7 +186,17 @@ public class LandCommand implements TabCompleter, CommandExecutor {
 
                     land.save();
 
-                    citizen.sendMessage("sell");
+                    citizen.sendMessage(Translator.of("land.sell-land")
+                            .replace("%world%", land.getCord2().getWorld().getName())
+                            .replace("%x%", String.valueOf(land.getCord2().getX()))
+                            .replace("%z%", String.valueOf(land.getCord2().getZ())));
+
+                    city.broadcast(Translator.of("land.sell-land-broadcast")
+                            .replace("%player%", citizen.getName())
+                            .replace("%world%", land.getCord2().getWorld().getName())
+                            .replace("%x%", String.valueOf(land.getCord2().getX()))
+                            .replace("%z%", String.valueOf(land.getCord2().getZ())),
+                            true);
                 }
 
 

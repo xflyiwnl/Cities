@@ -1,0 +1,39 @@
+gui:
+  title: "Банк"
+  rows: 5
+  mask:
+    - "BBBBBBBBB"
+    - "BOOOOOOOB"
+    - "BOOIOHOOB"
+    - "BOOOOOOOB"
+    - "BBBBBBBBB"
+
+items:
+
+  info-item:
+    type: BANK
+    material: gold_ingot
+    amount: 1
+    name: "#FCD05CИнформация о банке"
+    lore:
+      - " "
+      - " #FFF4D6Баланс: #F1B823%current% монет"
+      - " "
+      - " #FFF4D6Содержание: #F1B823%upkeep% монет"
+      - " #F1B823⤷ #FFF4D6Город: #F1B823%upkeep-city% монет"
+      - " #F1B823⤷ #FFF4D6Территория: #F1B823%upkeep-lands% монет"
+      - " "
+    mask: "I"
+
+  history-item:
+    type: HISTORY
+    material: book
+    amount: 1
+    name: "#FCD05CИстория банка"
+    mask: "H"
+
+  border-item:
+    material: "black_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "B"

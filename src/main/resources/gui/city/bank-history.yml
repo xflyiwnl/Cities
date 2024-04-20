@@ -6,7 +6,7 @@ gui:
     - "BOOOOOOOB"
     - "BOOOOOOOB"
     - "BOOOOOOOB"
-    - "BBRPRNRBB"
+    - "BBRPENRBB"
 
 transaction-item:
   deposit:
@@ -73,3 +73,13 @@ items:
     mask: "P"
     action:
       - "[previous]"
+
+  exit-item:
+    material: barrier
+    amount: 1
+    name: "&cВыйти"
+    lore:
+      - " "
+    mask: "E"
+    action:
+      - "[exit]"

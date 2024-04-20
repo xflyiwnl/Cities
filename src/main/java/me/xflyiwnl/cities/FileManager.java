@@ -3,7 +3,11 @@ package me.xflyiwnl.cities;
 import me.xflyiwnl.cities.config.YAML;
 
 import java.io.File;
+import java.io.IOException;
+import java.net.URL;
+import java.util.ArrayList;
 import java.util.Arrays;
+import java.util.Enumeration;
 import java.util.List;
 
 public class FileManager {
@@ -26,10 +30,12 @@ public class FileManager {
     public void createGuis() {
         List<String> guis = Arrays.asList(
                 "city/citizens.yml",
+                "city/bank.yml",
                 "city/bank-history.yml",
                 "rank/rank.yml",
                 "rank/rank-edit.yml"
         );
+
         guis.forEach(gui -> get("gui/" + gui));
     }
 

@@ -84,10 +84,11 @@ public class CitizensGUI extends BaseGUI {
     private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Settinger.ofString("time.format"));
 
     public String applyPlaceholders(String text, Citizen guiCitizen) {
+        String formattedRanks = guiCitizen.formatRanks();
         return text
                 .replace("%city%", city.getName())
                 .replace("%name%", guiCitizen.getName())
-                .replace("%rank%", "Делаем")
+                .replace("%rank%", formattedRanks == null ? "Нет" : formattedRanks)
                 .replace("%joined%", formatter.format(guiCitizen.getJoinedCity()));
     }
 

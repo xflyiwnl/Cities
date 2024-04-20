@@ -31,13 +31,13 @@ public class CityTask extends CitiesTask {
         if (city == null)
             return;
 
-        player.sendActionBar(city.getName() + " / " + (
-                land.isSelling()
-                ? "Продаётся * " + land.getPrice()
-                : "") + " / " +
+        player.sendActionBar(city.getName() +
+                (land.isSelling()
+                ? " / Продаётся * " + land.getPrice() : "") +
                 (land.getOwner() != null
-                ? land.getOwner().getName()
-                : ""));
+                ? " / " + land.getOwner().getName() : "") +
+                (land.isSpawnLand()
+                ? " / home" : ""));
 
     }
 

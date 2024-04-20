@@ -58,6 +58,22 @@ public class Citizen extends CitiesObject implements RankHandler, BankHandler, S
         this.joinedCity = joinedCity;
     }
 
+    public String formatRanks() {
+        if (ranks.isEmpty())
+            return null;
+        List<Rank> ranks = this.ranks.values().stream().toList();
+        StringBuilder sb = new StringBuilder();
+        for (int i = 0; i < ranks.size(); i++) {
+            Rank rank = ranks.get(i);
+            if (i == 0) {
+                sb.append(rank.getTitle());
+            } else {
+                sb.append(", ").append(rank.getTitle());
+            }
+        }
+        return sb.toString();
+    }
+
     public void sendMessage(String text) {
         if (getPlayer() != null) {
             getPlayer().sendMessage(TextUtil.colorize(text));

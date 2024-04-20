@@ -5,7 +5,10 @@ language:
   command:
     not-enough-args: "#FCD05C&lCities &7⇒ #FFF4D6Недостаточно аргументов для полноценной команды"
     unknown-arg: "#FCD05C&lCities &7⇒ #FFF4D6Неизвестный аргумент команды"
-    no-permission: ""
+    no-permission: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет прав, чтобы выполнить эту команду"
+
+  other:
+    number-exception: "#FCD05C&lCities &7⇒ #FFF4D6Ошибка! Вы ввели не цифру"
 
   time:
     new-day: "#FCD05C&lCities &7⇒ #FFF4D6Новый день! Налоги собраны."
@@ -23,6 +26,7 @@ language:
       citizen: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет столько монет"
       country: "#FCD05C&lCities &7⇒ #FFF4D6В городе нет столько монет"
       city: "#FCD05C&lCities &7⇒ #FFF4D6В городе нет столько монет"
+      city-with-money: "#FCD05C&lCities &7⇒ #FFF4D6В банке города не хватает #FCD05C%money% монет"
     amount-error: "#FCD05C&lCities &7⇒ #FFF4D6Можно пополнять от #FCD05C1 #FFF4D6до #FCD05C1 000 000 #FFF4D6монет"
     deposit-format: "#FCD05C[%name%] %player% #FFF4D6пополнил банк на #F1B823%amount% монет"
     withdraw-format: "#FCD05C[%name%] %player% #FFF4D6снял с банка #F1B823%amount% монет"
@@ -73,6 +77,7 @@ language:
     confirmation-messages:
       city-remove: "Вы действительно хотите удалить свой город?"
       city-create: "Вы уверены, что хотите основать свой город за 50 монет?"
+      buy-land: "Вы уверены, что хотите купить территорию за %money% монет?"
 
   invite:
     invite-self: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете отправить приглашение самому себе"
@@ -145,11 +150,26 @@ language:
 
   land:
     already-claimed: "#FCD05C&lCities &7⇒ #FFF4D6Эта территория принадлежит городу #F1B823%city%"
-    land-claim: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно колонизировали территорию #FCD05C(%world%, %x%, %z%)"
+    land-claim: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно колонизировали территорию #FCD05C(%world%, %x%, %z%) &fза #FCD05C%money% монет"
     free-land: "#FCD05C&lCities &7⇒ #FFF4D6Данная территория никем не занята"
     land-unclaim: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно де-колонизировали территорию #FCD05C(%world%, %x%, %z%)"
     not-connected: "#FCD05C&lCities &7⇒ #FFF4D6Нет ваших территории в соседних территориях (чанки)"
     unclaim-spawnland: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете расприватить территорию со спавном"
+
+    not-selling: "#FCD05C&lCities &7⇒ #FFF4D6Данная территория не продаётся"
+    is-owner: "#FCD05C&lCities &7⇒ #FFF4D6Вы уже владеете этой территорией"
+    other-land: "#FCD05C&lCities &7⇒ #FFF4D6Данная территория не входит в состав вашего города"
+
+    buy-land: "#FCD05C&lCities &7⇒ #FFF4D6Вы купили территорию #FCD05C(%world%, %x%, %z%)"
+    buy-land-broadcast: "#FCD05C%player% #FFF4D6купил территорию #FCD05C(%world%, %x%, %z%)"
+
+    sell-land: "#FCD05C&lCities &7⇒ #FFF4D6Вы выставили на продажу территорию #FCD05C(%world%, %x%, %z%)"
+    sell-land-broadcast: "#FCD05C%player% #FFF4D6выставил на продажу территорию #FCD05C(%world%, %x%, %z%)"
+
+    sell-cancel: "#FCD05C&lCities &7⇒ #FFF4D6Вы отменили продажу территорий #FCD05C(%world%, %x%, %z%)"
+    sell-cancel-broadcast: "#FCD05C%player% #FFF4D6отменил продажу территорий #FCD05C(%world%, %x%, %z%)"
+
+    is-spawn-land: "#FCD05C&lCities &7⇒ #FFF4D6Эта территория является спавном"
 
   country:
     creation-name-error: "#FCD05C&lCities &7⇒ #FFF4D6Страна с таким названием уже существует"

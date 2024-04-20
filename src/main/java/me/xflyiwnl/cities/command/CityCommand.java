@@ -3,6 +3,7 @@ package me.xflyiwnl.cities.command;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.city.BankHistoryGUI;
 import me.xflyiwnl.cities.gui.city.CitizensGUI;
+import me.xflyiwnl.cities.gui.city.CityBankGUI;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
 import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.bank.Transaction;
@@ -628,7 +629,7 @@ public class CityCommand implements CommandExecutor, TabCompleter {
         }
 
         if (args.length == 1) {
-            BankHistoryGUI.openGUI(citizen.getPlayer(), citizen, citizen.getCity());
+            CityBankGUI.openGUI(citizen.getPlayer(), citizen, citizen.getCity());
             return;
         }
 
@@ -720,6 +721,14 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                     return;
                 }
 
+                double price = Settinger.ofDouble("economy.land-price");
+
+                if (city.getBank().current() < price) {
+                    citizen.sendMessage(Translator.of("economy.not-enough-money.city-with-money")
+                            .replace("%money%", String.valueOf(price - city.getBank().current())));
+                    return;
+                }
+
                 Land land = new Land(
                         worldCord2, LandType.DEFAULT, city
                 );
@@ -735,7 +744,16 @@ public class CityCommand implements CommandExecutor, TabCompleter {
                 city.claimLand(land);
                 city.save();
 
+                city.getBank().withdraw(price);
+
+                city.getBank().transactions().add(
+                        new Transaction(
+                                citizen.getName(), price, "Колонизация территории", TransactionType.WITHDRAW
+                        )
+                );
+
                 citizen.sendMessage(Translator.of("land.land-claim")
+                        .replace("%money%", String.valueOf(price))
                         .replace("%world%", land.getCord2().getWorld().getName())
                         .replace("%x%", String.valueOf(land.getCord2().getX()))
                         .replace("%z%", String.valueOf(land.getCord2().getZ())));
