@@ -9,17 +9,17 @@ gui:
     - "BBRPENRBB"
 
 citizen-item:
-  name: "#46CAB1%name%"
+  name: "#2ee998%name%"
   lore:
     - " "
-    - " &fРанг: #46CAB1%rank%"
-    - " &fВступил: #46CAB1%joined%"
+    - " &fРанг: #FCD05C%rank%"
+    - " &fВступил: #6CE25F%joined%"
     - " "
 
 items:
 
   border-item:
-    material: "black_stained_glass_pane"
+    material: "gray_stained_glass_pane"
     amount: 1
     name: " "
     mask: "B"
@@ -30,32 +30,40 @@ items:
     name: " "
     mask: "R"
 
-  exit-item:
-    material: barrier
-    amount: 1
-    name: "&cВыйти"
-    lore:
-      - " "
-    mask: "E"
-    action:
-      - "[exit]"
-
   search-item:
     material: book
     amount: 1
-    name: "#46CAB1Поиск"
+    name: "#4498DBПоиск"
     lore:
+      - " "
+      - " &7Поиск игрока #4498DBпо имени"
+      - " &7или #4498DBключевому слову"
+      - " "
+      - " #4498DB➡ &fНажмите, чтобы искать"
       - " "
     mask: "S"
     action:
       - "[search]"
 
+  exit-item:
+    material: barrier
+    amount: 1
+    name: "#ED4040Выйти"
+    lore:
+      - " "
+      - " &7Возвращает вас в главное"
+      - " &7меню #ED4040вашего города"
+      - " "
+      - " #ED4040➡ &fНажмите, чтобы открыть"
+      - " "
+    mask: "E"
+    action:
+      - "[exit]"
+
   next-item:
     material: arrow
     amount: 1
-    name: "#46CAB1Следующая страница"
-    lore:
-      - " "
+    name: "#6CE25FСледующая страница"
     mask: "N"
     action:
       - "[next]"
@@ -63,9 +71,7 @@ items:
   prev-item:
     material: arrow
     amount: 1
-    name: "#46CAB1Предыдущая страница"
-    lore:
-      - " "
+    name: "#ED4040Предыдущая страница"
     mask: "P"
     action:
       - "[previous]"

@@ -36,7 +36,9 @@ public class FileManager {
                 "city/bank-history.yml",
 
                 "rank/rank.yml",
-                "rank/rank-edit.yml"
+                "rank/rank-edit.yml",
+
+                "switch/switch.yml"
         );
 
         guis.forEach(gui -> get("gui/" + gui));

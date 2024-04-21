@@ -5,6 +5,7 @@ import me.xflyiwnl.cities.object.bank.BankHandler;
 import me.xflyiwnl.cities.object.bank.types.GovernmentBank;
 import me.xflyiwnl.cities.object.rank.RankHandler;
 import me.xflyiwnl.cities.object.rank.Rank;
+import me.xflyiwnl.cities.object.switches.Switch;
 
 import java.util.HashMap;
 import java.util.Map;
@@ -14,6 +15,7 @@ public abstract class Government extends CitiesObject implements BankHandler, Ra
 
     private Bank bank = new GovernmentBank(this);
     private Map<UUID, Rank> ranks = new HashMap<>();
+    private Switch switches = new Switch();
 
     public Government() {
     }
@@ -61,6 +63,14 @@ public abstract class Government extends CitiesObject implements BankHandler, Ra
 
     public void setBank(Bank bank) {
         this.bank = bank;
+    }
+
+    public Switch getSwitches() {
+        return switches;
+    }
+
+    public void setSwitches(Switch switches) {
+        this.switches = switches;
     }
 
 }

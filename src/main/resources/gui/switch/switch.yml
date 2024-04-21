@@ -1,0 +1,97 @@
+gui:
+  title: "Переключатели"
+  rows: 6
+  mask:
+    - "BBOOOOOBB"
+    - "BOOOOOOOB"
+    - "BO1OOO4OB"
+    - "BOO2O3OOB"
+    - "BOOOOOOOB"
+    - "BBBRERBBB"
+
+status:
+  on-placeholder: "#6CE25FВключён"
+  off-placeholder: "#ED4040Выключен"
+
+off-material: red_wool
+
+items:
+
+  pvp-item:
+    type: PVP
+    material: iron_sword
+    amount: 4
+    name: "#ED4040PVP"
+    lore:
+      - " "
+      - " &fСтатус: %status%"
+      - " "
+      - " #ED4040➡ &fНажмите, чтобы выйти"
+      - " "
+    mask: "4"
+
+  explode-item:
+    type: EXPLODE
+    material: tnt
+    amount: 3
+    name: "#FCD05CВзрыв"
+    lore:
+      - " "
+      - " &fСтатус: %status%"
+      - " "
+      - " #FCD05C➡ &fНажмите, чтобы выйти"
+      - " "
+    mask: "3"
+
+  burn-item:
+    type: BURNING
+    material: flint_and_steel
+    amount: 2
+    name: "#4498DBОгонь"
+    lore:
+      - " "
+      - " &fСтатус: %status%"
+      - " "
+      - " #4498DB➡ &fНажмите, чтобы выйти"
+      - " "
+    mask: "2"
+
+  mob-item:
+    type: ENEMY_MOB
+    material: rotten_flesh
+    amount: 1
+    name: "#9863E7Злые монстры"
+    lore:
+      - " "
+      - " &fСтатус: %status%"
+      - " "
+      - " #9863E7➡ &fНажмите, чтобы выйти"
+      - " "
+    mask: "1"
+
+  exit-item:
+    material: barrier
+    amount: 1
+    name: "#ED4040Выйти"
+    lore:
+      - " "
+      - " &7Возвращает вас в главное"
+      - " &7меню #ED4040вашего города"
+      - " "
+      - " #ED4040➡ &fНажмите, чтобы открыть"
+      - " "
+    mask: "E"
+    action:
+      - "[exit]"
+
+  border-item:
+    material: "gray_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "B"
+
+  second-border-item:
+    material: "light_gray_stained_glass_pane"
+    amount: 1
+    name: " "
+    mask: "R"

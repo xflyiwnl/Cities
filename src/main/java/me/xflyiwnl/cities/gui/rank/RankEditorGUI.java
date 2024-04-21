@@ -87,7 +87,7 @@ public class RankEditorGUI extends BaseGUI {
         return text
                 .replace("%name%", node.toString().toLowerCase())
                 .replace("%title%", rank.getTitle())
-                .replace("%status%", rank.hasPermission(node) ? "&aВключен" : "&cВыключен")
+                .replace("%status%", rank.hasPermission(node) ? "#6CE25FВключен" : "#ED4040Выключен")
                 .replace("%lore%", node.getLore());
     }
 

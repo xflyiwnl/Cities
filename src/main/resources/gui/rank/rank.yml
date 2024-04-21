@@ -9,17 +9,17 @@ gui:
     - "BBRPENRBC"
 
 rank-item:
-  name: "#46CAB1%name%"
+  name: "#2ee998%name%"
   lore:
     - " "
-    - " #46CAB1ЛКМ &7- &fредактировать"
-    - " #46CAB1ПКМ &7- &fудалить"
+    - " #6CE25FЛКМ &7➡ &fредактировать"
+    - " #ED4040ПКМ &7➡ &fудалить"
     - " "
 
 items:
 
   border-item:
-    material: "black_stained_glass_pane"
+    material: "gray_stained_glass_pane"
     amount: 1
     name: " "
     mask: "B"
@@ -33,26 +33,36 @@ items:
   exit-item:
     material: barrier
     amount: 1
-    name: "&cВыйти"
+    name: "#ED4040Выйти"
     lore:
+      - " "
+      - " &7Возвращает вас в главное"
+      - " &7меню #ED4040вашего города"
+      - " "
+      - " #ED4040➡ &fНажмите, чтобы открыть"
       - " "
     mask: "E"
     action:
       - "[exit]"
 
   info-item:
+    type: rank
     material: lectern
     amount: 1
-    name: "#46CAB1Информация"
+    name: "#2ee998Информация"
     lore:
+      - " "
+      - " &fКоличество: #2ee998%ranks% рангов"
       - " "
     mask: "I"
 
   create-item:
     material: writable_book
     amount: 1
-    name: "#46CAB1Создать ранг"
+    name: "#FCD05CСоздать ранг"
     lore:
+      - " "
+      - " #FCD05C➡ &fНажмите, чтобы создать"
       - " "
     mask: "C"
     action:
@@ -61,9 +71,7 @@ items:
   next-item:
     material: arrow
     amount: 1
-    name: "#46CAB1Следующая страница"
-    lore:
-      - " "
+    name: "#6CE25FСледующая страница"
     mask: "N"
     action:
       - "[next]"
@@ -71,9 +79,7 @@ items:
   prev-item:
     material: arrow
     amount: 1
-    name: "#46CAB1Предыдущая страница"
-    lore:
-      - " "
+    name: "#ED4040Предыдущая страница"
     mask: "P"
     action:
       - "[previous]"

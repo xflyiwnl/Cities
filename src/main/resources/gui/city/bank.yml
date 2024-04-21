@@ -2,7 +2,7 @@ gui:
   title: "Банк"
   rows: 5
   mask:
-    - "BBBBBBBBB"
+    - "BBOOOOOBB"
     - "BOOOOOOOB"
     - "BOOIOHOOB"
     - "BOOOOOOOB"
@@ -14,14 +14,14 @@ items:
     type: BANK
     material: gold_ingot
     amount: 1
-    name: "#FCD05CИнформация о банке"
+    name: "#4498DBИнформация о банке"
     lore:
       - " "
-      - " #FFF4D6Баланс: #F1B823%current% монет"
+      - " &fТекущий баланс: #6CE25F%current%$"
       - " "
-      - " #FFF4D6Содержание: #F1B823%upkeep% монет"
-      - " #F1B823⤷ #FFF4D6Город: #F1B823%upkeep-city% монет"
-      - " #F1B823⤷ #FFF4D6Территория: #F1B823%upkeep-lands% монет"
+      - " &fСодержание: #ED4040%upkeep%$ &7(в день) "
+      - "  #4498DB&l⤷ &fГород: #C53434%upkeep-city%$"
+      - "  #4498DB&l⤷ &fТерритория: #C53434%upkeep-lands%$"
       - " "
     mask: "I"
 
@@ -30,20 +30,32 @@ items:
     material: book
     amount: 1
     name: "#FCD05CИстория банка"
+    lore:
+      - " "
+      - " &7Все #6CE25Fфинансовые операции &7будут"
+      - " &7записаны здесь, в #FCD05Cисторию транзакций "
+      - " "
+      - " #FCD05C➡ &fНажмите, чтобы открыть"
+      - " "
     mask: "H"
 
   exit-item:
     material: barrier
     amount: 1
-    name: "&cВыйти"
+    name: "#ED4040Выйти"
     lore:
+      - " "
+      - " &7Возвращает вас в главное"
+      - " &7меню #ED4040вашего города"
+      - " "
+      - " #ED4040➡ &fНажмите, чтобы открыть"
       - " "
     mask: "E"
     action:
       - "[exit]"
 
   border-item:
-    material: "black_stained_glass_pane"
+    material: "gray_stained_glass_pane"
     amount: 1
     name: " "
     mask: "B"

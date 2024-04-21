@@ -1,8 +1,8 @@
 gui:
-  title: "История транзакций: %city%"
+  title: "История: %city%"
   rows: 5
   mask:
-    - "BBBBBBBBB"
+    - "BBBRRRBBB"
     - "BOOOOOOOB"
     - "BOOOOOOOB"
     - "BOOOOOOOB"
@@ -11,39 +11,39 @@ gui:
 transaction-item:
   deposit:
     material: lime_dye
-    name: "&a%date%"
+    name: "#6CE25F%date%"
     lore:
       - " "
-      - " &fОт кого: &a%from%"
-      - " &fСумма: &a+%amount%"
+      - " &fОт кого: #2ee998%from%"
+      - " &fСумма: #6CE25F+%amount%$"
       - " "
-      - " &fПричина: &a%reason%"
+      - " &fПричина: #FCD05C%reason%"
       - " "
   withdraw:
     material: red_dye
-    name: "&c%date%"
+    name: "#ED4040%date%"
     lore:
       - " "
-      - " &fОт кого: &c%from%"
-      - " &fСумма: &c-%amount%"
+      - " &fОт кого: #C53434%from%"
+      - " &fСумма: #ED4040-%amount%$"
       - " "
-      - " &fПричина: &c%reason%"
+      - " &fПричина: #FCD05C%reason%"
       - " "
   set:
     material: yellow_dye
     name: "&e%date%"
     lore:
       - " "
-      - " &fОт кого: &e%from%"
-      - " &fСумма: &e%amount%"
+      - " &fОт кого: #2ee998%from%"
+      - " &fСумма: &e%amount%$"
       - " "
-      - " &fПричина: &e%reason%"
+      - " &fПричина: #FCD05C%reason%"
       - " "
 
 items:
 
   border-item:
-    material: "black_stained_glass_pane"
+    material: "gray_stained_glass_pane"
     amount: 1
     name: " "
     mask: "B"
@@ -54,12 +54,25 @@ items:
     name: " "
     mask: "R"
 
+  exit-item:
+    material: barrier
+    amount: 1
+    name: "#ED4040Выйти"
+    lore:
+      - " "
+      - " &7Возвращает вас в главное"
+      - " &7меню #ED4040вашего города"
+      - " "
+      - " #ED4040➡ &fНажмите, чтобы открыть"
+      - " "
+    mask: "E"
+    action:
+      - "[exit]"
+
   next-item:
     material: arrow
     amount: 1
-    name: "#46CAB1Следующая страница"
-    lore:
-      - " "
+    name: "#6CE25FСледующая страница"
     mask: "N"
     action:
       - "[next]"
@@ -67,19 +80,7 @@ items:
   prev-item:
     material: arrow
     amount: 1
-    name: "#46CAB1Предыдущая страница"
-    lore:
-      - " "
+    name: "#ED4040Предыдущая страница"
     mask: "P"
     action:
       - "[previous]"
-
-  exit-item:
-    material: barrier
-    amount: 1
-    name: "&cВыйти"
-    lore:
-      - " "
-    mask: "E"
-    action:
-      - "[exit]"

@@ -5,6 +5,7 @@ import me.xflyiwnl.cities.Cities;
 import me.xflyiwnl.cities.CitiesAPI;
 import me.xflyiwnl.cities.gui.BaseGUI;
 import me.xflyiwnl.cities.gui.rank.RankGUI;
+import me.xflyiwnl.cities.gui.switches.SwitchGUI;
 import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.util.Settinger;
@@ -112,7 +113,22 @@ public class ScreenGUI extends BaseGUI {
                 });
             }
 
-            case "switch", "permission" -> {
+            case "switch" -> {
+                String name = "";
+                List<String> lore = new ArrayList<>();
+
+                if (getYaml().contains(path + ".name"))
+                    name = getYaml().getString(path + ".name");
+
+                if (getYaml().contains(path + ".lore"))
+                    lore = getYaml().getStringList(path + ".lore");
+
+                createItem(path, name, lore, clickStaticItemEvent -> {
+                    SwitchGUI.openGUI(getPlayer(), citizen, city);
+                });
+            }
+
+            case "permission" -> {
                 String name = "";
                 List<String> lore = new ArrayList<>();
 

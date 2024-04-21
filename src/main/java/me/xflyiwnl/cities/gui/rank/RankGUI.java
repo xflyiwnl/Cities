@@ -12,12 +12,15 @@ import me.xflyiwnl.cities.object.city.City;
 import me.xflyiwnl.cities.object.country.Country;
 import me.xflyiwnl.cities.object.rank.Rank;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
+import me.xflyiwnl.colorfulgui.builder.item.StaticItemBuilder;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.object.event.click.ClickStaticItemEvent;
 import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
+import org.bukkit.inventory.ItemFlag;
 
+import java.util.ArrayList;
 import java.util.List;
 import java.util.stream.Collectors;
 
@@ -157,6 +160,59 @@ public class RankGUI extends BaseGUI {
                 },
                 () -> {}
         );
+    }
+
+    @Override
+    public void typeItem(String path, String type) {
+        super.typeItem(path, type);
+
+        if (type.equalsIgnoreCase("rank")) {
+            List<String> action = getYaml().get(path + ".action") != null ? getYaml().getStringList(path + ".action") : new ArrayList<>();
+
+            StaticItemBuilder builder = getApi().staticItem()
+                    .flags(ItemFlag.HIDE_ATTRIBUTES, ItemFlag.HIDE_POTION_EFFECTS)
+                    .action(event -> {
+                        handleAction(event, action);
+                    });
+
+            String vpath = path + ".material";
+            if (getYaml().contains(vpath))
+                builder.material(Material.valueOf(getYaml().getString(vpath).toUpperCase()));
+
+            vpath = path + ".amount";
+            if (getYaml().contains(vpath))
+                builder.amount(getYaml().getInt(vpath));
+
+            vpath = path + ".name";
+            if (getYaml().contains(vpath))
+                builder.name(applyRankPlaceholders(getYaml().getString(vpath)));
+
+            vpath = path + ".lore";
+            if (getYaml().contains(vpath))
+                builder.lore(getYaml().getStringList(vpath).stream()
+                        .map(this::applyRankPlaceholders)
+                        .collect(Collectors.toList()));
+
+            StaticItem staticItem = builder.build();
+
+            vpath = path + ".mask";
+            if (getYaml().contains(vpath))
+                getGui().addMask(getYaml().getString(vpath), staticItem);
+
+            vpath = path + ".slot";
+            if (getYaml().contains(vpath))
+                getGui().setItem(getYaml().getInt(vpath), staticItem);
+
+            vpath = path + ".slots";
+            if (getYaml().contains(vpath))
+                getYaml().getIntegerList(vpath).forEach(integer -> {
+                    getGui().setItem(integer, staticItem);
+                });
+        }
+    }
+
+    public String applyRankPlaceholders(String text) {
+        return text.replace("%ranks%", String.valueOf(government.getRanks().size()));
     }
 
     public static void openGUI(Player player, Government government) {

@@ -5,6 +5,7 @@ import me.xflyiwnl.cities.gui.BaseGUI;
 import me.xflyiwnl.cities.object.citizen.Citizen;
 import me.xflyiwnl.cities.object.bank.Transaction;
 import me.xflyiwnl.cities.object.city.City;
+import me.xflyiwnl.cities.util.Settinger;
 import me.xflyiwnl.colorfulgui.ColorfulGUI;
 import me.xflyiwnl.colorfulgui.object.StaticItem;
 import me.xflyiwnl.colorfulgui.object.event.click.ClickStaticItemEvent;
@@ -12,6 +13,7 @@ import org.bukkit.Material;
 import org.bukkit.configuration.file.YamlConfiguration;
 import org.bukkit.entity.Player;
 import org.bukkit.inventory.ItemFlag;
+import org.bukkit.inventory.ItemStack;
 
 import java.time.format.DateTimeFormatter;
 import java.util.Comparator;
@@ -75,9 +77,10 @@ public class BankHistoryGUI extends BaseGUI {
 
     }
 
-    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern("dd-MM-yyyy HH:mm");
+    private DateTimeFormatter formatter = DateTimeFormatter.ofPattern(Settinger.ofString("time.format"));
 
     public String applyPlaceholders(String text, Transaction transaction) {
+        
         return text
                 .replace("%from%", transaction.getFrom())
                 .replace("%reason%", transaction.getReason())

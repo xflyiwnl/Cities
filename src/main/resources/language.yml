@@ -1,76 +1,89 @@
 language:
 
-#   "#46CAB1&lCities &7⇒ #FFF4D6"
+  #   "#46CAB1&lCities &7☄ &f"
+
+  # MAIN = #2ee998
+  # SECOND = #2BC983
+  # ORANGE = #FCD05C
+  # DARKORANGE = #F1B823
+  # BLUE = #4498DB
+  # РОЗОВЫЙ = #E43A96
+  # PURPLE = #9863E7
+  # GREEN = #6CE25F
+  # RED = #ED4040
+  # DARKRED = #C53434
+
+  # ➡ , ☄
 
   command:
-    not-enough-args: "#FCD05C&lCities &7⇒ #FFF4D6Недостаточно аргументов для полноценной команды"
-    unknown-arg: "#FCD05C&lCities &7⇒ #FFF4D6Неизвестный аргумент команды"
-    no-permission: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет прав, чтобы выполнить эту команду"
+    not-enough-args: "#2ee998&lCities &7☄ &fНедостаточно аргументов для полноценной команды"
+    unknown-arg: "#2ee998&lCities &7☄ &fНеизвестный аргумент команды"
+    no-permission: "#2ee998&lCities &7☄ &fУ вас нет прав, чтобы выполнить эту команду"
 
   other:
-    number-exception: "#FCD05C&lCities &7⇒ #FFF4D6Ошибка! Вы ввели не цифру"
+    number-exception: "#2ee998&lCities &7☄ &fОшибка! Вы ввели не цифру"
 
   time:
-    new-day: "#FCD05C&lCities &7⇒ #FFF4D6Новый день! Налоги собраны."
-    command: "#FCD05C&lCities &7⇒ #FFF4D6До нового дня осталось #F1B823%hours% часов, %minutes% минут"
+    new-day: "#2ee998&lCities &7☄ &fНовый день! Налоги собраны."
+    command: "#2ee998&lCities &7☄ &fДо нового дня осталось #2BC983%hours% часов, %minutes% минут"
 
     collapsed:
-      city: "#FCD05C&lCities &7⇒ #FFF4D6Ваш город не смог оплатить налоги и развалился."
-      city-all: "#FCD05C&lCities &7⇒ #FFF4D6Город #F1B823%city% #FFF4D6не смог оплатить налоги и развалился"
+      city: "#2ee998&lCities &7☄ &fВаш город не смог оплатить налоги и развалился."
+      city-all: "#2ee998&lCities &7☄ &fГород #2BC983%city% &fне смог оплатить налоги и развалился"
 
     upkeep:
-      city: "#FCD05C&lCities &7⇒ #FFF4D6Ваш город заплатил налог в #FCD05C%money% монет"
+      city: "#2ee998&lCities &7☄ &fВаш город заплатил налог в #2ee998%money% монет"
 
   economy:
     not-enough-money:
-      citizen: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет столько монет"
-      country: "#FCD05C&lCities &7⇒ #FFF4D6В городе нет столько монет"
-      city: "#FCD05C&lCities &7⇒ #FFF4D6В городе нет столько монет"
-      city-with-money: "#FCD05C&lCities &7⇒ #FFF4D6В банке города не хватает #FCD05C%money% монет"
-    amount-error: "#FCD05C&lCities &7⇒ #FFF4D6Можно пополнять от #FCD05C1 #FFF4D6до #FCD05C1 000 000 #FFF4D6монет"
-    deposit-format: "#FCD05C[%name%] %player% #FFF4D6пополнил банк на #F1B823%amount% монет"
-    withdraw-format: "#FCD05C[%name%] %player% #FFF4D6снял с банка #F1B823%amount% монет"
+      citizen: "#2ee998&lCities &7☄ &fУ вас нет столько монет"
+      country: "#2ee998&lCities &7☄ &fВ городе нет столько монет"
+      city: "#2ee998&lCities &7☄ &fВ городе нет столько монет"
+      city-with-money: "#2ee998&lCities &7☄ &fВ банке города не хватает #2ee998%money% монет"
+    amount-error: "#2ee998&lCities &7☄ &fМожно пополнять от #2ee9981 &fдо #2ee9981 000 000 &fмонет"
+    deposit-format: "#2ee998[%name%] %player% &fпополнил банк на #2BC983%amount% монет"
+    withdraw-format: "#2ee998[%name%] %player% &fснял с банка #2BC983%amount% монет"
 
   rank:
-    create-rank: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно создали ранг: #F1B823%rank%"
-    title-format: "#FCD05C&lCities &7⇒ #FFF4D6В названии ранга не должно быть пробелов и прочих символов"
-    rank-remove: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно удалили ранг: #F1B823%rank%"
+    create-rank: "#2ee998&lCities &7☄ &fВы успешно создали ранг: #2BC983%rank%"
+    title-format: "#2ee998&lCities &7☄ &fВ названии ранга не должно быть пробелов и прочих символов"
+    rank-remove: "#2ee998&lCities &7☄ &fВы успешно удалили ранг: #2BC983%rank%"
 
-    rank-exists: "#FCD05C&lCities &7⇒ #FFF4D6Такой ранг уже существует"
-    unknown-rank: "#FCD05C&lCities &7⇒ #FFF4D6Такого ранга не существует"
+    rank-exists: "#2ee998&lCities &7☄ &fТакой ранг уже существует"
+    unknown-rank: "#2ee998&lCities &7☄ &fТакого ранга не существует"
 
-    citizen-no-rank: "#FCD05C&lCities &7⇒ #FFF4D6У данного игрока нет такого ранга"
-    citizen-has-rank: "#FCD05C&lCities &7⇒ #FFF4D6У данного игрока уже имеется такой ранг"
+    citizen-no-rank: "#2ee998&lCities &7☄ &fУ данного игрока нет такого ранга"
+    citizen-has-rank: "#2ee998&lCities &7☄ &fУ данного игрока уже имеется такой ранг"
 
-    given-rank: "#FCD05C&lCities &7⇒ #FFF4D6Вы выдали ранг #F1B823%rank% #FFF4D6игроку #F1B823%player%"
-    given-rank-request: "#FCD05C&lCities &7⇒ #FFF4D6Вам был выдан ранг #F1B823%rank%"
-    given-rank-broadcast: "#F1B823%sender% #FFF4D6выдал ранг #F1B823%rank% #FFF4D6игроку #F1B823%player%"
+    given-rank: "#2ee998&lCities &7☄ &fВы выдали ранг #2BC983%rank% &fигроку #2BC983%player%"
+    given-rank-request: "#2ee998&lCities &7☄ &fВам был выдан ранг #2BC983%rank%"
+    given-rank-broadcast: "#2BC983%sender% &fвыдал ранг #2BC983%rank% &fигроку #2BC983%player%"
 
-    taken-rank: "#FCD05C&lCities &7⇒ #FFF4D6Вы забрали ранг #F1B823%rank% #FFF4D6у игрока #F1B823%player%"
-    taken-rank-request: "#FCD05C&lCities &7⇒ #FFF4D6У вас забрали ранг #F1B823%rank%"
-    taken-rank-broadcast: "#F1B823%sender% #FFF4D6забрал ранг #F1B823%rank% #FFF4D6у игрока #F1B823%player%"
+    taken-rank: "#2ee998&lCities &7☄ &fВы забрали ранг #2BC983%rank% &fу игрока #2BC983%player%"
+    taken-rank-request: "#2ee998&lCities &7☄ &fУ вас забрали ранг #2BC983%rank%"
+    taken-rank-broadcast: "#2BC983%sender% &fзабрал ранг #2BC983%rank% &fу игрока #2BC983%player%"
 
   ask:
-    has-ask: "#FCD05C&lCities &7⇒ #FFF4D6У вас уже есть вопрос, ответьте на него"
+    has-ask: "#2ee998&lCities &7☄ &fУ вас уже есть вопрос, ответьте на него"
 
-    on-cancel: "#FCD05C&lCities &7⇒ #FFF4D6Вы отклонили вопрос"
-    time-out: "#FCD05C&lCities &7⇒ #FFF4D6Время на вопрос вышло"
+    on-cancel: "#2ee998&lCities &7☄ &fВы отклонили вопрос"
+    time-out: "#2ee998&lCities &7☄ &fВремя на вопрос вышло"
 
-    message: "#FFF4D6%message%\n#FFF4D6Или напишите в чат &cотмена#FFF4D6, если хотите отказаться от вопроса"
+    message: "&f%message%\n&fИли напишите в чат &cотмена&f, если хотите отказаться от вопроса"
 
     ask-messages:
       rank-create: "Введите в чат название ранга"
       search-citizen: "Введите в чат никнейм игрока &7(xfl, xfly, xflyiwnl)"
 
   confirmation:
-    no-confirmations: "#FCD05C&lCities &7⇒ #FFF4D6Вам нечего подтверждать"
-    has-confirmation: "#FCD05C&lCities &7⇒ #FFF4D6У вас уже имеется подтверждение, ответьте на него и попробуйте опять"
+    no-confirmations: "#2ee998&lCities &7☄ &fВам нечего подтверждать"
+    has-confirmation: "#2ee998&lCities &7☄ &fУ вас уже имеется подтверждение, ответьте на него и попробуйте опять"
 
-    on-accept: "#FCD05C&lCities &7⇒ #FFF4D6Вы приняли предложение"
-    on-decline: "#FCD05C&lCities &7⇒ #FFF4D6Вы отклонили предложение"
-    time-out: "#FCD05C&lCities &7⇒ #FFF4D6Время на подтверждение вышло"
+    on-accept: "#2ee998&lCities &7☄ &fВы приняли предложение"
+    on-decline: "#2ee998&lCities &7☄ &fВы отклонили предложение"
+    time-out: "#2ee998&lCities &7☄ &fВремя на подтверждение вышло"
 
-    message: "#FFF4D6%message%"
+    message: "&f%message%"
     accept: "&r     &a[Принять]       &r"
     decline: "&c[Отклонить]"
 
@@ -80,105 +93,105 @@ language:
       buy-land: "Вы уверены, что хотите купить территорию за %money% монет?"
 
   invite:
-    invite-self: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете отправить приглашение самому себе"
-    receiver-has-invite: "#FCD05C&lCities &7⇒ #FFF4D6Игрок уже приглашён куда-то, повторите попытку позже"
-    no-invite: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет приглашений"
+    invite-self: "#2ee998&lCities &7☄ &fВы не сможете отправить приглашение самому себе"
+    receiver-has-invite: "#2ee998&lCities &7☄ &fИгрок уже приглашён куда-то, повторите попытку позже"
+    no-invite: "#2ee998&lCities &7☄ &fУ вас нет приглашений"
 
     receiver-has:
-      city: "#FCD05C&lCities &7⇒ #FFF4D6Игрок уже состоит в городе #F1B823%city%"
-      country: "#FCD05C&lCities &7⇒ #FFF4D6Город уже состоит в стране #F1B823%country%"
+      city: "#2ee998&lCities &7☄ &fИгрок уже состоит в городе #2BC983%city%"
+      country: "#2ee998&lCities &7☄ &fГород уже состоит в стране #2BC983%country%"
 
-    has-invite: "#FCD05C&lCities &7⇒ #FFF4D6Получатель уже приглашён куда-то, повторите попытку чуть позже"
-    invite-send: "#FCD05C&lCities &7⇒ #FFF4D6Ваше приглашение было отправлено"
+    has-invite: "#2ee998&lCities &7☄ &fПолучатель уже приглашён куда-то, повторите попытку чуть позже"
+    invite-send: "#2ee998&lCities &7☄ &fВаше приглашение было отправлено"
 
-    on-accept-receiver: "#FCD05C&lCities &7⇒ #FFF4D6Вы приняли приглашение"
-    on-accept-sender: "#FCD05C&lCities &7⇒ #FFF4D6Ваше приглашение было принято"
+    on-accept-receiver: "#2ee998&lCities &7☄ &fВы приняли приглашение"
+    on-accept-sender: "#2ee998&lCities &7☄ &fВаше приглашение было принято"
 
-    on-decline-receiver: "#FCD05C&lCities &7⇒ #FFF4D6Вы отклонили приглашение"
-    on-decline-sender: "#FCD05C&lCities &7⇒ #FFF4D6Ваше приглашение было отклонено"
+    on-decline-receiver: "#2ee998&lCities &7☄ &fВы отклонили приглашение"
+    on-decline-sender: "#2ee998&lCities &7☄ &fВаше приглашение было отклонено"
 
-    time-out: "#FCD05C&lCities &7⇒ #FFF4D6Время на подтверждение приглашения вышло"
+    time-out: "#2ee998&lCities &7☄ &fВремя на подтверждение приглашения вышло"
 
-    message: "#FFF4D6%message%"
+    message: "&f%message%"
     accept: "&r     &a[Принять]       &r"
     decline: "&c[Отклонить]"
 
     invite-messages:
-      city: "Вы приглашены в город #F1B823%city% #FFF4D6игроком #F1B823%sender%"
-      country: "#F1B823%sender% из страны #F1B823%country% #FFF4D6приглашает ваш город вступить к ним"
+      city: "Вы приглашены в город #2BC983%city% &fигроком #2BC983%sender%"
+      country: "#2BC983%sender% из страны #2BC983%country% &fприглашает ваш город вступить к ним"
 
   city:
-    creation-name-error: "#FCD05C&lCities &7⇒ #FFF4D6Город с таким именем уже существует"
+    creation-name-error: "#2ee998&lCities &7☄ &fГород с таким именем уже существует"
 
-    unknown-city: "#FCD05C&lCities &7⇒ #FFF4D6Такого города не существует"
-    already-has-city: "#FCD05C&lCities &7⇒ #FFF4D6У вас уже имеется город #F1B823%city%"
+    unknown-city: "#2ee998&lCities &7☄ &fТакого города не существует"
+    already-has-city: "#2ee998&lCities &7☄ &fУ вас уже имеется город #2BC983%city%"
 
-    city-created: "#FCD05C&lCities &7⇒ #FFF4D6Город #F1B823%city% #FFF4D6был создан"
-    city-removed: "#FCD05C&lCities &7⇒ #FFF4D6Город #F1B823%city% #FFF4D6был удалён"
+    city-created: "#2ee998&lCities &7☄ &fГород #2BC983%city% &fбыл создан"
+    city-removed: "#2ee998&lCities &7☄ &fГород #2BC983%city% &fбыл удалён"
 
-    citizen-invited: "#FCD05C%citizen% #FFF4D6был приглашён игроком #FCD05C%sender%"
-    citizen-added: "#FCD05C%citizen% #FFF4D6присоединился к городу"
-    citizen-leaved: "#FCD05C%citizen% #FFF4D6покинул город"
-    citizen-kicked: "#FCD05C%citizen% #FFF4D6был кикнут игроком #F1B823%sender%"
+    citizen-invited: "#2ee998%citizen% &fбыл приглашён игроком #2ee998%sender%"
+    citizen-added: "#2ee998%citizen% &fприсоединился к городу"
+    citizen-leaved: "#2ee998%citizen% &fпокинул город"
+    citizen-kicked: "#2ee998%citizen% &fбыл кикнут игроком #2BC983%sender%"
 
-    mayor-leave-city: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете выйти из города, когда вы мэр"
-    far-spawn: "#FCD05C&lCities &7⇒ #FFF4D6Спавн можно ставить только на своих территориях"
-    broadcast-format: "#FCD05C[%city%] #FFF4D6%message%"
-    board-format: "#FCD05C[%city%] #FFF4D6%message%"
+    mayor-leave-city: "#2ee998&lCities &7☄ &fВы не сможете выйти из города, когда вы мэр"
+    far-spawn: "#2ee998&lCities &7☄ &fСпавн можно ставить только на своих территориях"
+    broadcast-format: "#2ee998[%city%] &f%message%"
+    board-format: "#2ee998[%city%] &f%message%"
 
     set:
-      board: "#FCD05C&lCities &7⇒ #FFF4D6Доска изменена нa: #F1B823%board%"
-      name: "#FCD05C&lCities &7⇒ #FFF4D6Название города изменена нa: #F1B823%name%"
-      spawn: "#FCD05C&lCities &7⇒ #FFF4D6Спавн города изменен"
+      board: "#2ee998&lCities &7☄ &fДоска изменена нa: #2BC983%board%"
+      name: "#2ee998&lCities &7☄ &fНазвание города изменена нa: #2BC983%name%"
+      spawn: "#2ee998&lCities &7☄ &fСпавн города изменен"
 
   citizen:
-    no-city: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет города"
-    no-country: "#FCD05C&lCities &7⇒ #FFF4D6У вас нет страны"
+    no-city: "#2ee998&lCities &7☄ &fУ вас нет города"
+    no-country: "#2ee998&lCities &7☄ &fУ вас нет страны"
 
-    not-mayor: "#FCD05C&lCities &7⇒ #FFF4D6Вы не являетесь мэром"
-    not-king: "#FCD05C&lCities &7⇒ #FFF4D6Вы не правите страной"
+    not-mayor: "#2ee998&lCities &7☄ &fВы не являетесь мэром"
+    not-king: "#2ee998&lCities &7☄ &fВы не правите страной"
 
-    unknown-citizen: "#FCD05C&lCities &7⇒ #FFF4D6Такого игрока не существует"
-    other-city: "#FCD05C&lCities &7⇒ #FFF4D6Этот игрок из другого города"
+    unknown-citizen: "#2ee998&lCities &7☄ &fТакого игрока не существует"
+    other-city: "#2ee998&lCities &7☄ &fЭтот игрок из другого города"
 
-    kick-error: "#FCD05C&lCities &7⇒ #FFF4D6Игрок не в вашем городе"
-    kick-self: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете кикнуть самого себя"
-    kick-mayor: "#FCD05C&lCities &7⇒ #FFF4D6Этот игрок является мэром вашего города"
+    kick-error: "#2ee998&lCities &7☄ &fИгрок не в вашем городе"
+    kick-self: "#2ee998&lCities &7☄ &fВы не сможете кикнуть самого себя"
+    kick-mayor: "#2ee998&lCities &7☄ &fЭтот игрок является мэром вашего города"
 
-    broadcast-send: "#FCD05C&lCities &7⇒ #FFF4D6Ваше объявление было отправлено"
-    teleported-spawn: "#FCD05C&lCities &7⇒ #FFF4D6Вы телепортировались на спавн города"
+    broadcast-send: "#2ee998&lCities &7☄ &fВаше объявление было отправлено"
+    teleported-spawn: "#2ee998&lCities &7☄ &fВы телепортировались на спавн города"
 
   land:
-    already-claimed: "#FCD05C&lCities &7⇒ #FFF4D6Эта территория принадлежит городу #F1B823%city%"
-    land-claim: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно колонизировали территорию #FCD05C(%world%, %x%, %z%) &fза #FCD05C%money% монет"
-    free-land: "#FCD05C&lCities &7⇒ #FFF4D6Данная территория никем не занята"
-    land-unclaim: "#FCD05C&lCities &7⇒ #FFF4D6Вы успешно де-колонизировали территорию #FCD05C(%world%, %x%, %z%)"
-    not-connected: "#FCD05C&lCities &7⇒ #FFF4D6Нет ваших территории в соседних территориях (чанки)"
-    unclaim-spawnland: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете расприватить территорию со спавном"
+    already-claimed: "#2ee998&lCities &7☄ &fЭта территория принадлежит городу #2BC983%city%"
+    land-claim: "#2ee998&lCities &7☄ &fВы успешно колонизировали территорию #2ee998(%world%, %x%, %z%) &fза #2ee998%money% монет"
+    free-land: "#2ee998&lCities &7☄ &fДанная территория никем не занята"
+    land-unclaim: "#2ee998&lCities &7☄ &fВы успешно де-колонизировали территорию #2ee998(%world%, %x%, %z%)"
+    not-connected: "#2ee998&lCities &7☄ &fНет ваших территории в соседних территориях (чанки)"
+    unclaim-spawnland: "#2ee998&lCities &7☄ &fВы не сможете расприватить территорию со спавном"
 
-    not-selling: "#FCD05C&lCities &7⇒ #FFF4D6Данная территория не продаётся"
-    is-owner: "#FCD05C&lCities &7⇒ #FFF4D6Вы уже владеете этой территорией"
-    other-land: "#FCD05C&lCities &7⇒ #FFF4D6Данная территория не входит в состав вашего города"
+    not-selling: "#2ee998&lCities &7☄ &fДанная территория не продаётся"
+    is-owner: "#2ee998&lCities &7☄ &fВы уже владеете этой территорией"
+    other-land: "#2ee998&lCities &7☄ &fДанная территория не входит в состав вашего города"
 
-    buy-land: "#FCD05C&lCities &7⇒ #FFF4D6Вы купили территорию #FCD05C(%world%, %x%, %z%)"
-    buy-land-broadcast: "#FCD05C%player% #FFF4D6купил территорию #FCD05C(%world%, %x%, %z%)"
+    buy-land: "#2ee998&lCities &7☄ &fВы купили территорию #2ee998(%world%, %x%, %z%)"
+    buy-land-broadcast: "#2ee998%player% &fкупил территорию #2ee998(%world%, %x%, %z%)"
 
-    sell-land: "#FCD05C&lCities &7⇒ #FFF4D6Вы выставили на продажу территорию #FCD05C(%world%, %x%, %z%)"
-    sell-land-broadcast: "#FCD05C%player% #FFF4D6выставил на продажу территорию #FCD05C(%world%, %x%, %z%)"
+    sell-land: "#2ee998&lCities &7☄ &fВы выставили на продажу территорию #2ee998(%world%, %x%, %z%)"
+    sell-land-broadcast: "#2ee998%player% &fвыставил на продажу территорию #2ee998(%world%, %x%, %z%)"
 
-    sell-cancel: "#FCD05C&lCities &7⇒ #FFF4D6Вы отменили продажу территорий #FCD05C(%world%, %x%, %z%)"
-    sell-cancel-broadcast: "#FCD05C%player% #FFF4D6отменил продажу территорий #FCD05C(%world%, %x%, %z%)"
+    sell-cancel: "#2ee998&lCities &7☄ &fВы отменили продажу территорий #2ee998(%world%, %x%, %z%)"
+    sell-cancel-broadcast: "#2ee998%player% &fотменил продажу территорий #2ee998(%world%, %x%, %z%)"
 
-    is-spawn-land: "#FCD05C&lCities &7⇒ #FFF4D6Эта территория является спавном"
+    is-spawn-land: "#2ee998&lCities &7☄ &fЭта территория является спавном"
 
   country:
-    creation-name-error: "#FCD05C&lCities &7⇒ #FFF4D6Страна с таким названием уже существует"
-    unknown-country: "#FCD05C&lCities &7⇒ #FFF4D6Неизвестная страна"
+    creation-name-error: "#2ee998&lCities &7☄ &fСтрана с таким названием уже существует"
+    unknown-country: "#2ee998&lCities &7☄ &fНеизвестная страна"
 
-    country-created: "#FCD05C&lCities &7⇒ #FFF4D6Вы создали страну #F1B823%country%"
-    country-removed: "#FCD05C&lCities &7⇒ #FFF4D6Вы удалили страну #F1B823%country%"
+    country-created: "#2ee998&lCities &7☄ &fВы создали страну #2BC983%country%"
+    country-removed: "#2ee998&lCities &7☄ &fВы удалили страну #2BC983%country%"
 
-    contains-city: "#FCD05C&lCities &7⇒ #FFF4D6Такой город уже в составе вашей страны"
-    not-contains-city: "#FCD05C&lCities &7⇒ #FFF4D6Такой город не состоит в вашей стране"
-    kick-capital: "#FCD05C&lCities &7⇒ #FFF4D6Вы не сможете кикнуть столицу из состава страны"
+    contains-city: "#2ee998&lCities &7☄ &fТакой город уже в составе вашей страны"
+    not-contains-city: "#2ee998&lCities &7☄ &fТакой город не состоит в вашей стране"
+    kick-capital: "#2ee998&lCities &7☄ &fВы не сможете кикнуть столицу из состава страны"
 

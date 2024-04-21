@@ -7,7 +7,7 @@ gui:
     - "BOGOTOCOB"
     - "BOOSOPOOB"
     - "BOOOOOOOB"
-    - "BBBBBBBBB"
+    - "BBRRRRRBB"
 
 items:
 
@@ -15,10 +15,13 @@ items:
     type: PERMISSION
     material: barrier
     amount: 1
-    name: "#FCD05CПрава"
+    name: "#4498DBПрава"
     lore:
       - " "
-      - " #F1B823Нажмите, чтобы открыть"
+      - " &7Настройка прав &7для #6CE25Fграждан&7,"
+      - " #4498DBчужеземцев &7и #FCD05Cстран."
+      - " "
+      - " #4498DB➡ &fНажмите, чтобы открыть"
       - " "
     mask: "P"
 
@@ -26,10 +29,13 @@ items:
     type: SWITCH
     material: book
     amount: 1
-    name: "#FCD05CПереключатели"
+    name: "#E43A96Переключатели"
     lore:
       - " "
-      - " #F1B823Нажмите, чтобы открыть"
+      - " &7Включай или выключай #ED4040PVP&7, "
+      - " #9863E7монстров &7в вашем городе."
+      - " "
+      - " #E43A96➡ &fНажмите, чтобы открыть"
       - " "
     mask: "S"
 
@@ -37,12 +43,15 @@ items:
     type: CITIZENS
     material: armor_stand
     amount: 1
-    name: "#FCD05CГраждане"
+    name: "#6CE25FГраждане"
     lore:
       - " "
-      - " #FFF4D6Количество: #F1B823%citizens%"
+      - " &7Список #2ee998граждан &7вашего города"
+      - " &7с #4498DBинформацией &7о них"
       - " "
-      - " #F1B823Нажмите, чтобы открыть"
+      - " &fКоличество: #6CE25F%citizens% чел"
+      - " "
+      - " #6CE25F➡ &fНажмите, чтобы открыть"
       - " "
     mask: "C"
 
@@ -50,12 +59,15 @@ items:
     type: RANK
     material: red_banner
     amount: 1
-    name: "#FCD05CРанги"
+    name: "#ED4040Ранги"
     lore:
       - " "
-      - " #FFF4D6Количество: #F1B823%ranks%"
+      - " &7Создавай #E43A96свои ранги &7с настраиваемыми"
+      - " #9863E7правами &7под ваш вкус и цвет."
       - " "
-      - " #F1B823Нажмите, чтобы открыть"
+      - " &fКоличество: #ED4040%ranks% рангов"
+      - " "
+      - " #ED4040➡ &fНажмите, чтобы открыть"
       - " "
     mask: "T"
 
@@ -66,10 +78,13 @@ items:
     name: "#FCD05CБанк"
     lore:
       - " "
-      - " #FFF4D6Баланс: #F1B823%current%"
-      - " #FFF4D6Содержание: #F1B823%upkeep%"
+      - " &7Все #6CE25Fфинансовые операции &7будут"
+      - " &7проводиться через банк #F1B823вашего города.  "
       - " "
-      - " #F1B823Нажмите, чтобы открыть"
+      - " &fБаланс: #6CE25F%current%$"
+      - " &fСодержание: #ED4040%upkeep%$"
+      - " "
+      - " #FCD05C➡ &fНажмите, чтобы открыть"
       - " "
     mask: "G"
 
@@ -77,20 +92,20 @@ items:
     type: CITY
     material: lectern
     amount: 1
-    name: "#FCD05CИнформация о городе"
+    name: "#2ee998Информация о городе"
     lore:
       - " "
-      - " #FFF4D6Название: #F1B823%name%"
-      - " #FFF4D6Доска: #F1B823%board%"
-      - " #FFF4D6Мэр: #F1B823%mayor%"
+      - " &fНазвание: #2BC983%name%"
+      - " &fДоска: #FCD05C%board%"
+      - " &fМэр: #6CE25F%mayor%"
       - " "
-      - " #FFF4D6Граждане: #F1B823%citizens%"
-      - " #FFF4D6Территория: #F1B823%lands%"
+      - " &fГраждане: #4498DB%citizens% чел."
+      - " &fТерритория: #9863E7%lands% чанков"
       - " "
     mask: "I"
 
   border-item:
-    material: "black_stained_glass_pane"
+    material: "gray_stained_glass_pane"
     amount: 1
     name: " "
     mask: "B"
